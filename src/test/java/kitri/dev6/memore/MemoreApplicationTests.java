@@ -9,5 +9,4 @@ class MemoreApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
