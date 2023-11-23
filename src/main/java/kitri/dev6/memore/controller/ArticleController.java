@@ -1,33 +1,72 @@
 package kitri.dev6.memore.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import kitri.dev6.memore.domain.Article;
+import kitri.dev6.memore.dto.ArticleRequest;
+import kitri.dev6.memore.repository.ArticleMapper;
+import lombok.Builder;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-public class ArticlesController {
-    @GetMapping("/articles/list")
-    public String articlesList(){
-        return "articles-list";
+@RequestMapping("/articles")
+@RequiredArgsConstructor
+public class ArticleController {
+
+    @Autowired
+    private ArticleMapper articleMapper;
+
+
+    @PostMapping("/list")
+    public List<Article> list(){
+        return articleMapper.findAll();
     }
 
-    @GetMapping("/articles/create")
-    public String articlesCreate(){
-        return "articles-create";
+
+    @PostMapping()
+    public Long create(@RequestBody ArticleRequest articleRequest) {
+        if (articleRequest != null) {
+            Article article = new Article();
+            article.setTitle(articleRequest.getTitle());
+            article.setContent(articleRequest.getContent());
+            article.setDone(articleRequest.isDone());
+            article.setRatingScore(articleRequest.getRatingScore());
+            article.setStartDate(articleRequest.getStartDate());
+            article.setEndDate(articleRequest.getEndDate());
+            article.setHide(articleRequest.isHide());
+            return articleMapper.insert(article);
+        }
+        return null;
     }
 
-    @GetMapping("/articles/{articles_id}")
-    public String articlesListDetail(){
-        return "articles-list-detail";
+
+    @GetMapping("/{id}")
+    public Article findById(@PathVariable String id){
+        return articleMapper.findById(Long.parseLong(id));
     }
 
-    @GetMapping("/articles/{articles_id}")
-    public String articlesModify(){
-        return "articles-modify";
+    @PutMapping("/{id}")
+    public Long update(@PathVariable String id, @RequestBody ArticleRequest articleRequest){
+        Article article = articleMapper.findById(Long.parseLong(id));
+        System.out.println(article.getId());
+        if (article == null) return null;
+        article.setTitle(articleRequest.getTitle());
+        article.setContent(articleRequest.getContent());
+        article.setDone(articleRequest.isDone());
+        article.setRatingScore(articleRequest.getRatingScore());
+        article.setStartDate(articleRequest.getStartDate());
+        article.setEndDate(articleRequest.getEndDate());
+        article.setHide(articleRequest.isHide());
+
+        return articleMapper.update(article);
     }
 
-    @GetMapping("/articles/{articles_id}")
-    public String articlesDelete(){
-        return "articles-delete";
+    @GetMapping("/delete/{id}")
+    public Long delete(@PathVariable String id){
+        return articleMapper.delete(Long.parseLong(id));
     }
+
 
 }

@@ -1,4 +1,4 @@
-package kitri.dev6.memore.entity;
+package kitri.dev6.memore.domain;
 
 import lombok.Getter;
 import lombok.Setter;
