@@ -11,7 +11,4 @@ public interface MemberMapper {
     @Select("select * from member")
     List<Member> findAll();
 
-    @Select("SELECT * FROM user WHERE userIdx = #{userIdx}")
-    Member findByUserIdx(@Param("userIdx") int userIdx);
-
 }
