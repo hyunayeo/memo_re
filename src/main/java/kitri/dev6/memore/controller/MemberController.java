@@ -16,8 +16,8 @@ import java.util.List;
 public class MemberController {
     private final MemberService memberService;
     @GetMapping("/{id}")
-    public Member findById(@PathVariable String id){
-        return memberService.findById(Long.parseLong(id));
+    public Member findById(@PathVariable Long id){
+        return memberService.findById(id);
     }
     @GetMapping("/")
     public List<Member> findAll(){
@@ -25,15 +25,16 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public void insert(@RequestBody @Valid final MemberRequest memberRequest){
-        memberService.insert(memberRequest);
+    public Long insert(@RequestBody @Valid final MemberRequest memberRequest){
+        return memberService.insert(memberRequest);
     }
     @PatchMapping("/{id}")
-    public void update(@PathVariable String id, @RequestBody MemberRequest memberRequest){
-        memberService.update(Long.parseLong(id), memberRequest);
+    public Long update(@PathVariable Long id, @RequestBody MemberRequest memberRequest){
+        return memberService.update(id, memberRequest);
     }
-    @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable String id){
-        memberService.deleteById(Long.parseLong(id));
+    @GetMapping("/delete/{id}")
+    public Long deleteById(@PathVariable Long id){
+        memberService.deleteById(id);
+        return id;
     }
 }

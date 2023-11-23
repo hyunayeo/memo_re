@@ -1,12 +1,15 @@
 package kitri.dev6.memore.dto;
 
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
+@Setter
 @Getter
-@NoArgsConstructor
+@Builder
 public class MemberRequest {
     @NotEmpty
     private String email;

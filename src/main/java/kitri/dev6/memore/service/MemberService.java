@@ -5,6 +5,7 @@ import kitri.dev6.memore.entity.Member;
 import kitri.dev6.memore.repository.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -12,16 +13,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberMapper memberMapper;
-
+    @Transactional
     public Member findById(Long id) {
         return memberMapper.findById(id);
     }
-
     public List<Member> findAll() {
         return memberMapper.findAll();
     }
-
-    public void insert(MemberRequest memberRequest) {
+    @Transactional
+    public Long insert(MemberRequest memberRequest) {
         Member member = Member.builder()
                 .name(memberRequest.getName())
                 .email(memberRequest.getEmail())
@@ -30,15 +30,17 @@ public class MemberService {
                 .picture(memberRequest.getPicture())
                 .build();
         memberMapper.insert(member);
+        return member.getId();
     }
+    @Transactional
+    public Long update(Long id, MemberRequest memberRequest) {
 
-    public void update(Long id, MemberRequest memberRequest) {
         Member member = memberMapper.findById(id);
         member.setName(memberRequest.getName());
         member.setNumber(memberRequest.getNumber());
         member.setPassword(memberRequest.getPassword());
         member.setPicture(memberRequest.getPicture());
-        memberMapper.updateById(member);
+        return memberMapper.updateById(member);
     }
 
     public void deleteById(Long id) {
