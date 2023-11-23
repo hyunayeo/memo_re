@@ -6,7 +6,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class MemoreApplicationTests {
 
+<<<<<<< HEAD
 	@Test
 	void contextLoads() {
 	}
 }
+=======
+    @Test
+    void contextLoads() {
+    }
+
+}
+>>>>>>> main
