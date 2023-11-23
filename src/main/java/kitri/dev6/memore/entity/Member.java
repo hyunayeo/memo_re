@@ -1,9 +1,20 @@
 package kitri.dev6.memore.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
 public class Member {
     private int id;
+    private String email;
+    private String number;
     private String name;
+    private String password;
+    private String picture;
+    private LocalDateTime created_at;
+    private LocalDateTime modified_at;
+    private LocalDateTime deleted_at;
 }
