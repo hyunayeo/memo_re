@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @Builder
 public class Book {
     private Long id;
-    private Long category_id;
-    private Long member_id;
+    private Long categoryId;
+    private Long memberId;
     private String title;
     private String isbn;
     private String isbn13;
@@ -23,8 +23,8 @@ public class Book {
     private String description;
     private String author;
     private String publisher;
-    private LocalDate published_date;
+    private LocalDate publishedDate;
     private boolean approved;
-    private LocalDateTime created_at;
-    private LocalDateTime modified_at;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 }

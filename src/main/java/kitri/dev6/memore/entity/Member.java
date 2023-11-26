@@ -16,7 +16,7 @@ public class Member {
     private String name;
     private String password;
     private String picture;
-    private LocalDateTime created_at;
-    private LocalDateTime modified_at;
-    private LocalDateTime deleted_at;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
+    private LocalDateTime deletedAt;
 }
