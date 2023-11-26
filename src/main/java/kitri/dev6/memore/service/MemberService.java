@@ -22,13 +22,7 @@ public class MemberService {
     }
     @Transactional
     public Long insert(MemberRequestDto memberRequestDto) {
-        Member member = Member.builder()
-                .name(memberRequestDto.getName())
-                .email(memberRequestDto.getEmail())
-                .number(memberRequestDto.getNumber())
-                .password(memberRequestDto.getPassword())
-                .picture(memberRequestDto.getPicture())
-                .build();
+        Member member = memberRequestDto.toDomain();
         memberMapper.insert(member);
         return member.getId();
     }
