@@ -1,5 +1,6 @@
 package kitri.dev6.memore.dto;
 
+import kitri.dev6.memore.domain.Member;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -15,16 +16,15 @@ public class MemberResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private LocalDateTime deletedAt;
-
-    public MemberResponseDto(Long id, String email, String number, String name, String password, String picture, LocalDateTime createdAt, LocalDateTime modifiedAt, LocalDateTime deletedAt) {
-        this.id = id;
-        this.email = email;
-        this.number = number;
-        this.name = name;
-        this.password = password;
-        this.picture = picture;
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-        this.deletedAt = deletedAt;
+    public MemberResponseDto(Member domain){
+        this.id = domain.getId();
+        this.email = domain.getEmail();
+        this.number = domain.getNumber();
+        this.name = domain.getName();
+        this.password = domain.getPassword();
+        this.picture = domain.getPicture();
+        this.createdAt = domain.getCreatedAt();
+        this.modifiedAt = domain.getModifiedAt();
+        this.deletedAt = domain.getDeletedAt();
     }
 }

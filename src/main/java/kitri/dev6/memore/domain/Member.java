@@ -19,4 +19,11 @@ public class Member {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private LocalDateTime deletedAt;
+
+    public void update(String number, String name, String password, String picture) {
+        this.number = number;
+        this.name = name;
+        this.password = password;
+        this.picture = picture;
+    }
 }
