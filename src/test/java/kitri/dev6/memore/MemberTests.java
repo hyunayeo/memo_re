@@ -53,7 +53,7 @@ public class MemberTests {
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         log.info("회원 저장 (성공) / 생성 ID :" + responseEntity.getBody());
 
-        Member member = memberMapper.findById(responseEntity.getBody());
+        Member member = memberMapper.findById(responseEntity.getBody()).get();
         assertThat(member.getEmail()).isEqualTo(email);
         assertThat(member.getNumber()).isEqualTo(number);
     }
