@@ -1,7 +1,7 @@
 package kitri.dev6.memore.controller;
 
-import kitri.dev6.memore.dto.MemberRequest;
-import kitri.dev6.memore.entity.Member;
+import kitri.dev6.memore.dto.MemberRequestDto;
+import kitri.dev6.memore.domain.Member;
 import kitri.dev6.memore.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +25,12 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public Long insert(@RequestBody @Valid final MemberRequest memberRequest){
-        return memberService.insert(memberRequest);
+    public Long insert(@RequestBody @Valid final MemberRequestDto memberRequestDto){
+        return memberService.insert(memberRequestDto);
     }
     @PatchMapping("/{id}")
-    public Long update(@PathVariable Long id, @RequestBody MemberRequest memberRequest){
-        return memberService.update(id, memberRequest);
+    public Long update(@PathVariable Long id, @RequestBody MemberRequestDto memberRequestDto){
+        return memberService.update(id, memberRequestDto);
     }
     @GetMapping("/delete/{id}")
     public Long deleteById(@PathVariable Long id){

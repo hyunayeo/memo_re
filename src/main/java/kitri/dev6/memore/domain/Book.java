@@ -1,9 +1,8 @@
-package kitri.dev6.memore.entity;
+package kitri.dev6.memore.domain;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.ibatis.annotations.Result;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

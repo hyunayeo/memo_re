@@ -1,7 +1,7 @@
 package kitri.dev6.memore.service;
 
-import kitri.dev6.memore.dto.MemberRequest;
-import kitri.dev6.memore.entity.Member;
+import kitri.dev6.memore.dto.MemberRequestDto;
+import kitri.dev6.memore.domain.Member;
 import kitri.dev6.memore.repository.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,25 +21,25 @@ public class MemberService {
         return memberMapper.findAll();
     }
     @Transactional
-    public Long insert(MemberRequest memberRequest) {
+    public Long insert(MemberRequestDto memberRequestDto) {
         Member member = Member.builder()
-                .name(memberRequest.getName())
-                .email(memberRequest.getEmail())
-                .number(memberRequest.getNumber())
-                .password(memberRequest.getPassword())
-                .picture(memberRequest.getPicture())
+                .name(memberRequestDto.getName())
+                .email(memberRequestDto.getEmail())
+                .number(memberRequestDto.getNumber())
+                .password(memberRequestDto.getPassword())
+                .picture(memberRequestDto.getPicture())
                 .build();
         memberMapper.insert(member);
         return member.getId();
     }
     @Transactional
-    public Long update(Long id, MemberRequest memberRequest) {
+    public Long update(Long id, MemberRequestDto memberRequestDto) {
 
         Member member = memberMapper.findById(id);
-        member.setName(memberRequest.getName());
-        member.setNumber(memberRequest.getNumber());
-        member.setPassword(memberRequest.getPassword());
-        member.setPicture(memberRequest.getPicture());
+        member.setName(memberRequestDto.getName());
+        member.setNumber(memberRequestDto.getNumber());
+        member.setPassword(memberRequestDto.getPassword());
+        member.setPicture(memberRequestDto.getPicture());
         return memberMapper.updateById(member);
     }
 

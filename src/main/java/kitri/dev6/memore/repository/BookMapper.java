@@ -1,6 +1,6 @@
 package kitri.dev6.memore.repository;
 
-import kitri.dev6.memore.entity.Book;
+import kitri.dev6.memore.domain.Book;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

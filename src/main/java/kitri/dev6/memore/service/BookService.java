@@ -1,7 +1,7 @@
 package kitri.dev6.memore.service;
 
 import kitri.dev6.memore.dto.BookRequest;
-import kitri.dev6.memore.entity.Book;
+import kitri.dev6.memore.domain.Book;
 import kitri.dev6.memore.repository.BookMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,8 +23,8 @@ public class BookService {
 
     public void create(BookRequest bookRequest) {
         Book book = Book.builder()
-                .category_id(bookRequest.getCategory_id())
-                .member_id(bookRequest.getMember_id())
+                .categoryId(bookRequest.getCategoryId())
+                .memberId(bookRequest.getMemberId())
                 .title(bookRequest.getTitle())
                 .isbn(bookRequest.getIsbn())
                 .isbn13(bookRequest.getIsbn13())
@@ -33,7 +33,7 @@ public class BookService {
                 .description(bookRequest.getDescription())
                 .author(bookRequest.getAuthor())
                 .publisher(bookRequest.getPublisher())
-                .published_date(bookRequest.getPublished_date())
+                .publishedDate(bookRequest.getPublishedDate())
                 .approved(bookRequest.isApproved())
                 .build();
         bookMapper.create(book);

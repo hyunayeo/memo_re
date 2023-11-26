@@ -1,7 +1,7 @@
 package kitri.dev6.memore;
 
-import kitri.dev6.memore.dto.MemberRequest;
-import kitri.dev6.memore.entity.Member;
+import kitri.dev6.memore.dto.MemberRequestDto;
+import kitri.dev6.memore.domain.Member;
 import kitri.dev6.memore.repository.MemberMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -37,7 +37,7 @@ public class MemberTests {
         String number = "01088889999";
         String password = "1234";
         String picture = "/path/";
-        MemberRequest memberRequest = MemberRequest.builder()
+        MemberRequestDto memberRequestDto = MemberRequestDto.builder()
                 .email(email)
                 .name(name)
                 .number(number)
@@ -47,7 +47,7 @@ public class MemberTests {
         String url = "http://localhost:" + port + "/api/members/join";
 
         // When
-        ResponseEntity<Long> responseEntity = restTemplate.postForEntity(url, memberRequest, Long.class);
+        ResponseEntity<Long> responseEntity = restTemplate.postForEntity(url, memberRequestDto, Long.class);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);

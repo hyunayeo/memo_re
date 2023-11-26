@@ -1,12 +1,8 @@
 package kitri.dev6.memore.controller;
 
 import kitri.dev6.memore.dto.BookRequest;
-import kitri.dev6.memore.dto.MemberRequest;
-import kitri.dev6.memore.entity.Book;
-import kitri.dev6.memore.entity.Member;
+import kitri.dev6.memore.domain.Book;
 import kitri.dev6.memore.service.BookService;
-import kitri.dev6.memore.service.MemberService;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

@@ -11,9 +11,9 @@ import java.time.LocalDate;
 @Setter
 public class BookRequest {
     @NotEmpty
-    private Long category_id;
+    private Long categoryId;
     @NotEmpty
-    private Long member_id;
+    private Long memberId;
     @NotEmpty
     private String title;
     @NotEmpty
@@ -27,7 +27,7 @@ public class BookRequest {
     private String author;
     @NotEmpty
     private String publisher;
-    private LocalDate published_date;
+    private LocalDate publishedDate;
     @NotEmpty
     private boolean approved;
 }

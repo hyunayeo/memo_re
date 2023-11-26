@@ -1,6 +1,6 @@
 package kitri.dev6.memore.repository;
 
-import kitri.dev6.memore.entity.Wish;
+import kitri.dev6.memore.domain.Wish;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
