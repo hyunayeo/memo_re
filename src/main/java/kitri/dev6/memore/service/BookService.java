@@ -1,11 +1,13 @@
 package kitri.dev6.memore.service;
 
-import kitri.dev6.memore.dto.BookRequest;
+import kitri.dev6.memore.dto.BookRequestDto;
 import kitri.dev6.memore.domain.Book;
+import kitri.dev6.memore.dto.BookResponseDto;
 import kitri.dev6.memore.repository.BookMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -13,29 +15,37 @@ import java.util.List;
 public class BookService {
     private final BookMapper bookMapper;
 
-    public Book findById(Long id) {
-        return bookMapper.findById(id);
+    public BookResponseDto findById(Long id) {
+        Book book = bookMapper.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 도서가 존재하지 않습니다, id=" + id));
+        return new BookResponseDto(book);
     }
 
     public List<Book> findAll() {
         return bookMapper.findAll();
     }
 
-    public void create(BookRequest bookRequest) {
-        Book book = Book.builder()
-                .categoryId(bookRequest.getCategoryId())
-                .memberId(bookRequest.getMemberId())
-                .title(bookRequest.getTitle())
-                .isbn(bookRequest.getIsbn())
-                .isbn13(bookRequest.getIsbn13())
-                .cover(bookRequest.getCover())
-                .link(bookRequest.getLink())
-                .description(bookRequest.getDescription())
-                .author(bookRequest.getAuthor())
-                .publisher(bookRequest.getPublisher())
-                .publishedDate(bookRequest.getPublishedDate())
-                .approved(bookRequest.isApproved())
-                .build();
-        bookMapper.create(book);
+    public Long insert(BookRequestDto bookRequestDto) {
+        Book book = bookRequestDto.toDomain();
+        bookMapper.insert(book);
+        return book.getId();
+    }
+
+    public Long update(Long id, BookRequestDto bookRequestDto){
+        Book book = bookMapper.findById(id).orElseThrow(()->new IllegalArgumentException("해당 도서가 존재하지 않습니다."));
+        book.update(bookRequestDto.getCategoryId(),
+                bookRequestDto.getMemberId(),
+                bookRequestDto.getTitle(),
+                bookRequestDto.getIsbn(),
+                bookRequestDto.getIsbn13(),
+                bookRequestDto.getCover(),
+                bookRequestDto.getLink(),
+                bookRequestDto.getDescription(),
+                bookRequestDto.getAuthor(),
+                bookRequestDto.getPublisher(),
+                bookRequestDto.getPublishedDate(),
+                bookRequestDto.isApproved()
+        );
+        bookMapper.updateById(book);
+        return id;
     }
 }

@@ -4,6 +4,7 @@ import kitri.dev6.memore.dto.MemberRequestDto;
 import kitri.dev6.memore.domain.Member;
 import kitri.dev6.memore.repository.MemberMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,6 +28,11 @@ public class MemberTests {
     private MemberMapper memberMapper;
     @Autowired
     private TestRestTemplate restTemplate;
+    private Long insertTestId;
+    @AfterEach
+    public void tearDown() throws Exception{
+        memberMapper.deleteById(insertTestId);
+    }
 
     @Test
     @DisplayName("회원 저장(성공)")
@@ -51,9 +57,10 @@ public class MemberTests {
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        log.info("회원 저장 (성공) / 생성 ID :" + responseEntity.getBody());
+        insertTestId = responseEntity.getBody();
+        log.info("회원 저장 (성공) / 생성 ID :" +insertTestId);
 
-        Member member = memberMapper.findById(responseEntity.getBody()).get();
+        Member member = memberMapper.findById(insertTestId).get();
         assertThat(member.getEmail()).isEqualTo(email);
         assertThat(member.getNumber()).isEqualTo(number);
     }

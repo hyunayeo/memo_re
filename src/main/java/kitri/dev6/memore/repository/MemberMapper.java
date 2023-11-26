@@ -18,7 +18,8 @@ public interface MemberMapper {
     @SelectKey(statement = "select last_insert_id()", keyColumn = "id", keyProperty = "id", before = false, resultType = Long.class)
     void insert(Member member);
 
-    @Delete("update member set deleted_at = now() where id = #{id}")
+//    @Delete("update member set deleted_at = now() where id = #{id}")
+    @Delete("delete from member where id = #{id}")
     void deleteById(Long id);
 
     @Update("update member set name=#{name}, number=#{number}, password=#{password}, picture=#{picture} where id = #{id}")

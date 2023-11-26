@@ -1,7 +1,8 @@
 package kitri.dev6.memore.controller;
 
-import kitri.dev6.memore.dto.BookRequest;
+import kitri.dev6.memore.dto.BookRequestDto;
 import kitri.dev6.memore.domain.Book;
+import kitri.dev6.memore.dto.BookResponseDto;
 import kitri.dev6.memore.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +19,18 @@ public class BookController {
         return bookService.findAll();
     }
     @GetMapping("/{id}")
-    public Book findById(@PathVariable String id){
-        return bookService.findById(Long.parseLong(id));
+    public BookResponseDto findById(@PathVariable Long id){
+        return bookService.findById(id);
     }
     @PostMapping("/create")
-    public void create(@RequestBody BookRequest bookRequest){
-        bookService.create(bookRequest);
+    public Long create(@RequestBody BookRequestDto bookRequestDto){
+        return bookService.insert(bookRequestDto);
+    }
+
+    @PutMapping("/{id}")
+    public Long update(@PathVariable Long id,@RequestBody BookRequestDto bookRequestDto){
+        bookService.update(id, bookRequestDto);
+        return id;
     }
 
 }

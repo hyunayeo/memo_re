@@ -26,4 +26,21 @@ public class Book {
     private boolean approved;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+
+    public void update(Long categoryId, Long memberId, String title, String isbn, String isbn13,
+                       String cover, String link, String description, String author,
+                       String publisher, LocalDate publishedDate, boolean approved) {
+        this.categoryId = categoryId;
+        this.memberId = memberId;
+        this.title = title;
+        this.isbn = isbn;
+        this.isbn13 = isbn13;
+        this.cover = cover;
+        this.link = link;
+        this.description = description;
+        this.author = author;
+        this.publisher = publisher;
+        this.publishedDate = publishedDate;
+        this.approved = approved;
+    }
 }
