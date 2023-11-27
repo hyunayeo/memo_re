@@ -14,21 +14,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookController {
     private final BookService bookService;
-    @GetMapping("/")
-    public List<Book> findAll(){
-        return bookService.findAll();
+    @GetMapping("")
+    public List<Book> findAll(@RequestParam(name = "memberId", required = false) Long memberId){
+        return bookService.findAll(memberId);
     }
     @GetMapping("/{id}")
     public BookResponseDto findById(@PathVariable Long id){
         return bookService.findById(id);
     }
-    @PostMapping("/create")
+    @PostMapping("")
     public Long create(@RequestBody BookRequestDto bookRequestDto){
         return bookService.insert(bookRequestDto);
     }
-
     @PutMapping("/{id}")
-    public Long update(@PathVariable Long id,@RequestBody BookRequestDto bookRequestDto){
+    public Long update(@PathVariable Long id, @RequestBody BookRequestDto bookRequestDto){
         bookService.update(id, bookRequestDto);
         return id;
     }

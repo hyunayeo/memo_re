@@ -20,12 +20,12 @@ public class MemberController {
     public MemberResponseDto findById(@PathVariable Long id){
         return memberService.findById(id);
     }
-    @GetMapping("/")
+    @GetMapping("")
     public List<Member> findAll(){
         return memberService.findAll();
     }
 
-    @PostMapping("/join")
+    @PostMapping("")
     public Long insert(@RequestBody @Valid final MemberRequestDto memberRequestDto){
         return memberService.insert(memberRequestDto);
     }
@@ -33,7 +33,7 @@ public class MemberController {
     public Long update(@PathVariable Long id, @RequestBody MemberRequestDto memberRequestDto){
         return memberService.update(id, memberRequestDto);
     }
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public Long deleteById(@PathVariable Long id){
         memberService.deleteById(id);
         return id;

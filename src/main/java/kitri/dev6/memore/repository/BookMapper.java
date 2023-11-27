@@ -15,6 +15,9 @@ public interface BookMapper {
     @Select("select * from book")
     List<Book> findAll();
 
+    @Select("select * from book where member_id=#{memberID}")
+    List<Book> findByMemberId(Long memberId);
+
     @Insert("insert into book (category_id, member_id, title, isbn, isbn13, cover, link, description, author, publisher, published_date, approved) " +
             "values (#{categoryId}, #{memberId}, #{title}, #{isbn}, #{isbn13}, #{cover}, #{link}, " +
             "#{description}, #{author}, #{publisher}, #{publishedDate}, #{approved})")

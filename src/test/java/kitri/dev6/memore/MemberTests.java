@@ -50,7 +50,7 @@ public class MemberTests {
                 .password(password)
                 .picture(picture)
                 .build();
-        String url = "http://localhost:" + port + "/api/members/join";
+        String url = "http://localhost:" + port + "/api/members";
 
         // When
         ResponseEntity<Long> responseEntity = restTemplate.postForEntity(url, memberRequestDto, Long.class);

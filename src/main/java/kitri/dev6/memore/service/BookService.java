@@ -1,13 +1,12 @@
 package kitri.dev6.memore.service;
 
-import kitri.dev6.memore.dto.BookRequestDto;
 import kitri.dev6.memore.domain.Book;
+import kitri.dev6.memore.dto.BookRequestDto;
 import kitri.dev6.memore.dto.BookResponseDto;
 import kitri.dev6.memore.repository.BookMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -20,8 +19,11 @@ public class BookService {
         return new BookResponseDto(book);
     }
 
-    public List<Book> findAll() {
-        return bookMapper.findAll();
+    public List<Book> findAll(Long memberId) {
+        if (memberId==null){
+            return bookMapper.findAll();
+        }
+        return bookMapper.findByMemberId(memberId);
     }
 
     public Long insert(BookRequestDto bookRequestDto) {
@@ -49,7 +51,7 @@ public class BookService {
         return id;
     }
     public void delete(Long id){
-        bookMapper.findById(id).orElseThrow(()->new IllegalArgumentException("해당 도서가 존재하지 않습니다."));
+        bookMapper.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 도서가 존재하지 않습니다."));
         bookMapper.deleteById(id);
     }
 }

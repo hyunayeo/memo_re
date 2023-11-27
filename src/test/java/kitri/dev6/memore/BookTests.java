@@ -68,7 +68,7 @@ public class BookTests {
                 .publishedDate(publishedDate)
                 .build();
 
-        String url = "http://localhost:" + port + "/api/books/create";
+        String url = "http://localhost:" + port + "/api/books";
 
         // When
         ResponseEntity<Long> responseEntity = restTemplate.postForEntity(url, bookRequestDto, Long.class);
