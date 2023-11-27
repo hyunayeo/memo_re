@@ -20,10 +20,10 @@ public interface WishMapper {
     Wish findById(Long id);
 
     // 찜 등록
-    @Insert("insert into wish (member_id, book_id) values (#{member_id}, #{book_id});")
-    void create(Long member_id, Long book_id);
+    @Insert("insert into wish (member_id, book_id) values (#{memberId}, #{bookId});")
+    void create(Wish wish);
 
     // 찜 삭제
-    @Delete("delete from wish where member_id = #{member_id} and id= #{id};")
-    void delete(Long id, Long member_id);
+    @Delete("delete from wish where member_id = #{memberId} and id= #{id};")
+    void delete(Long id, Long memberId);
 }
