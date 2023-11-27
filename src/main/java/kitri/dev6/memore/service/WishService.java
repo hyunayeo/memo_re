@@ -14,15 +14,12 @@ public class WishService {
     private final WishMapper wishMapper;
 
     // 전체 찜 조회
-    public List<Wish> findAll() {
-        return wishMapper.findAll();
+    public List<Wish> findAll(Long memberId) {
+        if (memberId == null) {
+            return wishMapper.findAll();
+        }
+        return wishMapper.findByMemberId(memberId);
     }
-
-    // 검색 찜 조회
-    public Wish findById(Long id) {
-        return wishMapper.findById(id);
-    }
-
     // 찜 등록 : 회원의 찜 목록에 book정보를 담아야 한다.
     public void createWish(WishRequestDto wishRequestDto) {
         wishMapper.create(wishRequestDto.toDomain());

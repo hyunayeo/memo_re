@@ -16,14 +16,8 @@ public class WishController {
 
     // 전체 찜 조회
     @GetMapping("")
-    public List<Wish> findAll() {
-        return wishService.findAll();
-    }
-
-    // 검색 찜 조회
-    @GetMapping("/{id}")
-    public Wish findById(@PathVariable Long id) {
-        return wishService.findById(id);
+    public List<Wish> findAll(@RequestParam(value = "memberId",required = false) Long memberId) {
+        return wishService.findAll(memberId);
     }
 
     // 찜 등록

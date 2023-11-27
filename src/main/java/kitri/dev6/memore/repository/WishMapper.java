@@ -15,9 +15,8 @@ public interface WishMapper {
     @Select("select * from wish")
     List<Wish> findAll();
 
-    // 검색 찜 조회
-    @Select("select * from wish where id = #{id}")
-    Wish findById(Long id);
+    @Select("select * from wish where member_id = #{memberId}")
+    List<Wish> findByMemberId(Long memberId);
 
     // 찜 등록
     @Insert("insert into wish (member_id, book_id) values (#{memberId}, #{bookId});")
