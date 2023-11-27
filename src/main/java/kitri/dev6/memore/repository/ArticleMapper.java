@@ -1,8 +1,6 @@
 package kitri.dev6.memore.repository;
 import kitri.dev6.memore.domain.Article;
-import kitri.dev6.memore.domain.Wish;
 import org.apache.ibatis.annotations.*;
-import org.springframework.stereotype.Repository;
 import java.util.*;
 
 @Mapper
