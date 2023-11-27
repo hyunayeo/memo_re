@@ -29,7 +29,7 @@ public class ArticleController {
     public Long update(@PathVariable String id, @RequestBody ArticleRequestDto articleRequestDto) {
         return articleService.update(id, articleRequestDto);
     }
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public Long delete(@PathVariable String id) {
         return articleService.delete(id);
     }
