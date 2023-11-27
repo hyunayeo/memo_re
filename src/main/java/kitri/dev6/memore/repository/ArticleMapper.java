@@ -1,6 +1,7 @@
 package kitri.dev6.memore.repository;
 
 import kitri.dev6.memore.domain.Article;
+import kitri.dev6.memore.domain.Book;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -18,10 +19,10 @@ public interface ArticleMapper {
             " values ( #{memberId}, #{bookId}, #{title}, #{content}, #{done}, #{startDate}, #{endDate}, #{ratingScore}, #{isHide})")
     Long insert(Article article);
 
-    @Update("update article set title = #{title}, content = #{content}, done = #{done}, start_date = #{startDate}, end_date = #{endDate}, " +
+    @Update("update article set member_id=#{memberId}, book_id=#{bookId}, title = #{title}, content = #{content}, done = #{done}, start_date = #{startDate}, end_date = #{endDate}, " +
             "rating_score = #{ratingScore}, is_hide = #{isHide}" +
             " where id = #{id}")
-    Long update(Article article);
+    Long updateById(Article article);
 
     @Delete("delete from article where id = #{id}")
     Long delete(Long id);

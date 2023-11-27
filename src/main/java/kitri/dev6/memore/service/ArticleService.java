@@ -22,26 +22,17 @@ public class ArticleService {
         return articleMapper.findById(Long.parseLong(id));
     }
 
-    public Long create(Article article) {
-        if (article != null) {
-            article.setMemberId(article.getMemberId());
-            article.setBookId(article.getBookId());
-            article.setTitle(article.getTitle());
-            article.setContent(article.getContent());
-            article.setDone(article.isDone());
-            article.setRatingScore(article.getRatingScore());
-            article.setStartDate(article.getStartDate());
-            article.setEndDate(article.getEndDate());
-            article.setHide(article.isHide());
-            articleMapper.insert(article);
-        }
-        return null;
+    public Long create(ArticleRequestDto articleRequestDto) {
+        Article article = articleRequestDto.toDomain();
+        articleMapper.insert(article);
+        return article.getId();
     }
 
-    public Long update(String id, ArticleRequestDto articleRequestDto) {
-        Article article = articleMapper.findById(Long.parseLong(id));
-        System.out.println(article.getId());
+    public Long update(Long id, ArticleRequestDto articleRequestDto) {
+        Article article = articleMapper.findById(id);
         if (article == null) return null;
+        article.setMemberId(articleRequestDto.getMemberId());
+        article.setBookId(articleRequestDto.getBookId());
         article.setTitle(articleRequestDto.getTitle());
         article.setContent(articleRequestDto.getContent());
         article.setDone(articleRequestDto.isDone());
@@ -49,7 +40,7 @@ public class ArticleService {
         article.setStartDate(articleRequestDto.getStartDate());
         article.setEndDate(articleRequestDto.getEndDate());
         article.setHide(articleRequestDto.isHide());
-        return articleMapper.update(article);
+        return articleMapper.updateById(article);
     }
 
     public Long delete(String id) {

@@ -14,20 +14,22 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
-
     @PostMapping("/list")
-    public List<Article> list() { return articleService.list(); }
+    public List<Article> list() {
+        return articleService.list();
+    }
     @PostMapping()
-    public Long create(@RequestBody Article article) {
-        return articleService.create(article);
+    public Long create(@RequestBody ArticleRequestDto articleRequestDto) {
+        return articleService.create(articleRequestDto);
     }
     @GetMapping("/{id}")
     public Article findById(@PathVariable String id) {
         return articleService.findById(id);
     }
     @PutMapping("/{id}")
-    public Long update(@PathVariable String id, @RequestBody ArticleRequestDto articleRequestDto) {
-        return articleService.update(id, articleRequestDto);
+    public Long update(@PathVariable Long id, @RequestBody ArticleRequestDto articleRequestDto) {
+        articleService.update(id, articleRequestDto);
+        return id;
     }
     @DeleteMapping("/{id}")
     public Long delete(@PathVariable String id) {
