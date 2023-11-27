@@ -21,9 +21,9 @@ public interface WishMapper {
 
     // 찜 등록
     @Insert("insert into wish (member_id, book_id) values (#{member_id}, #{book_id});")
-    void create(String member_id, String book_id);
+    void create(Long member_id, Long book_id);
 
     // 찜 삭제
     @Delete("delete from wish where member_id = #{member_id} and id= #{id};")
-    void delete(Long id, String member_id);
+    void delete(Long id, Long member_id);
 }

@@ -37,6 +37,6 @@ public class WishController {
     // TODO: use memberId of session(로그인한 멤버id를 쓰게 하기 / 세션 정보를 쓰게 하기)
     @DeleteMapping("/{id}")
     public void delete(@PathVariable String id, @RequestParam("memberId") String memberId) {
-        wishService.deleteWish(Long.parseLong(id), memberId);
+        wishService.deleteWish(Long.parseLong(id), Long.parseLong(memberId));
     }
 }
