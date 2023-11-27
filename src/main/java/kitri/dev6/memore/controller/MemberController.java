@@ -3,6 +3,7 @@ package kitri.dev6.memore.controller;
 import kitri.dev6.memore.dto.MemberRequestDto;
 import kitri.dev6.memore.domain.Member;
 import kitri.dev6.memore.dto.MemberResponseDto;
+import kitri.dev6.memore.dto.MemberUpdateRequestDto;
 import kitri.dev6.memore.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +31,8 @@ public class MemberController {
         return memberService.insert(memberRequestDto);
     }
     @PutMapping("/{id}")
-    public Long update(@PathVariable Long id, @RequestBody MemberRequestDto memberRequestDto){
-        return memberService.update(id, memberRequestDto);
+    public Long update(@PathVariable Long id, @RequestBody MemberUpdateRequestDto requestDto){
+        return memberService.update(id, requestDto);
     }
     @DeleteMapping("/{id}")
     public Long deleteById(@PathVariable Long id){

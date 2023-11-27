@@ -4,6 +4,7 @@ import com.fasterxml.classmate.MemberResolver;
 import kitri.dev6.memore.dto.MemberRequestDto;
 import kitri.dev6.memore.domain.Member;
 import kitri.dev6.memore.dto.MemberResponseDto;
+import kitri.dev6.memore.dto.MemberUpdateRequestDto;
 import kitri.dev6.memore.repository.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,13 +36,13 @@ public class MemberService {
     }
 
     @Transactional
-    public Long update(Long id, MemberRequestDto memberRequestDto) {
+    public Long update(Long id, MemberUpdateRequestDto requestDto) {
         Member member = memberMapper.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원이 없습니다"));
-        member.update(memberRequestDto.getNumber(),
-                memberRequestDto.getName(),
-                memberRequestDto.getPassword(),
-                memberRequestDto.getPicture());
+        member.update(requestDto.getNumber(),
+                requestDto.getName(),
+                requestDto.getPassword(),
+                requestDto.getPicture());
         memberMapper.updateById(member);
         return id;
     }
