@@ -49,7 +49,6 @@ public class ArticleService {
         article.setStartDate(articleRequestDto.getStartDate());
         article.setEndDate(articleRequestDto.getEndDate());
         article.setHide(articleRequestDto.isHide());
-
         return articleMapper.update(article);
     }
 

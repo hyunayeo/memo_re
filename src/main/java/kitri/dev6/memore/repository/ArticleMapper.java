@@ -18,7 +18,8 @@ public interface ArticleMapper {
             " values ( #{memberId}, #{bookId}, #{title}, #{content}, #{done}, #{startDate}, #{endDate}, #{ratingScore}, #{isHide})")
     Long insert(Article article);
 
-    @Update("update article set title = #{title}, content = #{content}, done = #{done}, start_date = #{startDate}, end_date = #{endDate}, rating_score = #{ratingScore}, is_hide = #{isHide}" +
+    @Update("update article set title = #{title}, content = #{content}, done = #{done}, start_date = #{startDate}, end_date = #{endDate}, " +
+            "rating_score = #{ratingScore}, is_hide = #{isHide}" +
             " where id = #{id}")
     Long update(Article article);
 
