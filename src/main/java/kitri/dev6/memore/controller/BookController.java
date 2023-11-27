@@ -1,7 +1,7 @@
 package kitri.dev6.memore.controller;
 
-import kitri.dev6.memore.dto.BookRequestDto;
 import kitri.dev6.memore.domain.Book;
+import kitri.dev6.memore.dto.BookRequestDto;
 import kitri.dev6.memore.dto.BookResponseDto;
 import kitri.dev6.memore.service.BookService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +30,11 @@ public class BookController {
     @PutMapping("/{id}")
     public Long update(@PathVariable Long id,@RequestBody BookRequestDto bookRequestDto){
         bookService.update(id, bookRequestDto);
+        return id;
+    }
+    @DeleteMapping("/{id}")
+    public Long delete(@PathVariable Long id){
+        bookService.delete(id);
         return id;
     }
 

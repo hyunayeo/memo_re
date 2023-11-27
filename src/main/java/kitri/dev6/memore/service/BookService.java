@@ -48,4 +48,8 @@ public class BookService {
         bookMapper.updateById(book);
         return id;
     }
+    public void delete(Long id){
+        bookMapper.findById(id).orElseThrow(()->new IllegalArgumentException("해당 도서가 존재하지 않습니다."));
+        bookMapper.deleteById(id);
+    }
 }

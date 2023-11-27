@@ -22,6 +22,6 @@ public interface MemberMapper {
     @Delete("delete from member where id = #{id}")
     void deleteById(Long id);
 
-    @Update("update member set name=#{name}, number=#{number}, password=#{password}, picture=#{picture} where id = #{id}")
+    @Update("update member set name=#{name}, number=#{number}, password=#{password}, picture=#{picture}, modified_at=now() where id = #{id}")
     Long updateById(Member member);
 }

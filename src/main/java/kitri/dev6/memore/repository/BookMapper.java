@@ -21,11 +21,12 @@ public interface BookMapper {
     @SelectKey(statement = "select last_insert_id()", keyColumn = "id", keyProperty = "id", before = false, resultType = Long.class)
     void insert(Book book);
 
-    @Delete("delete from book where id = #{id}")
+//    @Delete("delete from book where id = #{id}")
+    @Update("update book set deleted_at = now() where id = #{id}")
     void deleteById(Long id);
 
     @Update("update book set category_id=#{categoryId}, member_id=#{memberId}, title=#{title}, isbn=#{isbn}," +
             "isbn13=#{isbn13}, cover=#{cover}, link=#{link}, description=#{description}, author=#{author}, publisher=#{publisher}," +
-            "published_date=#{publishedDate}, approved=#{approved} where id = #{id}")
+            "published_date=#{publishedDate}, approved=#{approved}, modified_at=now() where id = #{id}")
     void updateById(Book book);
 }
