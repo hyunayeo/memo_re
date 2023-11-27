@@ -1,0 +1,11 @@
+# database
+
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql:[mysql url]
+&serverTimezone=UTC&autoReconnect=true&allowMultiQueries=true&characterEncoding=UTF-8
+spring.datasource.username=[username]
+spring.datasource.password=[password]
+logging.level.com.zaxxer.hikari=TRACE
+logging.level.com.zaxxer.hikari.HikariConfig=DEBUG
+
+mybatis.configuration.map-underscore-to-camel-case=true
