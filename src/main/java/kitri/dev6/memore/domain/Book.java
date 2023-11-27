@@ -23,15 +23,13 @@ public class Book {
     private String author;
     private String publisher;
     private LocalDate publishedDate;
-    private boolean approved;
+    private Boolean approved;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public void update(Long categoryId, Long memberId, String title, String isbn, String isbn13,
+    public void update(String title, String isbn, String isbn13,
                        String cover, String link, String description, String author,
-                       String publisher, LocalDate publishedDate, boolean approved) {
-        this.categoryId = categoryId;
-        this.memberId = memberId;
+                       String publisher, LocalDate publishedDate, Boolean approved) {
         this.title = title;
         this.isbn = isbn;
         this.isbn13 = isbn13;

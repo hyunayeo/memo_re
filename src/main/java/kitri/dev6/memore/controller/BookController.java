@@ -3,6 +3,7 @@ package kitri.dev6.memore.controller;
 import kitri.dev6.memore.domain.Book;
 import kitri.dev6.memore.dto.BookRequestDto;
 import kitri.dev6.memore.dto.BookResponseDto;
+import kitri.dev6.memore.dto.BookUpdateRequestDto;
 import kitri.dev6.memore.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class BookController {
         return bookService.insert(bookRequestDto);
     }
     @PutMapping("/{id}")
-    public Long update(@PathVariable Long id, @RequestBody BookRequestDto bookRequestDto){
+    public Long update(@PathVariable Long id, @RequestBody BookUpdateRequestDto bookRequestDto){
         bookService.update(id, bookRequestDto);
         return id;
     }

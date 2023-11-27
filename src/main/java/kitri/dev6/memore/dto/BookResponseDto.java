@@ -34,7 +34,7 @@ public class BookResponseDto {
         this.author = domain.getAuthor();
         this.publisher = domain.getPublisher();
         this.publishedDate = domain.getPublishedDate();
-        this.approved = domain.isApproved();
+        this.approved = domain.getApproved();
         this.createdAt = domain.getCreatedAt();
         this.modifiedAt = domain.getModifiedAt();
     }

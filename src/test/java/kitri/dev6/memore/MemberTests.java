@@ -1,8 +1,7 @@
 package kitri.dev6.memore;
 
-import kitri.dev6.memore.dto.MemberRequestDto;
 import kitri.dev6.memore.domain.Member;
-import kitri.dev6.memore.dto.MemberResponseDto;
+import kitri.dev6.memore.dto.MemberRequestDto;
 import kitri.dev6.memore.dto.MemberUpdateRequestDto;
 import kitri.dev6.memore.repository.MemberMapper;
 import lombok.extern.slf4j.Slf4j;

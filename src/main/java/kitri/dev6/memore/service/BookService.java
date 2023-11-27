@@ -3,6 +3,7 @@ package kitri.dev6.memore.service;
 import kitri.dev6.memore.domain.Book;
 import kitri.dev6.memore.dto.BookRequestDto;
 import kitri.dev6.memore.dto.BookResponseDto;
+import kitri.dev6.memore.dto.BookUpdateRequestDto;
 import kitri.dev6.memore.repository.BookMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class BookService {
     }
 
     public List<Book> findAll(Long memberId) {
-        if (memberId==null){
+        if (memberId == null) {
             return bookMapper.findAll();
         }
         return bookMapper.findByMemberId(memberId);
@@ -32,10 +33,9 @@ public class BookService {
         return book.getId();
     }
 
-    public Long update(Long id, BookRequestDto bookRequestDto){
-        Book book = bookMapper.findById(id).orElseThrow(()->new IllegalArgumentException("해당 도서가 존재하지 않습니다."));
-        book.update(bookRequestDto.getCategoryId(),
-                bookRequestDto.getMemberId(),
+    public Long update(Long id, BookUpdateRequestDto bookRequestDto) {
+        Book book = bookMapper.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 도서가 존재하지 않습니다."));
+        book.update(
                 bookRequestDto.getTitle(),
                 bookRequestDto.getIsbn(),
                 bookRequestDto.getIsbn13(),
@@ -45,13 +45,14 @@ public class BookService {
                 bookRequestDto.getAuthor(),
                 bookRequestDto.getPublisher(),
                 bookRequestDto.getPublishedDate(),
-                bookRequestDto.isApproved()
+                bookRequestDto.getApproved()
         );
         bookMapper.updateById(book);
         return id;
     }
-    public void delete(Long id){
-        bookMapper.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 도서가 존재하지 않습니다."));
+
+    public void delete(Long id) {
+        bookMapper.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 도서가 존재하지 않습니다."));
         bookMapper.deleteById(id);
     }
 }
