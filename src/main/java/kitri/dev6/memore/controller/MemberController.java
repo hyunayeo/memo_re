@@ -24,7 +24,6 @@ public class MemberController {
     public List<Member> findAll(){
         return memberService.findAll();
     }
-
     @PostMapping("/join")
     public Long insert(@RequestBody @Valid final MemberRequestDto memberRequestDto){
         return memberService.insert(memberRequestDto);

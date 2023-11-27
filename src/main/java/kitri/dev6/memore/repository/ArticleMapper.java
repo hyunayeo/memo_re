@@ -1,7 +1,9 @@
 package kitri.dev6.memore.repository;
+
 import kitri.dev6.memore.domain.Article;
 import org.apache.ibatis.annotations.*;
-import java.util.*;
+
+import java.util.List;
 
 @Mapper
 public interface ArticleMapper {
@@ -14,7 +16,6 @@ public interface ArticleMapper {
 
     @Insert("insert into article (member_id, book_id, title, content, done, start_date, end_date, rating_score, is_hide) " +
             " values ( #{memberId}, #{bookId}, #{title}, #{content}, #{done}, #{startDate}, #{endDate}, #{ratingScore}, #{isHide})")
-//    @Options(useGeneratedKeys=true, keyProperty="id")
     Long insert(Article article);
 
     @Update("update article set title = #{title}, content = #{content}, done = #{done}, start_date = #{startDate}, end_date = #{endDate}, rating_score = #{ratingScore}, is_hide = #{isHide}" +
