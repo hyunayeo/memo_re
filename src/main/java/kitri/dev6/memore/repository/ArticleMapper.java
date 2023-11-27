@@ -1,10 +1,10 @@
 package kitri.dev6.memore.repository;
 
 import kitri.dev6.memore.domain.Article;
-import kitri.dev6.memore.domain.Book;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface ArticleMapper {
@@ -13,7 +13,7 @@ public interface ArticleMapper {
     List<Article> findAll();
 
     @Select("select * from article where id = #{id}")
-    Article findById(Long id);
+    Optional<Article> findById(Long id);
 
     @Insert("insert into article (member_id, book_id, title, content, done, start_date, end_date, rating_score, is_hide) " +
             " values ( #{memberId}, #{bookId}, #{title}, #{content}, #{done}, #{startDate}, #{endDate}, #{ratingScore}, #{isHide})")
@@ -25,6 +25,6 @@ public interface ArticleMapper {
     Long updateById(Article article);
 
     @Delete("delete from article where id = #{id}")
-    Long delete(Long id);
+    Long deleteById(Long id);
 
 }

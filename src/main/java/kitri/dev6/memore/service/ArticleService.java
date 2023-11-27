@@ -2,6 +2,7 @@ package kitri.dev6.memore.service;
 
 import kitri.dev6.memore.domain.Article;
 import kitri.dev6.memore.dto.ArticleRequestDto;
+import kitri.dev6.memore.dto.ArticleResponseDto;
 import kitri.dev6.memore.repository.ArticleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,9 @@ public class ArticleService {
         return articleMapper.findAll();
     }
 
-    public Article findById(String id) {
-        return articleMapper.findById(Long.parseLong(id));
+    public ArticleResponseDto findById(Long id) {
+        Article article = articleMapper.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다, id=" + id));
+        return new ArticleResponseDto(article);
     }
 
     public Long create(ArticleRequestDto articleRequestDto) {
@@ -29,7 +31,7 @@ public class ArticleService {
     }
 
     public Long update(Long id, ArticleRequestDto articleRequestDto) {
-        Article article = articleMapper.findById(id);
+        Article article = articleMapper.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다, id=" + id));
         if (article == null) return null;
         article.setMemberId(articleRequestDto.getMemberId());
         article.setBookId(articleRequestDto.getBookId());
@@ -44,6 +46,6 @@ public class ArticleService {
     }
 
     public Long delete(String id) {
-        return articleMapper.delete(Long.parseLong(id));
+        return articleMapper.deleteById(Long.parseLong(id));
     }
 }

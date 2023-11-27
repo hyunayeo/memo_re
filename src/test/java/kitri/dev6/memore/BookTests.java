@@ -2,11 +2,7 @@ package kitri.dev6.memore;
 
 import kitri.dev6.memore.domain.Book;
 import kitri.dev6.memore.dto.BookRequestDto;
-import kitri.dev6.memore.dto.BookResponseDto;
-import kitri.dev6.memore.dto.MemberRequestDto;
-import kitri.dev6.memore.domain.Member;
 import kitri.dev6.memore.repository.BookMapper;
-import kitri.dev6.memore.repository.MemberMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
-import java.util.spi.LocaleNameProvider;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

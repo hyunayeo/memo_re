@@ -2,6 +2,7 @@ package kitri.dev6.memore.controller;
 
 import kitri.dev6.memore.domain.Article;
 import kitri.dev6.memore.dto.ArticleRequestDto;
+import kitri.dev6.memore.dto.ArticleResponseDto;
 import kitri.dev6.memore.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class ArticleController {
         return articleService.create(articleRequestDto);
     }
     @GetMapping("/{id}")
-    public Article findById(@PathVariable String id) {
+    public ArticleResponseDto findById(@PathVariable Long id) {
         return articleService.findById(id);
     }
     @PutMapping("/{id}")
