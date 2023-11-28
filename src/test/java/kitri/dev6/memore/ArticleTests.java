@@ -1,6 +1,7 @@
 package kitri.dev6.memore;
 
 import kitri.dev6.memore.domain.Article;
+import kitri.dev6.memore.domain.Member;
 import kitri.dev6.memore.dto.ArticleRequestDto;
 import kitri.dev6.memore.repository.ArticleMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -23,35 +24,33 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Slf4j
-public class AtricleTests {
+public class ArticleTests {
     @LocalServerPort
     private int port;
     @Autowired
     private ArticleMapper articleMapper;
     @Autowired
     private TestRestTemplate restTemplate;
-    private Long insertTestID;
+    private Long insertTestId;
 
     @AfterEach
     public void tearDown() throws Exception {
-        articleMapper.deleteById(insertTestID);
+        articleMapper.deleteById(insertTestId);
     }
 
     @Test
-    @DisplayName("게시물 저장(성공)")
+    @DisplayName("게시글 저장(성공)")
     void insertTest() throws Exception {
         // Given
-        Long memberId = 7L;
-        Long bookId = 1L;
-        String title = "test code insert";
-        String content = "123123";
-        boolean isDone= true;
+        Long memberId = 11L;
+        Long bookId = 19L;
+        String title = "들어가긴 하는 코드";
+        String content = "이것이 테스트";
+        boolean isDone = true;
         LocalDate startDate = LocalDate.now();
-        LocalDate endDate = LocalDate.now();
-        int ratingScore = 2;
+        LocalDate endDate =LocalDate.now();
+        int ratingScore =5;
         boolean isHide = true;
-
-
         ArticleRequestDto articleRequestDto = ArticleRequestDto.builder()
                 .memberId(memberId)
                 .bookId(bookId)
@@ -63,18 +62,20 @@ public class AtricleTests {
                 .ratingScore(ratingScore)
                 .isHide(isHide)
                 .build();
-        String url = "http://localhost:" + port + "/api/articles";
+        String url = "http://localhost:" + port + "/articles";
 
         // When
         ResponseEntity<Long> responseEntity = restTemplate.postForEntity(url, articleRequestDto, Long.class);
 
         // Then
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        insertTestID = responseEntity.getBody();
-        log.info("게시글 저장 (성공) / 생성 ID :" + insertTestID);
+        insertTestId = responseEntity.getBody();
+        log.info("게시글 저장 (성공) / 생성 ID :" + insertTestId);
 
-        Article article = articleMapper.findById(insertTestID).get();
+        Article article = articleMapper.findById(insertTestId).get();
+
         assertThat(article.getTitle()).isEqualTo(title);
-        assertThat(article.getBookId()).isEqualTo(bookId);
+        assertThat(article.getRatingScore()).isEqualTo(ratingScore);
     }
+
 }

@@ -1,8 +1,10 @@
 package kitri.dev6.memore.service;
 
 import kitri.dev6.memore.domain.Article;
+import kitri.dev6.memore.domain.Member;
 import kitri.dev6.memore.dto.ArticleRequestDto;
 import kitri.dev6.memore.dto.ArticleResponseDto;
+import kitri.dev6.memore.dto.MemberRequestDto;
 import kitri.dev6.memore.repository.ArticleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,9 +28,10 @@ public class ArticleService {
     }
 
     public List<Article> findByMemberId(Long memberId){
-        List<Article> articles = Optional.ofNullable(articleMapper.findByMemberId(memberId)).orElseThrow(()
-                -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다, id=" + memberId));
-        if (articles == null) return null;
+        List<Article> articles =articleMapper.findByMemberId(memberId);
+        if (articles == null){
+            new IllegalArgumentException("해당 게시물이 존재하지 않습니다, member_id=" + memberId);
+        }
         return articleMapper.findByMemberId(memberId);
     }
 

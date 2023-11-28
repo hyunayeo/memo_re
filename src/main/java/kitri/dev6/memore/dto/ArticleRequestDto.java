@@ -30,15 +30,15 @@ public class ArticleRequestDto {
 
     public Article toDomain(){
         return Article.builder()
-                .memberId(this.memberId)
-                .bookId(this.bookId)
-                .title(this.title)
-                .content(this.content)
-                .isDone(this.isDone)
-                .startDate(this.startDate)
-                .endDate(this.endDate)
-                .ratingScore(this.ratingScore)
-                .isHide(this.isHide)
+                .memberId(memberId)
+                .bookId(bookId)
+                .title(title)
+                .content(content)
+                .isDone(isDone)
+                .startDate(startDate)
+                .endDate(endDate)
+                .ratingScore(ratingScore)
+                .isHide(isHide)
                 .build();
     }
 }
