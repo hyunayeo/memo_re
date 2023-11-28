@@ -1,6 +1,7 @@
 package kitri.dev6.memore.service;
 
 import kitri.dev6.memore.domain.Article;
+import kitri.dev6.memore.domain.Book;
 import kitri.dev6.memore.domain.Member;
 import kitri.dev6.memore.dto.ArticleRequestDto;
 import kitri.dev6.memore.dto.ArticleResponseDto;
@@ -18,8 +19,11 @@ public class ArticleService {
     @Autowired
     private ArticleMapper articleMapper;
 
-    public List<Article> list() {
-        return articleMapper.findAll();
+    public List<Article> list(Long memberId){
+        if (memberId == null) {
+            return articleMapper.findAll();
+        }
+        return articleMapper.findByMemberId(memberId);
     }
 
     public ArticleResponseDto findById(Long id) {
@@ -27,15 +31,7 @@ public class ArticleService {
         return new ArticleResponseDto(article);
     }
 
-    public List<Article> findByMemberId(Long memberId){
-        List<Article> articles =articleMapper.findByMemberId(memberId);
-        if (articles == null){
-            new IllegalArgumentException("해당 게시물이 존재하지 않습니다, member_id=" + memberId);
-        }
-        return articleMapper.findByMemberId(memberId);
-    }
-
-    public Long create(ArticleRequestDto articleRequestDto) {
+    public Long insert(ArticleRequestDto articleRequestDto) {
         Article article = articleRequestDto.toDomain();
         articleMapper.insert(article);
         return article.getId();

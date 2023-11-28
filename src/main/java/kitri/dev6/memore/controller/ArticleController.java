@@ -7,7 +7,6 @@ import kitri.dev6.memore.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,20 +16,16 @@ public class ArticleController {
 
     private final ArticleService articleService;
     @GetMapping
-    public List<Article> list() {
-        return articleService.list();
+    public List<Article> list(@RequestParam(name = "memberId", required = false) Long memberId) {
+        return articleService.list(memberId);
     }
-    @PostMapping()
-    public Long create(@RequestBody ArticleRequestDto articleRequestDto) {
-        return articleService.create(articleRequestDto);
+    @PostMapping
+    public Long insert(@RequestBody ArticleRequestDto articleRequestDto) {
+        return articleService.insert(articleRequestDto);
     }
     @GetMapping("/{id}")
     public ArticleResponseDto findById(@PathVariable Long id) {
         return articleService.findById(id);
-    }
-    @GetMapping("/members/{memberId}")
-    public List<Article> findByMemberId(@PathVariable Long memberId){
-        return articleService.findByMemberId(memberId);
     }
     @PutMapping("/{id}")
     public Long update(@PathVariable Long id, @RequestBody ArticleRequestDto articleRequestDto) {
