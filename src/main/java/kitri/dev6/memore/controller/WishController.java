@@ -19,13 +19,11 @@ public class WishController {
     public List<Wish> findAll(@RequestParam(value = "memberId",required = false) Long memberId) {
         return wishService.findAll(memberId);
     }
-
     // 찜 등록
     @PostMapping("")
     public void create(@RequestBody WishRequestDto wishRequestDto) {
         wishService.createWish(wishRequestDto);
     }
-
     // 찜 삭제
     // TODO: use memberId of session(로그인한 멤버id를 쓰게 하기 / 세션 정보)
     @DeleteMapping("/{id}")

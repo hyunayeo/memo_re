@@ -1,12 +1,14 @@
 package kitri.dev6.memore.service;
 
 import kitri.dev6.memore.domain.Article;
-import kitri.dev6.memore.dto.ArticleRequest;
+import kitri.dev6.memore.dto.ArticleRequestDto;
+import kitri.dev6.memore.dto.ArticleResponseDto;
 import kitri.dev6.memore.repository.ArticleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ArticleService {
@@ -14,49 +16,46 @@ public class ArticleService {
     @Autowired
     private ArticleMapper articleMapper;
 
-    public List<Article> list(){
+    public List<Article> list() {
         return articleMapper.findAll();
     }
 
-    public Article findById(String id){
-        return articleMapper.findById(Long.parseLong(id));
+    public ArticleResponseDto findById(Long id) {
+        Article article = articleMapper.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다, id=" + id));
+        return new ArticleResponseDto(article);
     }
 
-    public Long create(Article article){
-        if (article != null) {
-            article.setMemberId(article.getMemberId());
-            article.setBookId(article.getBookId());
-            article.setTitle(article.getTitle());
-            article.setContent(article.getContent());
-            article.setDone(article.isDone());
-            article.setRatingScore(article.getRatingScore());
-            article.setStartDate(article.getStartDate());
-            article.setEndDate(article.getEndDate());
-            article.setHide(article.isHide());
-            articleMapper.insert(article);
-        }
-        return null;
+    public List<Article> findByMemberId(Long memberId){
+        List<Article> articles = Optional.ofNullable(articleMapper.findByMemberId(memberId)).orElseThrow(()
+                -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다, id=" + memberId));
+        if (articles == null) return null;
+        return articleMapper.findByMemberId(memberId);
     }
 
-    public Long update(String id, ArticleRequest articleRequest){
-//        Article article = articleMapper.findById(id);
-//        if (article == null) return null;
-//        return articleMapper.update(article);
-        Article article = articleMapper.findById(Long.parseLong(id));
-        System.out.println(article.getId());
+    public Long create(ArticleRequestDto articleRequestDto) {
+        Article article = articleRequestDto.toDomain();
+        articleMapper.insert(article);
+        return article.getId();
+    }
+
+    public Long update(Long id, ArticleRequestDto articleRequestDto) {
+        Article article = articleMapper.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다, id=" + id));
         if (article == null) return null;
-        article.setTitle(articleRequest.getTitle());
-        article.setContent(articleRequest.getContent());
-        article.setDone(articleRequest.isDone());
-        article.setRatingScore(articleRequest.getRatingScore());
-        article.setStartDate(articleRequest.getStartDate());
-        article.setEndDate(articleRequest.getEndDate());
-        article.setHide(articleRequest.isHide());
-
-        return articleMapper.update(article);
+        article.update(articleRequestDto.getMemberId(),
+                articleRequestDto.getBookId(),
+                articleRequestDto.getTitle(),
+                articleRequestDto.getContent(),
+                articleRequestDto.isDone(),
+                articleRequestDto.getStartDate(),
+                articleRequestDto.getEndDate(),
+                articleRequestDto.getRatingScore(),
+                articleRequestDto.isHide()
+        );
+        return articleMapper.updateById(article);
     }
 
-    public Long delete(String id){
-        return articleMapper.delete(Long.parseLong(id));
+    public void delete(Long id) {
+        articleMapper.findById(id).orElseThrow(()->new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
+        articleMapper.deleteById(id);
     }
 }

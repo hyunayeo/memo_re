@@ -1,10 +1,9 @@
 package kitri.dev6.memore;
 
 import kitri.dev6.memore.domain.Book;
-import kitri.dev6.memore.dto.*;
-import kitri.dev6.memore.domain.Member;
+import kitri.dev6.memore.dto.BookRequestDto;
+import kitri.dev6.memore.dto.BookUpdateRequestDto;
 import kitri.dev6.memore.repository.BookMapper;
-import kitri.dev6.memore.repository.MemberMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
-import java.util.spi.LocaleNameProvider;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,7 +36,7 @@ public class BookTests {
     private Long insertTestId;
 
     @AfterEach
-    public void tearDown() throws Exception{
+    public void tearDown() throws Exception {
         bookMapper.deleteById(insertTestId);
     }
 
@@ -123,7 +121,7 @@ public class BookTests {
 
         String url = "http://localhost:" + port + "/api/books/" + insertTestId;
         HttpEntity<BookUpdateRequestDto> requestEntity = new HttpEntity<>(requestDto);
-        log.info("requestDto approved"+requestDto.getApproved());
+        log.info("requestDto approved" + requestDto.getApproved());
 
         // When
         ResponseEntity<Long> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, Long.class);

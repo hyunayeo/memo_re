@@ -111,4 +111,3 @@ public class MemberTests {
         assertThat(result.getPicture()).isEqualTo(expectedPicture);
     }
 }
-
