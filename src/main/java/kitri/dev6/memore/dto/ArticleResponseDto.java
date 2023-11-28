@@ -14,7 +14,7 @@ public class ArticleResponseDto {
     private String title;
     private String content;
     private int viewCount;
-    private boolean done;
+    private boolean isDone;
     private LocalDate startDate;
     private LocalDate endDate;
     private int ratingScore;
@@ -30,7 +30,7 @@ public class ArticleResponseDto {
         this.title = domain.getTitle();
         this.content = domain.getContent();
         this.viewCount = domain.getViewCount();
-        this.done = domain.isDone();
+        this.isDone = domain.isDone();
         this.startDate = domain.getStartDate();
         this.endDate = domain.getEndDate();
         this.ratingScore = domain.getRatingScore();

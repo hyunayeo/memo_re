@@ -45,7 +45,7 @@ public class AtricleTests {
         Long bookId = 1L;
         String title = "test code insert";
         String content = "123123";
-        boolean done= true;
+        boolean isDone= true;
         LocalDate startDate = LocalDate.now();
         LocalDate endDate = LocalDate.now();
         int ratingScore = 2;
@@ -57,7 +57,7 @@ public class AtricleTests {
                 .bookId(bookId)
                 .title(title)
                 .content(content)
-                .done(done)
+                .isDone(isDone)
                 .startDate(startDate)
                 .endDate(endDate)
                 .ratingScore(ratingScore)

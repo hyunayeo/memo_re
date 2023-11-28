@@ -17,7 +17,7 @@ public class Article {
     private String title;
     private String content;
     private int viewCount;
-    private boolean done;
+    private boolean isDone;
     private LocalDate startDate;
     private LocalDate endDate;
     private int ratingScore;
@@ -26,13 +26,13 @@ public class Article {
     private LocalDateTime modifiedAt;
     private LocalDateTime deletedAt;
 
-    public void update(Long memberId, Long bookId, String title, String content, boolean done,
+    public void update(Long memberId, Long bookId, String title, String content, boolean isDone,
                        LocalDate startDate, LocalDate endDate, int ratingScore, boolean isHide) {
         this.memberId = memberId;
         this.bookId = bookId;
         this.title = title;
         this.content = content;
-        this.done = done;
+        this.isDone = isDone;
         this.startDate = startDate;
         this.endDate = endDate;
         this.ratingScore = ratingScore;

@@ -18,11 +18,11 @@ public interface ArticleMapper {
     @Select("select * from article where member_id = #{memberId}")
     List<Article> findByMemberId(Long memberId);
 
-    @Insert("insert into article (member_id, book_id, title, content, done, start_date, end_date, rating_score, is_hide) " +
-            " values ( #{memberId}, #{bookId}, #{title}, #{content}, #{done}, #{startDate}, #{endDate}, #{ratingScore}, #{isHide})")
+    @Insert("insert into article (member_id, book_id, title, content, is_done, start_date, end_date, rating_score, is_hide) " +
+            " values ( #{memberId}, #{bookId}, #{title}, #{content}, #{isDone}, #{startDate}, #{endDate}, #{ratingScore}, #{isHide})")
     Long insert(Article article);
 
-    @Update("update article set member_id=#{memberId}, book_id=#{bookId}, title = #{title}, content = #{content}, done = #{done}, start_date = #{startDate}, end_date = #{endDate}, " +
+    @Update("update article set member_id=#{memberId}, book_id=#{bookId}, title = #{title}, content = #{content}, is_done = #{isDone}, start_date = #{startDate}, end_date = #{endDate}, " +
             "rating_score = #{ratingScore}, is_hide = #{isHide}" +
             " where id = #{id}")
     Long updateById(Article article);

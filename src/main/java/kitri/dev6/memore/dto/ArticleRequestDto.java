@@ -20,7 +20,7 @@ public class ArticleRequestDto {
     private String title;
     private String content;
     @NotEmpty
-    private boolean done;
+    private boolean isDone;
     @NotEmpty
     private LocalDate startDate;
     private LocalDate endDate;
@@ -34,7 +34,7 @@ public class ArticleRequestDto {
                 .bookId(this.bookId)
                 .title(this.title)
                 .content(this.content)
-                .done(this.done)
+                .isDone(this.isDone)
                 .startDate(this.startDate)
                 .endDate(this.endDate)
                 .ratingScore(this.ratingScore)

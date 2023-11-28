@@ -5,7 +5,6 @@ import kitri.dev6.memore.dto.ArticleRequestDto;
 import kitri.dev6.memore.dto.ArticleResponseDto;
 import kitri.dev6.memore.repository.ArticleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.support.CustomSQLExceptionTranslatorRegistrar;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
