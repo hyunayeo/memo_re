@@ -27,13 +27,16 @@ public class ArticleController {
     public ArticleResponseDto findById(@PathVariable Long id) {
         return articleService.findById(id);
     }
+    @GetMapping("/member/{memberId}")
+    public List<Article> findByMemberId(@PathVariable Long memberId){return articleService.findByMemberId(memberId);}
     @PutMapping("/{id}")
     public Long update(@PathVariable Long id, @RequestBody ArticleRequestDto articleRequestDto) {
         articleService.update(id, articleRequestDto);
         return id;
     }
     @DeleteMapping("/{id}")
-    public Long delete(@PathVariable String id) {
-        return articleService.delete(id);
+    public Long delete(@PathVariable Long id) {
+        articleService.delete(id);
+        return id;
     }
 }

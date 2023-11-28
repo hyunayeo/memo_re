@@ -5,9 +5,11 @@ import kitri.dev6.memore.dto.ArticleRequestDto;
 import kitri.dev6.memore.dto.ArticleResponseDto;
 import kitri.dev6.memore.repository.ArticleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.support.CustomSQLExceptionTranslatorRegistrar;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ArticleService {
@@ -24,6 +26,13 @@ public class ArticleService {
         return new ArticleResponseDto(article);
     }
 
+    public List<Article> findByMemberId(Long memberId){
+        List<Article> articles = Optional.ofNullable(articleMapper.findByMemberId(memberId)).orElseThrow(()
+                -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다, id=" + memberId));
+        if (articles == null) return null;
+        return articleMapper.findByMemberId(memberId);
+    }
+
     public Long create(ArticleRequestDto articleRequestDto) {
         Article article = articleRequestDto.toDomain();
         articleMapper.insert(article);
@@ -33,19 +42,21 @@ public class ArticleService {
     public Long update(Long id, ArticleRequestDto articleRequestDto) {
         Article article = articleMapper.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다, id=" + id));
         if (article == null) return null;
-        article.setMemberId(articleRequestDto.getMemberId());
-        article.setBookId(articleRequestDto.getBookId());
-        article.setTitle(articleRequestDto.getTitle());
-        article.setContent(articleRequestDto.getContent());
-        article.setDone(articleRequestDto.isDone());
-        article.setRatingScore(articleRequestDto.getRatingScore());
-        article.setStartDate(articleRequestDto.getStartDate());
-        article.setEndDate(articleRequestDto.getEndDate());
-        article.setHide(articleRequestDto.isHide());
+        article.update(articleRequestDto.getMemberId(),
+                articleRequestDto.getBookId(),
+                articleRequestDto.getTitle(),
+                articleRequestDto.getContent(),
+                articleRequestDto.isDone(),
+                articleRequestDto.getStartDate(),
+                articleRequestDto.getEndDate(),
+                articleRequestDto.getRatingScore(),
+                articleRequestDto.isHide()
+        );
         return articleMapper.updateById(article);
     }
 
-    public Long delete(String id) {
-        return articleMapper.deleteById(Long.parseLong(id));
+    public void delete(Long id) {
+        articleMapper.findById(id).orElseThrow(()->new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
+        articleMapper.deleteById(id);
     }
 }

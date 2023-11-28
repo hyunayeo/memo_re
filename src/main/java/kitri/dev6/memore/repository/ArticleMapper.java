@@ -15,6 +15,9 @@ public interface ArticleMapper {
     @Select("select * from article where id = #{id}")
     Optional<Article> findById(Long id);
 
+    @Select("select * from article where member_id = #{memberId}")
+    List<Article> findByMemberId(Long memberId);
+
     @Insert("insert into article (member_id, book_id, title, content, done, start_date, end_date, rating_score, is_hide) " +
             " values ( #{memberId}, #{bookId}, #{title}, #{content}, #{done}, #{startDate}, #{endDate}, #{ratingScore}, #{isHide})")
     Long insert(Article article);

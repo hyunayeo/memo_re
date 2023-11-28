@@ -1,10 +1,11 @@
 package kitri.dev6.memore.dto;
 
 import kitri.dev6.memore.domain.Book;
+import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
+@Getter
 public class BookResponseDto {
     private Long id;
     private Long categoryId;
