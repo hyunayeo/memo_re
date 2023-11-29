@@ -18,7 +18,7 @@ public class ArticleController {
 
     private final ArticleService articleService;
     @GetMapping
-    public PagingResponse<Article> findAll(@ModelAttribute("params") SearchDto params) {
+    public PagingResponse<ArticleResponseDto> findAll(@ModelAttribute("params") SearchDto params) {
         return articleService.findAll(params);
     }
     @GetMapping("/{id}")
