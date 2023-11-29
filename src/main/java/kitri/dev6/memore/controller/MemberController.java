@@ -1,7 +1,10 @@
 package kitri.dev6.memore.controller;
 
+import kitri.dev6.memore.dto.common.PagingResponse;
+import kitri.dev6.memore.dto.common.SearchDto;
 import kitri.dev6.memore.dto.request.MemberRequestDto;
 import kitri.dev6.memore.domain.Member;
+import kitri.dev6.memore.dto.response.ArticleResponseDto;
 import kitri.dev6.memore.dto.response.MemberResponseDto;
 import kitri.dev6.memore.dto.request.MemberUpdateRequestDto;
 import kitri.dev6.memore.service.MemberService;
@@ -17,8 +20,8 @@ import java.util.List;
 public class MemberController {
     private final MemberService memberService;
     @GetMapping("")
-    public List<Member> findAll(){
-        return memberService.findAll();
+    public PagingResponse<MemberResponseDto> findAll(@ModelAttribute("params") SearchDto params){
+        return memberService.findAll(params);
     }
     @GetMapping("/{id}")
     public MemberResponseDto findById(@PathVariable Long id){

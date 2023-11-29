@@ -1,10 +1,10 @@
 package kitri.dev6.memore.repository;
 
+import kitri.dev6.memore.domain.Member;
 import kitri.dev6.memore.domain.Wish;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import kitri.dev6.memore.dto.common.SearchDto;
+import kitri.dev6.memore.repository.sql.Sql;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -12,8 +12,8 @@ import java.util.List;
 public interface WishMapper {
 
     // 전체 찜 조회
-    @Select("select * from wish")
-    List<Wish> findAll();
+    @SelectProvider(type = Sql.class, method = "findWishes")
+    List<Wish> findAll(SearchDto searchDto);
 
     @Select("select * from wish where member_id = #{memberId}")
     List<Wish> findByMemberId(Long memberId);
@@ -25,4 +25,7 @@ public interface WishMapper {
     // 찜 삭제
     @Delete("delete from wish where member_id = #{memberId} and id= #{id};")
     void delete(Long id, Long memberId);
+
+    @Select("select count(*) from count")
+    int count();
 }

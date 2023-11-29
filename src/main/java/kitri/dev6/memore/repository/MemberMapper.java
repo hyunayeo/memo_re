@@ -1,6 +1,9 @@
 package kitri.dev6.memore.repository;
 
+import kitri.dev6.memore.domain.Book;
 import kitri.dev6.memore.domain.Member;
+import kitri.dev6.memore.dto.common.SearchDto;
+import kitri.dev6.memore.repository.sql.Sql;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -8,8 +11,8 @@ import java.util.Optional;
 
 @Mapper
 public interface MemberMapper {
-    @Select("select * from member")
-    List<Member> findAll();
+    @SelectProvider(type = Sql.class, method = "findMembers")
+    List<Member> findAll(SearchDto searchDto);
 
     @Select("select * from member where id = #{id}")
     Optional<Member> findById(Long id);
@@ -24,4 +27,7 @@ public interface MemberMapper {
 
     @Update("update member set name=#{name}, number=#{number}, password=#{password}, picture=#{picture}, modified_at=now() where id = #{id}")
     Long updateById(Member member);
+
+    @Select("select count(*) from member")
+    int count();
 }
