@@ -30,5 +30,4 @@ public class MemberRequestDto {
                 .picture(picture)
                 .build();
     }
-
 }

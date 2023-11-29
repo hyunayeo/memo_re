@@ -8,6 +8,7 @@ import kitri.dev6.memore.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -24,11 +25,11 @@ public class BookController {
         return bookService.findById(id);
     }
     @PostMapping("")
-    public Long create(@RequestBody BookRequestDto bookRequestDto){
+    public Long insert(@RequestBody BookRequestDto bookRequestDto){
         return bookService.insert(bookRequestDto);
     }
     @PutMapping("/{id}")
-    public Long update(@PathVariable Long id, @RequestBody BookUpdateRequestDto bookRequestDto){
+    public Long update(@PathVariable Long id, @RequestBody @Valid final BookUpdateRequestDto bookRequestDto){
         bookService.update(id, bookRequestDto);
         return id;
     }
