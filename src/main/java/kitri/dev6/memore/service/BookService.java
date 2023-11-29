@@ -17,7 +17,7 @@ public class BookService {
 
     public BookResponseDto findById(Long id) {
         Book book = bookMapper.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 도서가 존재하지 않습니다, id=" + id));
-        return BookResponseDto.toDto(book);
+        return new BookResponseDto(book);
     }
 
     public List<Book> findAll(Long memberId) {
