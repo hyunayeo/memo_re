@@ -1,6 +1,8 @@
 package kitri.dev6.memore.controller;
 
 import kitri.dev6.memore.domain.Book;
+import kitri.dev6.memore.dto.common.PagingResponse;
+import kitri.dev6.memore.dto.common.SearchDto;
 import kitri.dev6.memore.dto.request.BookRequestDto;
 import kitri.dev6.memore.dto.response.BookResponseDto;
 import kitri.dev6.memore.dto.request.BookUpdateRequestDto;
@@ -17,8 +19,8 @@ import java.util.List;
 public class BookController {
     private final BookService bookService;
     @GetMapping("")
-    public List<Book> findAll(@RequestParam(name = "memberId", required = false) Long memberId){
-        return bookService.findAll(memberId);
+    public PagingResponse<BookResponseDto> findAll(@ModelAttribute("params") SearchDto params){
+        return bookService.findAll(params);
     }
     @GetMapping("/{id}")
     public BookResponseDto findById(@PathVariable Long id){
