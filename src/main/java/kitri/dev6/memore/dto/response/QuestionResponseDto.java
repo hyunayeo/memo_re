@@ -1,4 +1,4 @@
-package kitri.dev6.memore.dto;
+package kitri.dev6.memore.dto.response;
 
 import java.time.LocalDateTime;
 

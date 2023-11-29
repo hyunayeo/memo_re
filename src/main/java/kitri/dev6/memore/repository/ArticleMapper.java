@@ -1,6 +1,8 @@
 package kitri.dev6.memore.repository;
 
 import kitri.dev6.memore.domain.Article;
+import kitri.dev6.memore.dto.common.SearchDto;
+import kitri.dev6.memore.repository.sql.Sql;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -9,8 +11,9 @@ import java.util.Optional;
 @Mapper
 public interface ArticleMapper {
 
-    @Select("select * from article")
-    List<Article> findAll();
+    @SelectProvider(type = Sql.class, method = "findArticles")
+    List<Article> findAll(SearchDto searchDto);
+
     @Select("select * from article where member_id = #{memberId}")
     List<Article> findByMemberId(Long memberId);
     @Select("select * from article where id = #{id}")
@@ -29,4 +32,6 @@ public interface ArticleMapper {
     @Delete("delete from article where id = #{id}")
     Long deleteById(Long id);
 
+    @Select("select count(*) from article")
+    int count();
 }

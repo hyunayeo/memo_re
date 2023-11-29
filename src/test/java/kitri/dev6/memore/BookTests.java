@@ -1,8 +1,8 @@
 package kitri.dev6.memore;
 
 import kitri.dev6.memore.domain.Book;
-import kitri.dev6.memore.dto.BookRequestDto;
-import kitri.dev6.memore.dto.BookUpdateRequestDto;
+import kitri.dev6.memore.dto.request.BookRequestDto;
+import kitri.dev6.memore.dto.request.BookUpdateRequestDto;
 import kitri.dev6.memore.repository.BookMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;

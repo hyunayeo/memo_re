@@ -1,7 +1,7 @@
 package kitri.dev6.memore.service;
 
 import kitri.dev6.memore.domain.Wish;
-import kitri.dev6.memore.dto.WishRequestDto;
+import kitri.dev6.memore.dto.request.WishRequestDto;
 import kitri.dev6.memore.repository.WishMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

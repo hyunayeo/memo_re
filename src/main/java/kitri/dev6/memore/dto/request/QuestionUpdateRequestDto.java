@@ -1,4 +1,4 @@
-package kitri.dev6.memore.dto;
+package kitri.dev6.memore.dto.request;
 
 import lombok.Getter;
 

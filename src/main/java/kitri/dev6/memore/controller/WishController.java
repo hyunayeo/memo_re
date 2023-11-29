@@ -1,7 +1,7 @@
 package kitri.dev6.memore.controller;
 
 import kitri.dev6.memore.domain.Wish;
-import kitri.dev6.memore.dto.WishRequestDto;
+import kitri.dev6.memore.dto.request.WishRequestDto;
 import kitri.dev6.memore.service.WishService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +10,9 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/wishes")
+@RequestMapping("/api/wishes")
 public class WishController {
     private final WishService wishService;
-
     // 전체 찜 조회
     @GetMapping("")
     public List<Wish> findAll(@RequestParam(value = "memberId",required = false) Long memberId) {

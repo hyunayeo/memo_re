@@ -1,4 +1,4 @@
-package kitri.dev6.memore.dto;
+package kitri.dev6.memore.dto.request;
 
 import kitri.dev6.memore.domain.Question;
 import lombok.Getter;

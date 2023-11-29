@@ -1,9 +1,9 @@
 package kitri.dev6.memore.service;
 
 import kitri.dev6.memore.domain.Book;
-import kitri.dev6.memore.dto.BookRequestDto;
-import kitri.dev6.memore.dto.BookResponseDto;
-import kitri.dev6.memore.dto.BookUpdateRequestDto;
+import kitri.dev6.memore.dto.request.BookRequestDto;
+import kitri.dev6.memore.dto.response.BookResponseDto;
+import kitri.dev6.memore.dto.request.BookUpdateRequestDto;
 import kitri.dev6.memore.repository.BookMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,18 +17,19 @@ public class BookService {
 
     public BookResponseDto findById(Long id) {
         Book book = bookMapper.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 도서가 존재하지 않습니다, id=" + id));
-        return new BookResponseDto(book);
+        return BookResponseDto.toDto(book);
     }
 
     public List<Book> findAll(Long memberId) {
         if (memberId == null) {
             return bookMapper.findAll();
         }
-        return bookMapper.findByMemberId(memberId);
+        return bookMapper.findAllByMemberId(memberId);
     }
 
     public Long insert(BookRequestDto bookRequestDto) {
         Book book = bookRequestDto.toDomain();
+
         bookMapper.insert(book);
         return book.getId();
     }

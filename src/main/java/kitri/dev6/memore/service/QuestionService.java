@@ -1,8 +1,8 @@
 package kitri.dev6.memore.service;
 
 import kitri.dev6.memore.domain.Question;
-import kitri.dev6.memore.dto.QuestionRequestDto;
-import kitri.dev6.memore.dto.QuestionUpdateRequestDto;
+import kitri.dev6.memore.dto.request.QuestionRequestDto;
+import kitri.dev6.memore.dto.request.QuestionUpdateRequestDto;
 import kitri.dev6.memore.repository.QuestionMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,8 +1,7 @@
 package kitri.dev6.memore;
 
 import kitri.dev6.memore.domain.Article;
-import kitri.dev6.memore.domain.Member;
-import kitri.dev6.memore.dto.ArticleRequestDto;
+import kitri.dev6.memore.dto.request.ArticleRequestDto;
 import kitri.dev6.memore.repository.ArticleMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;

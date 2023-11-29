@@ -1,10 +1,9 @@
 package kitri.dev6.memore.service;
 
-import com.fasterxml.classmate.MemberResolver;
-import kitri.dev6.memore.dto.MemberRequestDto;
+import kitri.dev6.memore.dto.request.MemberRequestDto;
 import kitri.dev6.memore.domain.Member;
-import kitri.dev6.memore.dto.MemberResponseDto;
-import kitri.dev6.memore.dto.MemberUpdateRequestDto;
+import kitri.dev6.memore.dto.response.MemberResponseDto;
+import kitri.dev6.memore.dto.request.MemberUpdateRequestDto;
 import kitri.dev6.memore.repository.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
