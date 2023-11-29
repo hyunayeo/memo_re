@@ -2,9 +2,11 @@ package kitri.dev6.memore.dto.response;
 
 import kitri.dev6.memore.domain.Question;
 import kitri.dev6.memore.domain.Wish;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+@Getter
 public class WishResponseDto {
     private Long id;
     private Long memberId;
