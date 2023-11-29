@@ -1,16 +1,15 @@
 package kitri.dev6.memore.repository.sql;
 
-import kitri.dev6.memore.dto.common.Pagination;
 import kitri.dev6.memore.dto.common.SearchDto;
 import org.apache.ibatis.jdbc.SQL;
 import org.springframework.util.StringUtils;
-
-import javax.management.Query;
 
 public class Sql {
     public String findArticles(SearchDto params) {
         String searchType = params.getSearchType();
         String keyword = params.getKeyword();
+        String sortOrder = params.getSortAs();
+        String sortType = params.getSortFieldType();
 
         SQL query = new SQL() {
             {
@@ -28,10 +27,11 @@ public class Sql {
             query.OR();
             query.WHERE(QueryUtils.like("content", keyword));
         }
-        query.ORDER_BY("id DESC");
+        query.ORDER_BY(QueryUtils.sortAs(sortType, sortOrder));
         // 페이징
         query.LIMIT("#{pagination.limitStart}, #{recordSize}");
 
+        System.out.println(query);
         return query.toString();
     }
 
@@ -54,7 +54,7 @@ public class Sql {
             query.OR();
             query.WHERE(QueryUtils.like("content", keyword));
         }
-        System.out.println(query);
+//        System.out.println(query);
         return query.toString();
     }
 
