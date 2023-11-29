@@ -95,7 +95,7 @@ public class Sql {
         return query.toString();
     }
 
-    public String Questions(SearchDto params) {
+    public String findQuestions(SearchDto params) {
         String searchType = params.getSearchType();
         String keyword = params.getKeyword();
         String sortOrder = params.getSortAs();
@@ -137,26 +137,7 @@ public class Sql {
                 FROM("wish");
             }
         };
-
-        query.ORDER_BY(QueryUtils.sortAs(sortType, sortOrder));
-        // 페이징
-        query.LIMIT("#{pagination.limitStart}, #{recordSize}");
-
-        System.out.println(query);
-        return query.toString();
-    }
-
-    public String findAll(SearchDto params) {
-        String domainType = params.getDomainType();
-        String searchType = params.getSearchType();
-        String keyword = params.getKeyword();
-
-        SQL query = new SQL() {
-            {
-                SELECT("*");
-                FROM(domainType);
-            }
-        };
+        // 검색어
         if (!StringUtils.isEmpty(keyword)) {
             if (!StringUtils.isEmpty(searchType)) {
                 query.WHERE(QueryUtils.like(searchType, keyword));
@@ -165,18 +146,11 @@ public class Sql {
             query.OR();
             query.WHERE(QueryUtils.like("content", keyword));
         }
-//        System.out.println(query);
-        return query.toString();
-    }
+        query.ORDER_BY(QueryUtils.sortAs(sortType, sortOrder));
+        // 페이징
+        query.LIMIT("#{pagination.limitStart}, #{recordSize}");
 
-    public String count(SearchDto params) {
-        String domainType = params.getDomainType();
-        SQL query = new SQL() {
-            {
-                SELECT("COUNT(*)");
-                FROM(domainType);
-            }
-        };
+        System.out.println(query);
         return query.toString();
     }
 }
