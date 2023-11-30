@@ -1,21 +1,17 @@
 package kitri.dev6.memore.service;
 
-import kitri.dev6.memore.domain.Book;
 import kitri.dev6.memore.dto.common.Converter;
 import kitri.dev6.memore.dto.common.Pagination;
 import kitri.dev6.memore.dto.common.PagingResponse;
 import kitri.dev6.memore.dto.common.SearchDto;
 import kitri.dev6.memore.dto.request.MemberRequestDto;
 import kitri.dev6.memore.domain.Member;
-import kitri.dev6.memore.dto.response.ArticleResponseDto;
-import kitri.dev6.memore.dto.response.BookResponseDto;
 import kitri.dev6.memore.dto.response.MemberResponseDto;
 import kitri.dev6.memore.dto.request.MemberUpdateRequestDto;
 import kitri.dev6.memore.repository.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.Collections;
 import java.util.List;

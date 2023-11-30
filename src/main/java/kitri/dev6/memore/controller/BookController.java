@@ -1,6 +1,5 @@
 package kitri.dev6.memore.controller;
 
-import kitri.dev6.memore.domain.Book;
 import kitri.dev6.memore.dto.common.PagingResponse;
 import kitri.dev6.memore.dto.common.SearchDto;
 import kitri.dev6.memore.dto.request.BookRequestDto;
@@ -8,10 +7,15 @@ import kitri.dev6.memore.dto.response.BookResponseDto;
 import kitri.dev6.memore.dto.request.BookUpdateRequestDto;
 import kitri.dev6.memore.service.BookService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.Link;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api/books")
@@ -19,12 +23,33 @@ import java.util.List;
 public class BookController {
     private final BookService bookService;
     @GetMapping("")
-    public PagingResponse<BookResponseDto> findAll(@ModelAttribute("params") SearchDto params){
-        return bookService.findAll(params);
+    public ResponseEntity<PagingResponse<BookResponseDto>> findAll(@ModelAttribute("params") SearchDto params){
+        PagingResponse<BookResponseDto> bookResponseDtos = bookService.findAll(params);
+        if (bookResponseDtos == null) {
+            throw new IllegalArgumentException("No members");
+        }
+
+        for (BookResponseDto bookResponseDto : bookResponseDtos.getList()) {
+            Long bookId = bookResponseDto.getId();
+            Link selfLink = linkTo(BookController.class).slash(bookId).withSelfRel();
+            bookResponseDto.add(selfLink);
+            bookResponseDto.add(linkTo(methodOn(ArticleController.class).findAll(new SearchDto())).slash("?searchType=book_id&searchKeyword=" + bookId).withRel("articles"));
+            bookResponseDto.add(linkTo(methodOn(WishController.class).findAll(new SearchDto())).slash("?searchType=book_id&searchKeyword=" + bookId).withRel("wishes"));
+        }
+        bookResponseDtos.set_links(linkTo(BookController.class).withSelfRel());
+        return new ResponseEntity<>(bookResponseDtos, HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public BookResponseDto findById(@PathVariable Long id){
-        return bookService.findById(id);
+    public ResponseEntity<BookResponseDto> findById(@PathVariable Long id){
+        BookResponseDto bookResponseDto = bookService.findById(id);
+        if (bookResponseDto == null) {
+            throw new IllegalArgumentException("No book");
+        }
+        bookResponseDto.add(linkTo(methodOn(BookController.class).findAll(new SearchDto())).slash(id).withRel("self"));
+        bookResponseDto.add(linkTo(methodOn(ArticleController.class).findAll(new SearchDto())).slash("?searchType=book_id&searchKeyword=" + id).withRel("articles"));
+        bookResponseDto.add(linkTo(methodOn(WishController.class).findAll(new SearchDto())).slash("?searchType=book_id&searchKeyword=" + id).withRel("wishes"));
+
+        return new ResponseEntity<>(bookResponseDto, HttpStatus.OK);
     }
     @PostMapping("")
     public Long insert(@RequestBody BookRequestDto bookRequestDto){

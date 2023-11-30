@@ -1,7 +1,6 @@
 package kitri.dev6.memore.dto.response;
 
 import kitri.dev6.memore.domain.Book;
-import lombok.Builder;
 import lombok.Getter;
 import org.springframework.hateoas.RepresentationModel;
 

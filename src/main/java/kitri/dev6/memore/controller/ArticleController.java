@@ -5,11 +5,14 @@ import kitri.dev6.memore.dto.common.PagingResponse;
 import kitri.dev6.memore.dto.common.SearchDto;
 import kitri.dev6.memore.dto.request.ArticleRequestDto;
 import kitri.dev6.memore.dto.response.ArticleResponseDto;
+import kitri.dev6.memore.dto.response.MemberResponseDto;
 import kitri.dev6.memore.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,21 +25,31 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 public class ArticleController {
 
     private final ArticleService articleService;
-//    @GetMapping(params = {"member_id"})
-//    public PagingResponse<ArticleResponseDto> findByMemberID(@ModelAttribute("params") SearchDto params, @RequestParam("member_id") String memberId) {
-//        return articleService.findByMemberId(params, Long.parseLong(memberId));
-//    }
-//    @GetMapping(params = {"book_id"})
-//    public PagingResponse<ArticleResponseDto> findByBookId(@ModelAttribute("params") SearchDto params, @RequestParam("book_id") String bookId) {
-//        return articleService.findByBookId(params, Long.parseLong(bookId));
-//    }
     @GetMapping
-    public PagingResponse<ArticleResponseDto> findAll(@ModelAttribute("params") SearchDto params) {
-        return articleService.findAll(params);
+    public ResponseEntity<PagingResponse<ArticleResponseDto>> findAll(@ModelAttribute("params") SearchDto params) {
+        PagingResponse<ArticleResponseDto> articleResponseDtos = articleService.findAll(params);
+        if (articleResponseDtos == null) {
+            throw new IllegalArgumentException("No Articles");
+        }
+
+        for (ArticleResponseDto articleResponseDto : articleResponseDtos.getList()) {
+            Long articleId = articleResponseDto.getId();
+            Link selfLink = linkTo(ArticleController.class).slash(articleId).withSelfRel();
+            articleResponseDto.add(selfLink);
+        }
+        articleResponseDtos.set_links(linkTo(ArticleController.class).withSelfRel());
+
+        return new ResponseEntity<>(articleResponseDtos, HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ArticleResponseDto findById(@PathVariable Long id) {
-        return articleService.findById(id);
+    public ResponseEntity<ArticleResponseDto> findById(@PathVariable Long id) {
+        ArticleResponseDto articleResponseDto = articleService.findById(id);
+        if (articleResponseDto == null) {
+            throw new IllegalArgumentException("No article");
+        }
+        articleResponseDto.add(linkTo(methodOn(ArticleController.class).findAll(new SearchDto())).slash(id).withRel("self"));
+
+        return new ResponseEntity<>(articleResponseDto, HttpStatus.OK);
     }
     @PostMapping
     public Long insert(@RequestBody ArticleRequestDto articleRequestDto) {

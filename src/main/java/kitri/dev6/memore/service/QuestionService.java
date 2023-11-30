@@ -1,6 +1,5 @@
 package kitri.dev6.memore.service;
 
-import kitri.dev6.memore.domain.Member;
 import kitri.dev6.memore.domain.Question;
 import kitri.dev6.memore.dto.common.Converter;
 import kitri.dev6.memore.dto.common.Pagination;
@@ -8,7 +7,7 @@ import kitri.dev6.memore.dto.common.PagingResponse;
 import kitri.dev6.memore.dto.common.SearchDto;
 import kitri.dev6.memore.dto.request.QuestionRequestDto;
 import kitri.dev6.memore.dto.request.QuestionUpdateRequestDto;
-import kitri.dev6.memore.dto.response.MemberResponseDto;
+import kitri.dev6.memore.dto.response.BookResponseDto;
 import kitri.dev6.memore.dto.response.QuestionResponseDto;
 import kitri.dev6.memore.repository.QuestionMapper;
 import lombok.RequiredArgsConstructor;
@@ -42,10 +41,11 @@ public class QuestionService {
         return new PagingResponse<>(convertedList, pagination);
     }
 
-    public Question findById(Long id) {
-        Question Question = questionMapper.findById(id).orElseThrow(() ->
+    public QuestionResponseDto findById(Long id) {
+        Question question = questionMapper.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("질문이 존재하지 않습니다. id=" + id));
-        return Question;
+
+        return new QuestionResponseDto(question);
     }
 
     public void delete(Long id) {
@@ -60,10 +60,10 @@ public class QuestionService {
     }
 
     public Long updateById(Long id, QuestionUpdateRequestDto requestDto){
-        Question Question = this.findById(id);
-        Question.setTitle(requestDto.getTitle());
-        Question.setContent(requestDto.getContent());
-        questionMapper.updateById(Question);
+        Question question = questionMapper.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 질문이 없습니다"));;
+        question.setTitle(requestDto.getTitle());
+        question.setContent(requestDto.getContent());
+        questionMapper.updateById(question);
         return id;
     }
 }

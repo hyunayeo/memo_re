@@ -39,10 +39,10 @@ public class WishService {
 
         return new PagingResponse<>(convertedList, pagination);
     }
-    public Wish findById(Long id) {
+    public WishResponseDto findById(Long id) {
         Wish wish = wishMapper.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("질문이 존재하지 않습니다. id=" + id));
-        return wish;
+        return new WishResponseDto(wish);
     }
 
     // 찜 등록 : 회원의 찜 목록에 book정보를 담아야 한다.
