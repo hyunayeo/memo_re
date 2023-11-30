@@ -3,11 +3,12 @@ package kitri.dev6.memore.dto.response;
 import kitri.dev6.memore.domain.Book;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 @Getter
-public class BookResponseDto {
+public class BookResponseDto extends RepresentationModel<BookResponseDto> {
     private Long id;
     private Long categoryId;
     private Long memberId;

@@ -2,12 +2,13 @@ package kitri.dev6.memore.dto.response;
 
 import kitri.dev6.memore.domain.Article;
 import lombok.Getter;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
-public class ArticleResponseDto {
+public class ArticleResponseDto extends RepresentationModel<ArticleResponseDto> {
     private Long id;
     private Long memberId;
     private Long bookId;
