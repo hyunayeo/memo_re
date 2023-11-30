@@ -160,6 +160,7 @@ public class Sql {
                 FROM(params.getDomainType());
             }
         };
+
         if (!StringUtils.isEmpty(params.getSearchKeyword())) {
             if (!StringUtils.isEmpty(params.getSearchType())) {
                 query.WHERE(QueryUtils.procSearchInput(params.getSearchType(), params.getSearchKeyword()));

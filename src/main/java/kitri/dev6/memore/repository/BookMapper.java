@@ -1,5 +1,6 @@
 package kitri.dev6.memore.repository;
 
+import kitri.dev6.memore.domain.Article;
 import kitri.dev6.memore.domain.Book;
 import kitri.dev6.memore.dto.common.SearchDto;
 import kitri.dev6.memore.repository.sql.Sql;
@@ -11,8 +12,12 @@ import java.util.Optional;
 @Mapper
 public interface BookMapper {
 
-    @SelectProvider(type = Sql.class, method = "findBooks")
+    @SelectProvider(type = Sql.class, method = "count")
+    int count(SearchDto params);
+
+    @SelectProvider(type = Sql.class, method = "findAll")
     List<Book> findAll(SearchDto searchDto);
+
     @Select("select * from book where id = #{id}")
     Optional<Book> findById(Long id);
 
@@ -34,6 +39,4 @@ public interface BookMapper {
             "published_date=#{publishedDate}, approved=#{approved}, modified_at=now() where id = #{id}")
     void updateById(Book book);
 
-    @Select("select count(*) from book")
-    int count();
 }

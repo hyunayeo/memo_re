@@ -7,9 +7,14 @@ import kitri.dev6.memore.dto.request.ArticleRequestDto;
 import kitri.dev6.memore.dto.response.ArticleResponseDto;
 import kitri.dev6.memore.service.ArticleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/api/articles")
@@ -17,6 +22,14 @@ import java.util.List;
 public class ArticleController {
 
     private final ArticleService articleService;
+//    @GetMapping(params = {"member_id"})
+//    public PagingResponse<ArticleResponseDto> findByMemberID(@ModelAttribute("params") SearchDto params, @RequestParam("member_id") String memberId) {
+//        return articleService.findByMemberId(params, Long.parseLong(memberId));
+//    }
+//    @GetMapping(params = {"book_id"})
+//    public PagingResponse<ArticleResponseDto> findByBookId(@ModelAttribute("params") SearchDto params, @RequestParam("book_id") String bookId) {
+//        return articleService.findByBookId(params, Long.parseLong(bookId));
+//    }
     @GetMapping
     public PagingResponse<ArticleResponseDto> findAll(@ModelAttribute("params") SearchDto params) {
         return articleService.findAll(params);

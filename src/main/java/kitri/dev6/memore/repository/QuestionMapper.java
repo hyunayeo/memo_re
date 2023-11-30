@@ -1,5 +1,6 @@
 package kitri.dev6.memore.repository;
 
+import kitri.dev6.memore.domain.Article;
 import kitri.dev6.memore.domain.Member;
 import kitri.dev6.memore.domain.Question;
 import kitri.dev6.memore.dto.common.SearchDto;
@@ -12,7 +13,11 @@ import java.util.Optional;
 
 @Mapper
 public interface QuestionMapper {
-    @SelectProvider(type = Sql.class, method = "findQuestions")
+
+    @SelectProvider(type = Sql.class, method = "count")
+    int count(SearchDto params);
+
+    @SelectProvider(type = Sql.class, method = "findAll")
     List<Question> findAll(SearchDto searchDto);
 
     @Select("select * from question where member_id=#{memberId}")
@@ -32,6 +37,4 @@ public interface QuestionMapper {
     @Delete("delete from question where id= #{id}")
     void delete(Long id);
 
-    @Select("select count(*) from question")
-    int count();
 }

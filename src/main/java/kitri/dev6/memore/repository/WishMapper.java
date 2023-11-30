@@ -1,5 +1,6 @@
 package kitri.dev6.memore.repository;
 
+import kitri.dev6.memore.domain.Question;
 import kitri.dev6.memore.domain.Wish;
 import kitri.dev6.memore.dto.common.SearchDto;
 import kitri.dev6.memore.repository.sql.Sql;
@@ -11,8 +12,10 @@ import java.util.Optional;
 @Mapper
 public interface WishMapper {
 
-    // 전체 찜 조회
-    @SelectProvider(type = Sql.class, method = "findWishes")
+    @SelectProvider(type = Sql.class, method = "count")
+    int count(SearchDto params);
+
+    @SelectProvider(type = Sql.class, method = "findAll")
     List<Wish> findAll(SearchDto searchDto);
 
     @Select("select * from wish where id = #{id}")
@@ -29,6 +32,4 @@ public interface WishMapper {
     @Delete("delete from wish where member_id = #{memberId} and id= #{id};")
     void delete(Long id, Long memberId);
 
-    @Select("select count(*) from wish")
-    int count();
 }

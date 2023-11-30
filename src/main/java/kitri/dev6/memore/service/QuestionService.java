@@ -23,8 +23,9 @@ public class QuestionService {
     private final QuestionMapper questionMapper;
 
     public PagingResponse<QuestionResponseDto> findAll(SearchDto params) {
-        // 조건에 해당하는 데이터가 없는 경우, 응답 데이터에 비어있는 리스트와 null을 담아 반환
-        int count = questionMapper.count();
+
+        params.setDomainType("question");
+        int count = questionMapper.count(params);
         if (count < 1) {
             return new PagingResponse<>(Collections.emptyList(), null);
         }

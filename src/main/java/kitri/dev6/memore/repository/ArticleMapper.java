@@ -10,12 +10,18 @@ import java.util.Optional;
 
 @Mapper
 public interface ArticleMapper {
+    @SelectProvider(type = Sql.class, method = "count")
+    int count(SearchDto params);
 
-    @SelectProvider(type = Sql.class, method = "findArticles")
+    @SelectProvider(type = Sql.class, method = "findAll")
     List<Article> findAll(SearchDto searchDto);
 
     @Select("select * from article where member_id = #{memberId}")
     List<Article> findByMemberId(Long memberId);
+
+    @Select("select * from article where book_id = #{bookId}")
+    List<Article> findByBookId(Long bookId);
+
     @Select("select * from article where id = #{id}")
     Optional<Article> findById(Long id);
 
@@ -32,6 +38,4 @@ public interface ArticleMapper {
     @Delete("delete from article where id = #{id}")
     Long deleteById(Long id);
 
-    @Select("select count(*) from article")
-    int count();
 }

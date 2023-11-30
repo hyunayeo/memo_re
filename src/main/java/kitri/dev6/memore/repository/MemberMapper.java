@@ -1,5 +1,6 @@
 package kitri.dev6.memore.repository;
 
+import kitri.dev6.memore.domain.Article;
 import kitri.dev6.memore.domain.Book;
 import kitri.dev6.memore.domain.Member;
 import kitri.dev6.memore.dto.common.SearchDto;
@@ -11,7 +12,10 @@ import java.util.Optional;
 
 @Mapper
 public interface MemberMapper {
-    @SelectProvider(type = Sql.class, method = "findMembers")
+    @SelectProvider(type = Sql.class, method = "count")
+    int count(SearchDto params);
+
+    @SelectProvider(type = Sql.class, method = "findAll")
     List<Member> findAll(SearchDto searchDto);
 
     @Select("select * from member where id = #{id}")
@@ -28,6 +32,4 @@ public interface MemberMapper {
     @Update("update member set name=#{name}, number=#{number}, password=#{password}, picture=#{picture}, modified_at=now() where id = #{id}")
     Long updateById(Member member);
 
-    @Select("select count(*) from member")
-    int count();
 }
