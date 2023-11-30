@@ -7,7 +7,7 @@ import org.springframework.util.StringUtils;
 public class Sql {
     public String findArticles(SearchDto params) {
         String searchType = params.getSearchType();
-        String keyword = params.getKeyword();
+        String keyword = params.getSearchKeyword();
         String sortOrder = params.getSortAs();
         String sortType = params.getSortFieldType();
 
@@ -22,10 +22,11 @@ public class Sql {
         if (!StringUtils.isEmpty(keyword)) {
             if (!StringUtils.isEmpty(searchType)) {
                 query.WHERE(QueryUtils.like(searchType, keyword));
+            } else {
+                query.WHERE(QueryUtils.like("title", keyword));
+                query.OR();
+                query.WHERE(QueryUtils.like("content", keyword));
             }
-            query.WHERE(QueryUtils.like("title", keyword));
-            query.OR();
-            query.WHERE(QueryUtils.like("content", keyword));
         }
         query.ORDER_BY(QueryUtils.sortAs(sortType, sortOrder));
         // 페이징
@@ -37,7 +38,7 @@ public class Sql {
 
     public String findBooks(SearchDto params) {
         String searchType = params.getSearchType();
-        String keyword = params.getKeyword();
+        String keyword = params.getSearchKeyword();
         String sortOrder = params.getSortAs();
         String sortType = params.getSortFieldType();
 
@@ -67,7 +68,7 @@ public class Sql {
 
     public String findMembers(SearchDto params) {
         String searchType = params.getSearchType();
-        String keyword = params.getKeyword();
+        String keyword = params.getSearchKeyword();
         String sortOrder = params.getSortAs();
         String sortType = params.getSortFieldType();
 
@@ -97,7 +98,7 @@ public class Sql {
 
     public String findQuestions(SearchDto params) {
         String searchType = params.getSearchType();
-        String keyword = params.getKeyword();
+        String keyword = params.getSearchKeyword();
         String sortOrder = params.getSortAs();
         String sortType = params.getSortFieldType();
 
@@ -127,7 +128,7 @@ public class Sql {
 
     public String findWishes(SearchDto params) {
         String searchType = params.getSearchType();
-        String keyword = params.getKeyword();
+        String keyword = params.getSearchKeyword();
         String sortOrder = params.getSortAs();
         String sortType = params.getSortFieldType();
 
@@ -137,20 +138,53 @@ public class Sql {
                 FROM("wish");
             }
         };
-        // 검색어
-        if (!StringUtils.isEmpty(keyword)) {
-            if (!StringUtils.isEmpty(searchType)) {
-                query.WHERE(QueryUtils.like(searchType, keyword));
+        if (!StringUtils.isEmpty(params.getSearchKeyword())) {
+            if (!StringUtils.isEmpty(params.getSearchType())) {
+                query.WHERE(QueryUtils.procSearchInput(searchType, keyword));
             }
-            query.WHERE(QueryUtils.like("title", keyword));
-            query.OR();
-            query.WHERE(QueryUtils.like("content", keyword));
+//            query.WHERE(QueryUtils.like("title", keyword));
+//            query.OR();
+//            query.WHERE(QueryUtils.like("content", keyword));
         }
         query.ORDER_BY(QueryUtils.sortAs(sortType, sortOrder));
-        // 페이징
+        query.LIMIT("#{pagination.limitStart}, #{recordSize}");
+
+//        System.out.println(query);
+        return query.toString();
+    }
+
+    public String findAll(SearchDto params) {
+        SQL query = new SQL() {
+            {
+                SELECT("*");
+                FROM(params.getDomainType());
+            }
+        };
+        if (!StringUtils.isEmpty(params.getSearchKeyword())) {
+            if (!StringUtils.isEmpty(params.getSearchType())) {
+                query.WHERE(QueryUtils.procSearchInput(params.getSearchType(), params.getSearchKeyword()));
+            }
+        }
+        query.ORDER_BY(QueryUtils.sortAs(params.getSortFieldType(), params.getSortAs()));
         query.LIMIT("#{pagination.limitStart}, #{recordSize}");
 
         System.out.println(query);
         return query.toString();
     }
+    public String count(SearchDto params) {
+        SQL query = new SQL() {
+            {
+                SELECT("count(*)");
+                FROM(params.getDomainType());
+            }
+        };
+        if (!StringUtils.isEmpty(params.getSearchKeyword())) {
+            if (!StringUtils.isEmpty(params.getSearchType())) {
+                query.WHERE(QueryUtils.procSearchInput(params.getSearchType(), params.getSearchKeyword()));
+            }
+        }
+        System.out.println(query);
+        return query.toString();
+    }
+
 }
