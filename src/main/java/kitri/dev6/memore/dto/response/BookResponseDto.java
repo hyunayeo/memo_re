@@ -1,11 +1,16 @@
 package kitri.dev6.memore.dto.response;
 
 import kitri.dev6.memore.domain.Book;
-import lombok.Getter;
+import kitri.dev6.memore.dto.open_api.AladinBookVO;
+import kitri.dev6.memore.dto.open_api.NaverBookVO;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import lombok.Getter;
+
 @Getter
 public class BookResponseDto extends RepresentationModel<BookResponseDto> {
     private Long id;
@@ -39,6 +44,33 @@ public class BookResponseDto extends RepresentationModel<BookResponseDto> {
         this.approved = domain.getApproved();
         this.createdAt = domain.getCreatedAt();
         this.modifiedAt = domain.getModifiedAt();
+    }
+
+    public BookResponseDto(NaverBookVO book){
+        this.categoryId = 1L;
+        this.memberId = 1L;
+        this.title = book.getTitle();
+        this.isbn13 = book.getIsbn();
+        this.cover = book.getImage();
+        this.link = book.getLink();
+        this.description = book.getDescription();
+        this.author = book.getAuthor();
+        this.publisher = book.getPublisher();
+        this.publishedDate = LocalDate.parse(book.getPubdate(), DateTimeFormatter.ofPattern("yyyyMMdd"));
+    }
+
+    public BookResponseDto(AladinBookVO book){
+        this.categoryId = 1L;
+        this.memberId = 1L;
+        this.title = book.getTitle();
+        this.isbn = book.getIsbn();
+        this.isbn13 = book.getIsbn13();
+        this.cover = book.getCover();
+        this.link = book.getLink();
+        this.description = book.getDescription();
+        this.author = book.getAuthor();
+        this.publisher = book.getPublisher();
+        this.publishedDate = LocalDate.parse(book.getPubDate());
     }
 
 }

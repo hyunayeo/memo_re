@@ -1,6 +1,8 @@
 package kitri.dev6.memore.dto.common;
 
 import kitri.dev6.memore.domain.*;
+import kitri.dev6.memore.dto.open_api.AladinBookVO;
+import kitri.dev6.memore.dto.open_api.NaverBookVO;
 import kitri.dev6.memore.dto.response.*;
 
 import java.util.List;
@@ -36,5 +38,30 @@ public class Converter {
             }).collect(Collectors.toList());
         }
         return null;
+    }
+    public static List<Object> openApiListTodtoList(List<? extends Object> apiRespList) {
+        if (apiRespList.isEmpty()) return null;
+
+        if (apiRespList.get(0) instanceof NaverBookVO) {
+            return apiRespList.stream().map(resp -> {
+                return new BookResponseDto((NaverBookVO) resp);
+            }).collect(Collectors.toList());
+        }
+
+        if (apiRespList.get(0) instanceof AladinBookVO) {
+            return apiRespList.stream().map(resp -> {
+                return new BookResponseDto((AladinBookVO) resp);
+            }).collect(Collectors.toList());
+        }
+        return null;
+    }
+
+    public static List<Object> toDto(List<? extends Object> original) {
+        List<Object> result = null;
+        result = domainListTodtoList(original);
+        if (result == null) {
+            result = openApiListTodtoList(original);
+        }
+        return result;
     }
 }
