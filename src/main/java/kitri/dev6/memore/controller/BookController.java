@@ -6,10 +6,12 @@ import kitri.dev6.memore.dto.request.BookRequestDto;
 import kitri.dev6.memore.dto.response.BookResponseDto;
 import kitri.dev6.memore.dto.request.BookUpdateRequestDto;
 import kitri.dev6.memore.service.BookService;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,18 +32,23 @@ public class BookController {
         }
 
         for (BookResponseDto bookResponseDto : bookResponseDtos.getList()) {
-            Long bookId = bookResponseDto.getId();
-            Link selfLink = linkTo(BookController.class).slash(bookId).withSelfRel();
+            String isbn = bookResponseDto.getIsbn13();
+            Link selfLink = linkTo(BookController.class).slash("?searchType=book_id&searchKeyword=" + isbn).withSelfRel();
             bookResponseDto.add(selfLink);
-            bookResponseDto.add(linkTo(methodOn(ArticleController.class).findAll(new SearchDto())).slash("?searchType=book_id&searchKeyword=" + bookId).withRel("articles"));
-            bookResponseDto.add(linkTo(methodOn(WishController.class).findAll(new SearchDto())).slash("?searchType=book_id&searchKeyword=" + bookId).withRel("wishes"));
+            bookResponseDto.add(linkTo(methodOn(ArticleController.class).findAll(new SearchDto())).slash("?searchType=book_id&searchKeyword=" + isbn).withRel("articles"));
+            bookResponseDto.add(linkTo(methodOn(WishController.class).findAll(new SearchDto())).slash("?searchType=book_id&searchKeyword=" + isbn).withRel("wishes"));
         }
         bookResponseDtos.set_links(linkTo(BookController.class).withSelfRel());
         return new ResponseEntity<>(bookResponseDtos, HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<BookResponseDto> findById(@PathVariable Long id){
-        BookResponseDto bookResponseDto = bookService.findById(id);
+    public ResponseEntity<BookResponseDto> findById(@PathVariable Long id, @ModelAttribute("params") SearchDto params){
+        BookResponseDto bookResponseDto = null;
+        if (params.getSearchType().equals("isbn")) {
+            bookResponseDto = bookService.findByIsbn(id);
+        } else {
+            bookResponseDto = bookService.findById(id);
+        }
         if (bookResponseDto == null) {
             throw new IllegalArgumentException("No book");
         }

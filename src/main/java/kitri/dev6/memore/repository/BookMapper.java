@@ -1,6 +1,5 @@
 package kitri.dev6.memore.repository;
 
-import kitri.dev6.memore.domain.Article;
 import kitri.dev6.memore.domain.Book;
 import kitri.dev6.memore.dto.common.SearchDto;
 import kitri.dev6.memore.repository.sql.Sql;
@@ -21,6 +20,9 @@ public interface BookMapper {
     @Select("select * from book where id = #{id}")
     Optional<Book> findById(Long id);
 
+    @Select("select * from book where isbn13 = #{isbn}")
+    Optional<Book> findByIsbn(Long isbn);
+
     @Select("select * from book where member_id=#{memberID}")
     List<Book> findAllByMemberId(Long memberId);
 
@@ -28,7 +30,7 @@ public interface BookMapper {
             "values (#{categoryId}, #{memberId}, #{title}, #{isbn}, #{isbn13}, #{cover}, #{link}, " +
             "#{description}, #{author}, #{publisher}, #{publishedDate}, #{approved})")
     @SelectKey(statement = "select last_insert_id()", keyColumn = "id", keyProperty = "id", before = false, resultType = Long.class)
-    void insert(Book book);
+    Long insert(Book book);
 
 //    @Delete("delete from book where id = #{id}")
     @Update("update book set deleted_at = now() where id = #{id}")
