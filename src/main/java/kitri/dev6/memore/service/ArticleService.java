@@ -32,12 +32,23 @@ public class ArticleService {
         Pagination pagination = new Pagination(count, params);
         params.setPagination(pagination);
 
-        // 계산된 페이지 정보의 일부(limitStart, recordSize)를 기준으로 리스트 데이터 조회 후 응답 데이터 반환
         List<Article> list = articleMapper.findAll(params);
-        // domain -> dto
+
         List<ArticleResponseDto> convertedList = (List<ArticleResponseDto>) (Object) Converter.domainListTodtoList(list);
 
         return new PagingResponse<>(convertedList, pagination);
+    }
+
+    private List<Article> findAllAsConditions(SearchDto params) {
+        List<Article> result = null;
+        if (!params.getJoinWith().isEmpty()) {
+            if (params.getJoinWith().equals("all")) {
+//                articleMapper.findAllWithBookAndMember(params);
+            }
+        }
+//          result = articleMapper.findAll(params);
+
+        return null;
     }
 
     public PagingResponse<ArticleResponseDto> findByBookId(SearchDto params, Long bookId) {

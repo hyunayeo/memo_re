@@ -172,6 +172,33 @@ public class Sql {
         System.out.println(query);
         return query.toString();
     }
+
+    public String findAllWithBookAndMember(SearchDto params) {
+        SQL query = new SQL() {
+            {
+                SELECT("a.id, a.title, a.content, a.view_count, a.rating_score,a.is_done, a.is_hide");
+                SELECT("a.start_date, a.end_date,a.book_id, a.member_id, a.created_at, a.modified_at, a.deleted_at");
+                SELECT("b.id, b.category_id, b.member_id, b.title, b.isbn13, b.cover, b.link, b.description, b.author");
+                SELECT("b.publisher, b.published_date, b.approved, m.id, m.name, m.picture");
+                FROM("article a");
+                INNER_JOIN("book b on a.book_id = b.id");
+                INNER_JOIN("member m on a.member_id = m.id");
+            }
+        };
+
+        if (!StringUtils.isEmpty(params.getSearchKeyword())) {
+            if (!StringUtils.isEmpty(params.getSearchType())) {
+                query.WHERE(QueryUtils.procSearchInput(params.getSearchType(), params.getSearchKeyword()));
+            }
+        }
+        query.ORDER_BY(QueryUtils.sortAs(params.getSortFieldType(), params.getSortAs()));
+        query.LIMIT("#{pagination.limitStart}, #{recordSize}");
+
+        System.out.println(query);
+        return query.toString();
+
+    }
+
     public String count(SearchDto params) {
         SQL query = new SQL() {
             {
