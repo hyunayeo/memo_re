@@ -1,9 +1,7 @@
 package kitri.dev6.memore.dto.common;
 
-import kitri.dev6.memore.repository.BookMapper;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.ibatis.annotations.*;
 
 @Getter
 @Setter
@@ -36,6 +34,7 @@ public class SearchDto {
     private String searchKeyword;       // 검색 키워드
     private String searchType;    // 검색 유형 (제목, 아이디, 날짜...)
     private Pagination pagination; // 페이지네이션 정보
+    private String joinWith;
     private String apiFrom;
 
     public SearchDto() {
@@ -80,7 +79,7 @@ public class SearchDto {
         return false;
     }
 
-    public void setPage(int count) {
+    public void setPaging(int count) {
         this.setPagination(new Pagination(count, this));
     }
 }

@@ -27,7 +27,7 @@ public class Pagination {
 
         // 현재 페이지 번호가 전체 페이지 수보다 큰 경우, 현재 페이지 번호에 전체 페이지 수 저장
         if (params.getPage() > totalPageCount) {
-            params.setPage(totalPageCount);
+            params.setPaging(totalPageCount);
         }
 
         // 첫 페이지 번호 계산

@@ -57,7 +57,7 @@ public class BookOpenApiService {
             throw new RuntimeException(e);
         }
 
-        params.setPage(result.getTotal());
+        params.setPaging(result.getTotal());
 
         return result.getItems();
     }
@@ -91,7 +91,7 @@ public class BookOpenApiService {
             throw new RuntimeException(e);
         }
 
-        params.setPage(result.getTotalResults());
+        params.setPaging(result.getTotalResults());
 
         return result.getItem();
     }
@@ -126,7 +126,7 @@ public class BookOpenApiService {
             throw new RuntimeException(e);
         }
 
-        params.setPage(result.getTotalResults());
+        params.setPaging(result.getTotalResults());
 
         return result.getItem();
     }

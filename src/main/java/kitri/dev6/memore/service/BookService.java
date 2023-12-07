@@ -58,7 +58,7 @@ public class BookService {
     }
 
     public List<Book> findAllFromDB(SearchDto params) {
-        params.setPage(bookMapper.count(params));
+        params.setPaging(bookMapper.count(params));
         return bookMapper.findAll(params);
     }
 
