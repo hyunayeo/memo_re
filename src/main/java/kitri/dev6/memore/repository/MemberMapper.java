@@ -21,6 +21,9 @@ public interface MemberMapper {
     @Select("select * from member where id = #{id}")
     Optional<Member> findById(Long id);
 
+    @Select("select * from member where id = #{id}")
+    Member findById2(@Param("member_id") Long id);
+
     @Insert("insert into member(email, number, name, password, picture) values (#{email}, #{number}, #{name}, #{password}, #{picture})")
     @SelectKey(statement = "select last_insert_id()", keyColumn = "id", keyProperty = "id", before = false, resultType = Long.class)
     void insert(Member member);

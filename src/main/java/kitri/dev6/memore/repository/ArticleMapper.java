@@ -18,20 +18,22 @@ public interface ArticleMapper {
     @SelectProvider(type = Sql.class, method = "findAll")
     List<Article> findAll(SearchDto searchDto);
 
-//    @SelectProvider(type = Sql.class, method = "findAllWithBookAndMember")
-//    @Results({
-//            @Result(property = "")
-//    })
-//    List<ArticleResponseDto> findAllWithBookAndMember(SearchDto params);
-//
-//    @SelectProvider(type = Sql.class, method = "findAllWithBookAndMember2")
-//    @Results({
-//            @Result(property = "id", column = "a.id", id = true),
-//            @Result(property = "name", column = "name"),
-//            @Result(property = "email", column = "id", one = @One(select = "selectUserEmailById", fetchType = FetchType.LAZY)),
-//            @Result(property = "telephoneNumbers", column = "id", many = @Many(select = "selectAllUserTelephoneNumberById", fetchType = FetchType.LAZY))
-//    })
-//    List<ArticleResponseDto> findAllWithBookAndMember2(SearchDto params);
+    @SelectProvider(type = Sql.class, method = "findAll")
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "title", column = "title"),
+            @Result(property = "content", column = "content"),
+            @Result(property = "viewCount", column = "view_count"),
+            @Result(property = "isDone", column = "is_done"),
+            @Result(property = "isHide", column = "is_hide"),
+            @Result(property = "ratingScore", column = "rating_score"),
+            @Result(property = "startDate", column = "start_date"),
+            @Result(property = "endDate", column = "end_date"),
+            @Result(property = "createdAt", column = "created_at"),
+            @Result(property = "book", column = "book_id", one = @One(select = "kitri.dev6.memore.repository.BookMapper.findById2", fetchType = FetchType.EAGER)),
+            @Result(property = "member", column = "member_id", one = @One(select = "kitri.dev6.memore.repository.MemberMapper.findById2", fetchType = FetchType.EAGER))
+    })
+    List<ArticleResponseDto> findAllFetchJoin(SearchDto params);
 
     @Select("select * from article where member_id = #{memberId}")
     List<Article> findByMemberId(Long memberId);

@@ -173,7 +173,7 @@ public class Sql {
         return query.toString();
     }
 
-    public String findAllWithBookAndMember(SearchDto params) {
+    public String findAllWithFetchJoin(SearchDto params) {
         SQL query = new SQL() {
             {
                 SELECT("a.id, a.title, a.content, a.view_count, a.rating_score,a.is_done, a.is_hide");

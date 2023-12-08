@@ -20,6 +20,9 @@ public interface BookMapper {
     @Select("select * from book where id = #{id}")
     Optional<Book> findById(Long id);
 
+    @Select("select * from book where id = #{id}")
+    Book findById2(@Param("book_id") Long id);
+
     @Select("select * from book where isbn13 = #{isbn}")
     Optional<Book> findByIsbn(Long isbn);
 
