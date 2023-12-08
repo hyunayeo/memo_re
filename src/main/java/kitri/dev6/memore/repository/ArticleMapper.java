@@ -8,7 +8,6 @@ import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
 
 import java.util.List;
-import java.util.Optional;
 
 @Mapper
 public interface ArticleMapper {
@@ -30,10 +29,42 @@ public interface ArticleMapper {
             @Result(property = "startDate", column = "start_date"),
             @Result(property = "endDate", column = "end_date"),
             @Result(property = "createdAt", column = "created_at"),
-            @Result(property = "book", column = "book_id", one = @One(select = "kitri.dev6.memore.repository.BookMapper.findById2", fetchType = FetchType.EAGER)),
-            @Result(property = "member", column = "member_id", one = @One(select = "kitri.dev6.memore.repository.MemberMapper.findById2", fetchType = FetchType.EAGER))
+            @Result(property = "book", column = "book_id", one = @One(select = "kitri.dev6.memore.repository.BookMapper.findById", fetchType = FetchType.EAGER)),
+            @Result(property = "member", column = "member_id", one = @One(select = "kitri.dev6.memore.repository.MemberMapper.findById", fetchType = FetchType.EAGER))
     })
-    List<ArticleResponseDto> findAllFetchJoin(SearchDto params);
+    List<Article> findArticlesWithBookAndMember(SearchDto params);
+
+    @Select("select * from article where #{bookId}=book_id")
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "title", column = "title"),
+            @Result(property = "content", column = "content"),
+            @Result(property = "viewCount", column = "view_count"),
+            @Result(property = "isDone", column = "is_done"),
+            @Result(property = "isHide", column = "is_hide"),
+            @Result(property = "ratingScore", column = "rating_score"),
+            @Result(property = "startDate", column = "start_date"),
+            @Result(property = "endDate", column = "end_date"),
+            @Result(property = "createdAt", column = "created_at"),
+            @Result(property = "member", column = "member_id", one = @One(select = "kitri.dev6.memore.repository.MemberMapper.findById", fetchType = FetchType.EAGER))
+    })
+    List<Article> findArticlesWithMemberByBookId(Long bookId);
+
+
+    @Select("select * from article where #{memberId}=member_id")
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "title", column = "title"),
+            @Result(property = "content", column = "content"),
+            @Result(property = "viewCount", column = "view_count"),
+            @Result(property = "isDone", column = "is_done"),
+            @Result(property = "isHide", column = "is_hide"),
+            @Result(property = "ratingScore", column = "rating_score"),
+            @Result(property = "startDate", column = "start_date"),
+            @Result(property = "endDate", column = "end_date"),
+            @Result(property = "createdAt", column = "created_at"),
+    })
+    List<Article> findArticlesByMemberId(Long memberId);
 
     @Select("select * from article where member_id = #{memberId}")
     List<Article> findByMemberId(Long memberId);
@@ -42,7 +73,7 @@ public interface ArticleMapper {
     List<Article> findByBookId(Long bookId);
 
     @Select("select * from article where id = #{id}")
-    Optional<Article> findById(Long id);
+    Article findById(Long id);
 
     @Insert("insert into article (member_id, book_id, title, content, is_done, start_date, end_date, rating_score, is_hide) " +
             " values ( #{memberId}, #{bookId}, #{title}, #{content}, #{isDone}, #{startDate}, #{endDate}, #{ratingScore}, #{isHide})")

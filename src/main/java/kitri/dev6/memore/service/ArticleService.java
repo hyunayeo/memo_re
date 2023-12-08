@@ -20,7 +20,7 @@ public class ArticleService {
     @Autowired
     private ArticleMapper articleMapper;
 
-    public PagingResponse<ArticleResponseDto> findAll(SearchDto params){
+    public PagingResponse<Article> findAll(SearchDto params){
         params.setDomainType("article");
         // 조건에 해당하는 데이터가 없는 경우, 응답 데이터에 비어있는 리스트와 null을 담아 반환
         int count = articleMapper.count(params);
@@ -32,9 +32,7 @@ public class ArticleService {
         Pagination pagination = new Pagination(count, params);
         params.setPagination(pagination);
 
-        List<ArticleResponseDto> list = articleMapper.findAllFetchJoin(params);
-
-//        List<ArticleResponseDto> convertedList = (List<ArticleResponseDto>) (Object) Converter.domainListTodtoList(list);
+        List<Article> list = articleMapper.findArticlesWithBookAndMember(params);
 
         return new PagingResponse<>(list, pagination);
     }
@@ -51,11 +49,11 @@ public class ArticleService {
 //        return null;
 //    }
 
-    public PagingResponse<ArticleResponseDto> findByBookId(SearchDto params, Long bookId) {
+    public PagingResponse<Article> findByBookId(SearchDto params, Long bookId) {
         // 계산된 페이지 정보의 일부(limitStart, recordSize)를 기준으로 리스트 데이터 조회 후 응답 데이터 반환
         List<Article> list = articleMapper.findByBookId(bookId);
         // domain -> dto
-        List<ArticleResponseDto> convertedList = (List<ArticleResponseDto>) (Object) Converter.domainListTodtoList(list);
+//        List<ArticleResponseDto> convertedList = (List<ArticleResponseDto>) (Object) Converter.domainListTodtoList(list);
         // 조건에 해당하는 데이터가 없는 경우, 응답 데이터에 비어있는 리스트와 null을 담아 반환
         int count = list.size();
         if (count < 1) {
@@ -66,14 +64,14 @@ public class ArticleService {
         Pagination pagination = new Pagination(count, params);
         params.setPagination(pagination);
 
-        return new PagingResponse<>(convertedList, pagination);
+        return new PagingResponse<>(list, pagination);
     }
 
-    public PagingResponse<ArticleResponseDto> findByMemberId(SearchDto params, Long memberId) {
+    public PagingResponse<Article> findByMemberId(SearchDto params, Long memberId) {
         // 계산된 페이지 정보의 일부(limitStart, recordSize)를 기준으로 리스트 데이터 조회 후 응답 데이터 반환
         List<Article> list = articleMapper.findByMemberId(memberId);
         // domain -> dto
-        List<ArticleResponseDto> convertedList = (List<ArticleResponseDto>) (Object) Converter.domainListTodtoList(list);
+//        List<ArticleResponseDto> convertedList = (List<ArticleResponseDto>) (Object) Converter.domainListTodtoList(list);
         // 조건에 해당하는 데이터가 없는 경우, 응답 데이터에 비어있는 리스트와 null을 담아 반환
         int count = list.size();
         if (count < 1) {
@@ -84,12 +82,11 @@ public class ArticleService {
         Pagination pagination = new Pagination(count, params);
         params.setPagination(pagination);
 
-        return new PagingResponse<>(convertedList, pagination);
+        return new PagingResponse<>(list, pagination);
     }
 
-    public ArticleResponseDto findById(Long id) {
-        Article article = articleMapper.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다, id=" + id));
-        return new ArticleResponseDto(article);
+    public Article findById(Long id) {
+        return articleMapper.findById(id);
     }
 
     public Long insert(ArticleRequestDto articleRequestDto) {
@@ -99,7 +96,7 @@ public class ArticleService {
     }
 
     public Long update(Long id, ArticleRequestDto articleRequestDto) {
-        Article article = articleMapper.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다, id=" + id));
+        Article article = articleMapper.findById(id);
         if (article == null) return null;
         article.update(articleRequestDto.getMemberId(),
                 articleRequestDto.getBookId(),
@@ -115,8 +112,9 @@ public class ArticleService {
     }
 
     public void delete(Long id) {
-        articleMapper.findById(id).orElseThrow(()->new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
-        articleMapper.deleteById(id);
+        if (articleMapper.findById(id) != null) {
+            articleMapper.deleteById(id);
+        }
     }
 
 }

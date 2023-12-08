@@ -56,11 +56,28 @@ public class Converter {
         return null;
     }
 
+    public static List<Object> openApiListToDomainList(List<? extends Object> apiRespList) {
+        if (apiRespList.isEmpty()) return null;
+
+        if (apiRespList.get(0) instanceof NaverBookVO) {
+            return apiRespList.stream().map(resp -> {
+                return new Book((NaverBookVO) resp);
+            }).collect(Collectors.toList());
+        }
+
+        if (apiRespList.get(0) instanceof AladinBookVO) {
+            return apiRespList.stream().map(resp -> {
+                return new Book((AladinBookVO) resp);
+            }).collect(Collectors.toList());
+        }
+        return null;
+    }
+
     public static List<Object> toDto(List<? extends Object> original) {
         List<Object> result = null;
-        result = domainListTodtoList(original);
+//        result = domainListTodtoList(original);
         if (result == null) {
-            result = openApiListTodtoList(original);
+            result = openApiListToDomainList(original);
         }
         return result;
     }

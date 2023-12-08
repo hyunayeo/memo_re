@@ -26,30 +26,30 @@ public class ArticleController {
 
     private final ArticleService articleService;
     @GetMapping
-    public ResponseEntity<PagingResponse<ArticleResponseDto>> findAll(@ModelAttribute("params") SearchDto params) {
-        PagingResponse<ArticleResponseDto> articleResponseDtos = articleService.findAll(params);
-        if (articleResponseDtos == null) {
+    public ResponseEntity<PagingResponse<Article>> findAll(@ModelAttribute("params") SearchDto params) {
+        PagingResponse<Article> articles = articleService.findAll(params);
+        if (articles == null) {
             throw new IllegalArgumentException("No Articles");
         }
 
-        for (ArticleResponseDto articleResponseDto : articleResponseDtos.getList()) {
-            Long articleId = articleResponseDto.getId();
+        for (Article article : articles.getList()) {
+            Long articleId = article.getId();
             Link selfLink = linkTo(ArticleController.class).slash(articleId).withSelfRel();
-            articleResponseDto.add(selfLink);
+//            article.add(selfLink);
         }
-        articleResponseDtos.set_links(linkTo(ArticleController.class).withSelfRel());
+        articles.set_links(linkTo(ArticleController.class).withSelfRel());
 
-        return new ResponseEntity<>(articleResponseDtos, HttpStatus.OK);
+        return new ResponseEntity<>(articles, HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<ArticleResponseDto> findById(@PathVariable Long id) {
-        ArticleResponseDto articleResponseDto = articleService.findById(id);
-        if (articleResponseDto == null) {
+    public ResponseEntity<Article> findById(@PathVariable Long id) {
+        Article article = articleService.findById(id);
+        if (article == null) {
             throw new IllegalArgumentException("No article");
         }
-        articleResponseDto.add(linkTo(methodOn(ArticleController.class).findAll(new SearchDto())).slash(id).withRel("self"));
+//        article.add(linkTo(methodOn(ArticleController.class).findAll(new SearchDto())).slash(id).withRel("self"));
 
-        return new ResponseEntity<>(articleResponseDto, HttpStatus.OK);
+        return new ResponseEntity<>(article, HttpStatus.OK);
     }
     @PostMapping
     public Long insert(@RequestBody ArticleRequestDto articleRequestDto) {

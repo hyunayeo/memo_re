@@ -1,8 +1,6 @@
 package kitri.dev6.memore.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,6 +8,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Article {
     private Long id;
     private Long memberId;
@@ -25,6 +25,9 @@ public class Article {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private LocalDateTime deletedAt;
+
+    private Book book;
+    private Member member;
 
     public void update(Long memberId, Long bookId, String title, String content, boolean isDone,
                        LocalDate startDate, LocalDate endDate, int ratingScore, boolean isHide) {

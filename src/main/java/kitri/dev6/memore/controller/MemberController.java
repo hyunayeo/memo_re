@@ -29,45 +29,23 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
-//    @GetMapping()
-//    public PagingResponse<MemberResponseDto> findAll(@ModelAttribute("params") SearchDto params){
-//        return memberService.findAll(params);
-//    }
+
     @GetMapping()
-    public ResponseEntity<PagingResponse<MemberResponseDto>> findAll(@ModelAttribute("params") SearchDto params){
-        PagingResponse<MemberResponseDto> memberResponseDtos = memberService.findAll(params);
-        if (memberResponseDtos == null) {
+    public ResponseEntity<PagingResponse<Member>> findAll(@ModelAttribute("params") SearchDto params){
+        PagingResponse<Member> members = memberService.findAll(params);
+        if (members == null) {
             throw new IllegalArgumentException("No members");
         }
-
-        for (MemberResponseDto memberResponseDto : memberResponseDtos.getList()) {
-            Long memberId = memberResponseDto.getId();
-            Link selfLink = linkTo(MemberController.class).slash(memberId).withSelfRel();
-            memberResponseDto.add(selfLink);
-            memberResponseDto.add(linkTo(methodOn(ArticleController.class).findAll(new SearchDto())).slash("?searchType=member_id&searchKeyword=" + memberId).withRel("articles"));
-            memberResponseDto.add(linkTo(methodOn(QuestionController.class).findAll(new SearchDto())).slash("?searchType=member_id&searchKeyword=" + memberId).withRel("questions"));
-            memberResponseDto.add(linkTo(methodOn(WishController.class).findAll(new SearchDto())).slash("?searchType=member_id&searchKeyword=" + memberId).withRel("wishes"));
-            memberResponseDto.add(linkTo(methodOn(BookController.class).findAll(new SearchDto())).slash("?searchType=member_id&searchKeyword=" + memberId).withRel("books"));
-        }
-        memberResponseDtos.set_links(linkTo(MemberController.class).withSelfRel());
-
-        return new ResponseEntity<>(memberResponseDtos, HttpStatus.OK);
+        return new ResponseEntity<>(members, HttpStatus.OK);
     }
-    // "FOR THE HATEOAS TEST"
+
     @GetMapping("/{id}")
-    public ResponseEntity<MemberResponseDto> findById(@PathVariable Long id) {
-        MemberResponseDto memberResponseDto = memberService.findById(id);
-        if (memberResponseDto == null) {
+    public ResponseEntity<Member> findById(@PathVariable Long id) {
+        Member member = memberService.findById(id);
+        if (member == null) {
             throw new IllegalArgumentException("No member");
         }
-
-        memberResponseDto.add(linkTo(methodOn(MemberController.class).findAll(new SearchDto())).slash(id).withRel("self"));
-        memberResponseDto.add(linkTo(methodOn(ArticleController.class).findAll(new SearchDto())).slash("?searchType=member_id&searchKeyword=" + id).withRel("articles"));
-        memberResponseDto.add(linkTo(methodOn(QuestionController.class).findAll(new SearchDto())).slash("?searchType=member_id&searchKeyword=" + id).withRel("questions"));
-        memberResponseDto.add(linkTo(methodOn(WishController.class).findAll(new SearchDto())).slash("?searchType=member_id&searchKeyword=" + id).withRel("wishes"));
-        memberResponseDto.add(linkTo(methodOn(BookController.class).findAll(new SearchDto())).slash("?searchType=member_id&searchKeyword=" + id).withRel("books"));
-
-        return new ResponseEntity<>(memberResponseDto, HttpStatus.OK);
+        return new ResponseEntity<>(member, HttpStatus.OK);
     }
 
     @PostMapping("")

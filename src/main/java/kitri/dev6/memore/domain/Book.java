@@ -1,15 +1,20 @@
 package kitri.dev6.memore.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import kitri.dev6.memore.dto.open_api.AladinBookVO;
+import kitri.dev6.memore.dto.open_api.NaverBookVO;
+import kitri.dev6.memore.dto.response.ArticleResponseDto;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Book {
     private Long id;
     private Long categoryId;
@@ -27,6 +32,8 @@ public class Book {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
+    private List<ArticleResponseDto> articles;
+
     public void update(String title, String isbn, String isbn13,
                        String cover, String link, String description, String author,
                        String publisher, LocalDate publishedDate, Boolean approved) {
@@ -40,5 +47,32 @@ public class Book {
         this.publisher = publisher;
         this.publishedDate = publishedDate;
         this.approved = approved;
+    }
+
+    public Book(NaverBookVO book){
+        this.categoryId = 1L;
+        this.memberId = 1L;
+        this.title = book.getTitle();
+        this.isbn13 = book.getIsbn();
+        this.cover = book.getImage();
+        this.link = book.getLink();
+        this.description = book.getDescription();
+        this.author = book.getAuthor();
+        this.publisher = book.getPublisher();
+        this.publishedDate = LocalDate.parse(book.getPubdate(), DateTimeFormatter.ofPattern("yyyyMMdd"));
+    }
+
+    public Book(AladinBookVO book){
+        this.categoryId = 1L;
+        this.memberId = 1L;
+        this.title = book.getTitle();
+        this.isbn = book.getIsbn();
+        this.isbn13 = book.getIsbn13();
+        this.cover = book.getCover();
+        this.link = book.getLink();
+        this.description = book.getDescription();
+        this.author = book.getAuthor();
+        this.publisher = book.getPublisher();
+        this.publishedDate = LocalDate.parse(book.getPubDate());
     }
 }

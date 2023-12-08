@@ -3,15 +3,18 @@ package kitri.dev6.memore.dto.response;
 import kitri.dev6.memore.domain.Book;
 import kitri.dev6.memore.dto.open_api.AladinBookVO;
 import kitri.dev6.memore.dto.open_api.NaverBookVO;
+import lombok.NoArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import lombok.Getter;
 
 @Getter
+@NoArgsConstructor
 public class BookResponseDto extends RepresentationModel<BookResponseDto> {
     private Long id;
     private Long categoryId;
@@ -28,6 +31,9 @@ public class BookResponseDto extends RepresentationModel<BookResponseDto> {
     private boolean approved;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+
+    private List<ArticleResponseDto> articles;
+
     public BookResponseDto(Book domain){
         this.id = domain.getId();
         this.categoryId = domain.getCategoryId();

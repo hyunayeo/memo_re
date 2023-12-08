@@ -2,8 +2,10 @@ package kitri.dev6.memore.repository;
 
 import kitri.dev6.memore.domain.Book;
 import kitri.dev6.memore.dto.common.SearchDto;
+import kitri.dev6.memore.dto.response.BookResponseDto;
 import kitri.dev6.memore.repository.sql.Sql;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.FetchType;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,14 +19,65 @@ public interface BookMapper {
     @SelectProvider(type = Sql.class, method = "findAll")
     List<Book> findAll(SearchDto searchDto);
 
-    @Select("select * from book where id = #{id}")
-    Optional<Book> findById(Long id);
+    @SelectProvider(type = Sql.class, method = "findAll")
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "title", column = "title"),
+            @Result(property = "description", column = "description"),
+            @Result(property = "isbn", column = "isbn"),
+            @Result(property = "viewCount", column = "view_count"),
+            @Result(property = "cover", column = "cover"),
+            @Result(property = "link", column = "link"),
+            @Result(property = "author", column = "author"),
+            @Result(property = "publisher", column = "publisher"),
+            @Result(property = "createdAt", column = "created_at"),
+            @Result(property = "modifiedAt", column = "modified_at"),
+            @Result(property = "memberId", column = "member_id"),
+            @Result(property = "categoryId", column = "category_id"),
+            @Result(property = "articles", column = "id", many = @Many(select = "kitri.dev6.memore.repository.ArticleMapper.findArticlesWithMemberByBookId", fetchType = FetchType.EAGER)),
+    })
+    List<Book> findBooksWithArticles(SearchDto params);
 
     @Select("select * from book where id = #{id}")
-    Book findById2(@Param("book_id") Long id);
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "title", column = "title"),
+            @Result(property = "description", column = "description"),
+            @Result(property = "isbn", column = "isbn"),
+            @Result(property = "viewCount", column = "view_count"),
+            @Result(property = "cover", column = "cover"),
+            @Result(property = "link", column = "link"),
+            @Result(property = "author", column = "author"),
+            @Result(property = "publisher", column = "publisher"),
+            @Result(property = "createdAt", column = "created_at"),
+            @Result(property = "modifiedAt", column = "modified_at"),
+            @Result(property = "memberId", column = "member_id"),
+            @Result(property = "categoryId", column = "category_id"),
+            @Result(property = "articles", column = "id", many = @Many(select = "kitri.dev6.memore.repository.ArticleMapper.findArticlesWithMemberByBookId", fetchType = FetchType.EAGER)),
+    })
+    Book findBookWithArticlesById(Long id);
+
+    @Select("select * from book where id = #{id}")
+    Book findById(Long id);
 
     @Select("select * from book where isbn13 = #{isbn}")
-    Optional<Book> findByIsbn(Long isbn);
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "title", column = "title"),
+            @Result(property = "description", column = "description"),
+            @Result(property = "isbn", column = "isbn13"),
+            @Result(property = "viewCount", column = "view_count"),
+            @Result(property = "cover", column = "cover"),
+            @Result(property = "link", column = "link"),
+            @Result(property = "author", column = "author"),
+            @Result(property = "publisher", column = "publisher"),
+            @Result(property = "createdAt", column = "created_at"),
+            @Result(property = "modifiedAt", column = "modified_at"),
+            @Result(property = "memberId", column = "member_id"),
+            @Result(property = "categoryId", column = "category_id"),
+            @Result(property = "articles", column = "id", many = @Many(select = "kitri.dev6.memore.repository.ArticleMapper.findArticlesWithMemberByBookId", fetchType = FetchType.EAGER)),
+    })
+    Book findBookWithArticlesByIsbn(Long isbn);
 
     @Select("select * from book where member_id=#{memberID}")
     List<Book> findAllByMemberId(Long memberId);
@@ -35,7 +88,6 @@ public interface BookMapper {
     @SelectKey(statement = "select last_insert_id()", keyColumn = "id", keyProperty = "id", before = false, resultType = Long.class)
     Long insert(Book book);
 
-//    @Delete("delete from book where id = #{id}")
     @Update("update book set deleted_at = now() where id = #{id}")
     void deleteById(Long id);
 
@@ -44,4 +96,6 @@ public interface BookMapper {
             "published_date=#{publishedDate}, approved=#{approved}, modified_at=now() where id = #{id}")
     void updateById(Book book);
 
+    // 기타
+    // @Select("select name from category where #{id} = code")
 }

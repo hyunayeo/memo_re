@@ -6,6 +6,7 @@ import kitri.dev6.memore.domain.Member;
 import kitri.dev6.memore.dto.common.SearchDto;
 import kitri.dev6.memore.repository.sql.Sql;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.FetchType;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,17 +19,30 @@ public interface MemberMapper {
     @SelectProvider(type = Sql.class, method = "findAll")
     List<Member> findAll(SearchDto searchDto);
 
-    @Select("select * from member where id = #{id}")
-    Optional<Member> findById(Long id);
+    @SelectProvider(type = Sql.class, method = "findAll")
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "email", column = "email"),
+            @Result(property = "number", column = "number"),
+            @Result(property = "name", column = "name"),
+            @Result(property = "password", column = "password"),
+            @Result(property = "picture", column = "picture"),
+            @Result(property = "createdAt", column = "createdAt"),
+            @Result(property = "modifiedAt", column = "modifiedAt"),
+            @Result(property = "deletedAt", column = "deletedAt"),
+            @Result(property = "articles", column = "id", many = @Many(select = "kitri.dev6.memore.repository.ArticleMapper.findArticlesByMemberId", fetchType = FetchType.EAGER)),
+            @Result(property = "articles", column = "id", many = @Many(select = "kitri.dev6.memore.repository.ArticleMapper.findArticlesByMemberId", fetchType = FetchType.EAGER)),
+            @Result(property = "articles", column = "id", many = @Many(select = "kitri.dev6.memore.repository.ArticleMapper.findArticlesByMemberId", fetchType = FetchType.EAGER)),
+    })
+    List<Article> findMembersWithArticleAndWishAndQuestion(SearchDto params);
 
     @Select("select * from member where id = #{id}")
-    Member findById2(@Param("member_id") Long id);
+    Member findById(Long id);
 
     @Insert("insert into member(email, number, name, password, picture) values (#{email}, #{number}, #{name}, #{password}, #{picture})")
     @SelectKey(statement = "select last_insert_id()", keyColumn = "id", keyProperty = "id", before = false, resultType = Long.class)
     void insert(Member member);
 
-//    @Delete("update member set deleted_at = now() where id = #{id}")
     @Delete("delete from member where id = #{id}")
     void deleteById(Long id);
 

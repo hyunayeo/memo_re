@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,46 +19,48 @@ public class BookService {
     private final BookMapper bookMapper;
     private final BookOpenApiService bookOpenApiService;
 
-    public BookResponseDto findById(Long id) {
-        Book book = bookMapper.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 도서가 존재하지 않습니다, id=" + id));
+    public BookResponseDto findById2(Long id) {
+        Book book = bookMapper.findById(id);
         return new BookResponseDto(book);
+
+    }
+    public Book findById(Long id) {
+        return bookMapper.findBookWithArticlesById(id);
     }
 
-    public BookResponseDto findByIsbn(Long isbn) {
-        Optional<Book> book = null;
+    public Book findByIsbn(Long isbn) {
+        Book book = null;
 
-        book = bookMapper.findByIsbn(isbn);
-        if (book.isEmpty()) {
+        book = bookMapper.findBookWithArticlesByIsbn(isbn);
+        if (book == null) {
             // 알라딘 API에서 가져오기 by isbn
             Long id = bookMapper.insert(bookOpenApiService.fetchOneFromAladin(isbn));
             if (id == null) {
                 new IllegalArgumentException("DB에 저장되지 않았습니다.");
             }
-            book = bookMapper.findByIsbn(isbn);
+            book = bookMapper.findBookWithArticlesByIsbn(isbn);
         }
-        return new BookResponseDto(book.get());
+        return book;
     }
 
-    public PagingResponse<BookResponseDto> findAll(SearchDto params) {
+    public PagingResponse<Book> findAll(SearchDto params) {
         params.setDomainType("book");
-        List<? extends Object> list = null;
+        List<Book> list = null;
         // 조건에 해당하는 데이터가 없는 경우, 응답 데이터에 비어있는 리스트와 null을 담아 반환
         if (params.shouldIUseNaverBookApi()) {
-            list = bookOpenApiService.fetchAllFromNaver(params);
+            list = (List<Book>) (Object) Converter.toDto(bookOpenApiService.fetchAllFromNaver(params));
         } else if (params.shouldIUseAladinBookApi()) {
-            list = bookOpenApiService.fetchAllFromAladin(params);
+            list = (List<Book>) (Object) Converter.toDto(bookOpenApiService.fetchAllFromAladin(params));
         } else {
             list = findAllFromDB(params);
         }
 
-        List<BookResponseDto> convertedList = (List<BookResponseDto>) (Object) Converter.toDto(list);
-
-        return new PagingResponse<>(convertedList, params.getPagination());
+        return new PagingResponse<>(list, params.getPagination());
     }
 
     public List<Book> findAllFromDB(SearchDto params) {
         params.setPaging(bookMapper.count(params));
-        return bookMapper.findAll(params);
+        return bookMapper.findBooksWithArticles(params);
     }
 
     public Long insert(BookRequestDto bookRequestDto) {
@@ -69,7 +70,7 @@ public class BookService {
     }
 
     public Long update(Long id, BookUpdateRequestDto bookRequestDto) {
-        Book book = bookMapper.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 도서가 존재하지 않습니다."));
+        Book book = bookMapper.findById(id);
         book.update(
                 bookRequestDto.getTitle(),
                 bookRequestDto.getIsbn(),
@@ -87,7 +88,7 @@ public class BookService {
     }
 
     public void delete(Long id) {
-        bookMapper.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 도서가 존재하지 않습니다."));
+        bookMapper.findById(id);
         bookMapper.deleteById(id);
     }
 }
