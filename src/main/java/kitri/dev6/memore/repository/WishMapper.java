@@ -19,10 +19,10 @@ public interface WishMapper {
     List<Wish> findAll(SearchDto searchDto);
 
     @Select("select * from wish where id = #{id}")
-    Optional<Wish> findById(Long id);
+    Wish findById(Long id);
 
     @Select("select * from wish where member_id = #{memberId}")
-    List<Wish> findByMemberId(Long memberId);
+    List<Wish> findAllByMemberId(Long memberId);
 
     // 찜 등록
     @Insert("insert into wish (member_id, book_id) values (#{memberId}, #{bookId});")

@@ -4,25 +4,16 @@ import kitri.dev6.memore.dto.common.PagingResponse;
 import kitri.dev6.memore.dto.common.SearchDto;
 import kitri.dev6.memore.dto.request.MemberRequestDto;
 import kitri.dev6.memore.domain.Member;
-import kitri.dev6.memore.dto.response.ArticleResponseDto;
-import kitri.dev6.memore.dto.response.MemberResponseDto;
 import kitri.dev6.memore.dto.request.MemberUpdateRequestDto;
 import kitri.dev6.memore.service.MemberService;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 import javax.validation.Valid;
-import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api/members")
@@ -58,7 +49,7 @@ public class MemberController {
     }
     @DeleteMapping("/{id}")
     public Long delete(@PathVariable Long id){
-        memberService.deleteById(id);
+        memberService.delete(id);
         return id;
     }
 }

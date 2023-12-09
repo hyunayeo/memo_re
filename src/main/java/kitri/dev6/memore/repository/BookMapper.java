@@ -2,13 +2,11 @@ package kitri.dev6.memore.repository;
 
 import kitri.dev6.memore.domain.Book;
 import kitri.dev6.memore.dto.common.SearchDto;
-import kitri.dev6.memore.dto.response.BookResponseDto;
 import kitri.dev6.memore.repository.sql.Sql;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
 
 import java.util.List;
-import java.util.Optional;
 
 @Mapper
 public interface BookMapper {
@@ -34,9 +32,12 @@ public interface BookMapper {
             @Result(property = "modifiedAt", column = "modified_at"),
             @Result(property = "memberId", column = "member_id"),
             @Result(property = "categoryId", column = "category_id"),
-            @Result(property = "articles", column = "id", many = @Many(select = "kitri.dev6.memore.repository.ArticleMapper.findArticlesWithMemberByBookId", fetchType = FetchType.EAGER)),
+            @Result(property = "articles", column = "id", many = @Many(select = "kitri.dev6.memore.repository.ArticleMapper.findAllWithMemberByBookId", fetchType = FetchType.EAGER)),
     })
-    List<Book> findBooksWithArticles(SearchDto params);
+    List<Book> findAllWithArticles(SearchDto params);
+
+    @Select("select * from book where id = #{id}")
+    Book findById(Long id);
 
     @Select("select * from book where id = #{id}")
     @Results({
@@ -53,12 +54,9 @@ public interface BookMapper {
             @Result(property = "modifiedAt", column = "modified_at"),
             @Result(property = "memberId", column = "member_id"),
             @Result(property = "categoryId", column = "category_id"),
-            @Result(property = "articles", column = "id", many = @Many(select = "kitri.dev6.memore.repository.ArticleMapper.findArticlesWithMemberByBookId", fetchType = FetchType.EAGER)),
+            @Result(property = "articles", column = "id", many = @Many(select = "kitri.dev6.memore.repository.ArticleMapper.findAllWithMemberByBookId", fetchType = FetchType.EAGER)),
     })
-    Book findBookWithArticlesById(Long id);
-
-    @Select("select * from book where id = #{id}")
-    Book findById(Long id);
+    Book findWithArticlesById(Long id);
 
     @Select("select * from book where isbn13 = #{isbn}")
     @Results({
@@ -75,12 +73,12 @@ public interface BookMapper {
             @Result(property = "modifiedAt", column = "modified_at"),
             @Result(property = "memberId", column = "member_id"),
             @Result(property = "categoryId", column = "category_id"),
-            @Result(property = "articles", column = "id", many = @Many(select = "kitri.dev6.memore.repository.ArticleMapper.findArticlesWithMemberByBookId", fetchType = FetchType.EAGER)),
+            @Result(property = "articles", column = "id", many = @Many(select = "kitri.dev6.memore.repository.ArticleMapper.findAllWithMemberByBookId", fetchType = FetchType.EAGER)),
     })
-    Book findBookWithArticlesByIsbn(Long isbn);
+    Book findWithArticlesByIsbn(Long isbn);
 
     @Select("select * from book where member_id=#{memberID}")
-    List<Book> findAllByMemberId(Long memberId);
+    List<Book> findByMemberId(Long memberId);
 
     @Insert("insert into book (category_id, member_id, title, isbn, isbn13, cover, link, description, author, publisher, published_date, approved) " +
             "values (#{categoryId}, #{memberId}, #{title}, #{isbn}, #{isbn13}, #{cover}, #{link}, " +
@@ -89,12 +87,12 @@ public interface BookMapper {
     Long insert(Book book);
 
     @Update("update book set deleted_at = now() where id = #{id}")
-    void deleteById(Long id);
+    void delete(Long id);
 
     @Update("update book set category_id=#{categoryId}, member_id=#{memberId}, title=#{title}, isbn=#{isbn}," +
             "isbn13=#{isbn13}, cover=#{cover}, link=#{link}, description=#{description}, author=#{author}, publisher=#{publisher}," +
             "published_date=#{publishedDate}, approved=#{approved}, modified_at=now() where id = #{id}")
-    void updateById(Book book);
+    void update(Book book);
 
     // 기타
     // @Select("select name from category where #{id} = code")

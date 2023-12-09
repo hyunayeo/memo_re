@@ -9,7 +9,7 @@ public class Sql {
         String searchType = params.getSearchType();
         String keyword = params.getSearchKeyword();
         String sortOrder = params.getSortAs();
-        String sortType = params.getSortFieldType();
+        String sortType = params.getSortType();
 
         SQL query = new SQL() {
             {
@@ -40,7 +40,7 @@ public class Sql {
         String searchType = params.getSearchType();
         String keyword = params.getSearchKeyword();
         String sortOrder = params.getSortAs();
-        String sortType = params.getSortFieldType();
+        String sortType = params.getSortType();
 
         SQL query = new SQL() {
             {
@@ -70,7 +70,7 @@ public class Sql {
         String searchType = params.getSearchType();
         String keyword = params.getSearchKeyword();
         String sortOrder = params.getSortAs();
-        String sortType = params.getSortFieldType();
+        String sortType = params.getSortType();
 
         SQL query = new SQL() {
             {
@@ -100,7 +100,7 @@ public class Sql {
         String searchType = params.getSearchType();
         String keyword = params.getSearchKeyword();
         String sortOrder = params.getSortAs();
-        String sortType = params.getSortFieldType();
+        String sortType = params.getSortType();
 
         SQL query = new SQL() {
             {
@@ -130,7 +130,7 @@ public class Sql {
         String searchType = params.getSearchType();
         String keyword = params.getSearchKeyword();
         String sortOrder = params.getSortAs();
-        String sortType = params.getSortFieldType();
+        String sortType = params.getSortType();
 
         SQL query = new SQL() {
             {
@@ -166,7 +166,7 @@ public class Sql {
                 query.WHERE(QueryUtils.procSearchInput(params.getSearchType(), params.getSearchKeyword()));
             }
         }
-        query.ORDER_BY(QueryUtils.sortAs(params.getSortFieldType(), params.getSortAs()));
+        query.ORDER_BY(QueryUtils.sortAs(params.getSortType(), params.getSortAs()));
         query.LIMIT("#{pagination.limitStart}, #{recordSize}");
 
         System.out.println(query);
@@ -191,7 +191,7 @@ public class Sql {
                 query.WHERE(QueryUtils.procSearchInput(params.getSearchType(), params.getSearchKeyword()));
             }
         }
-        query.ORDER_BY(QueryUtils.sortAs(params.getSortFieldType(), params.getSortAs()));
+        query.ORDER_BY(QueryUtils.sortAs(params.getSortType(), params.getSortAs()));
         query.LIMIT("#{pagination.limitStart}, #{recordSize}");
 
         System.out.println(query);

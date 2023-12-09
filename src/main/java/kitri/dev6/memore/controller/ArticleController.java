@@ -31,14 +31,6 @@ public class ArticleController {
         if (articles == null) {
             throw new IllegalArgumentException("No Articles");
         }
-
-        for (Article article : articles.getList()) {
-            Long articleId = article.getId();
-            Link selfLink = linkTo(ArticleController.class).slash(articleId).withSelfRel();
-//            article.add(selfLink);
-        }
-        articles.set_links(linkTo(ArticleController.class).withSelfRel());
-
         return new ResponseEntity<>(articles, HttpStatus.OK);
     }
     @GetMapping("/{id}")
@@ -47,8 +39,6 @@ public class ArticleController {
         if (article == null) {
             throw new IllegalArgumentException("No article");
         }
-//        article.add(linkTo(methodOn(ArticleController.class).findAll(new SearchDto())).slash(id).withRel("self"));
-
         return new ResponseEntity<>(article, HttpStatus.OK);
     }
     @PostMapping

@@ -5,40 +5,36 @@ import kitri.dev6.memore.dto.common.Converter;
 import kitri.dev6.memore.dto.common.PagingResponse;
 import kitri.dev6.memore.dto.common.SearchDto;
 import kitri.dev6.memore.dto.request.BookRequestDto;
-import kitri.dev6.memore.dto.response.BookResponseDto;
 import kitri.dev6.memore.dto.request.BookUpdateRequestDto;
 import kitri.dev6.memore.repository.BookMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BookService {
     private final BookMapper bookMapper;
     private final BookOpenApiService bookOpenApiService;
 
-    public BookResponseDto findById2(Long id) {
-        Book book = bookMapper.findById(id);
-        return new BookResponseDto(book);
-
-    }
     public Book findById(Long id) {
-        return bookMapper.findBookWithArticlesById(id);
+        return bookMapper.findWithArticlesById(id);
     }
 
     public Book findByIsbn(Long isbn) {
         Book book = null;
 
-        book = bookMapper.findBookWithArticlesByIsbn(isbn);
+        book = bookMapper.findWithArticlesByIsbn(isbn);
         if (book == null) {
             // 알라딘 API에서 가져오기 by isbn
             Long id = bookMapper.insert(bookOpenApiService.fetchOneFromAladin(isbn));
             if (id == null) {
                 new IllegalArgumentException("DB에 저장되지 않았습니다.");
             }
-            book = bookMapper.findBookWithArticlesByIsbn(isbn);
+            book = bookMapper.findWithArticlesByIsbn(isbn);
         }
         return book;
     }
@@ -60,7 +56,7 @@ public class BookService {
 
     public List<Book> findAllFromDB(SearchDto params) {
         params.setPaging(bookMapper.count(params));
-        return bookMapper.findBooksWithArticles(params);
+        return bookMapper.findAllWithArticles(params);
     }
 
     public Long insert(BookRequestDto bookRequestDto) {
@@ -83,12 +79,12 @@ public class BookService {
                 bookRequestDto.getPublishedDate(),
                 bookRequestDto.getApproved()
         );
-        bookMapper.updateById(book);
+        bookMapper.update(book);
         return id;
     }
 
     public void delete(Long id) {
         bookMapper.findById(id);
-        bookMapper.deleteById(id);
+        bookMapper.delete(id);
     }
 }

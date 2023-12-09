@@ -37,7 +37,7 @@ public class BookTests {
 
     @AfterEach
     public void tearDown() throws Exception {
-        bookMapper.deleteById(insertTestId);
+        bookMapper.delete(insertTestId);
     }
 
     @Test

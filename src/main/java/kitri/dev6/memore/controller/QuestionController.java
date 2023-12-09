@@ -1,10 +1,10 @@
 package kitri.dev6.memore.controller;
 
+import kitri.dev6.memore.domain.Question;
 import kitri.dev6.memore.dto.common.PagingResponse;
 import kitri.dev6.memore.dto.common.SearchDto;
 import kitri.dev6.memore.dto.request.QuestionRequestDto;
 import kitri.dev6.memore.dto.request.QuestionUpdateRequestDto;
-import kitri.dev6.memore.dto.response.BookResponseDto;
 import kitri.dev6.memore.dto.response.QuestionResponseDto;
 import kitri.dev6.memore.service.QuestionService;
 import lombok.RequiredArgsConstructor;
@@ -24,29 +24,20 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class QuestionController {
     private final QuestionService questionService;
     @GetMapping("")
-    public ResponseEntity<PagingResponse<QuestionResponseDto>> findAll(@ModelAttribute("params") SearchDto params){
-        PagingResponse<QuestionResponseDto> questionResponseDtos = questionService.findAll(params);
-        if (questionResponseDtos == null) {
+    public ResponseEntity<PagingResponse<Question>> findAll(@ModelAttribute("params") SearchDto params){
+        PagingResponse<Question> questions = questionService.findAll(params);
+        if (questions == null) {
             throw new IllegalArgumentException("No questions");
         }
-
-        for (QuestionResponseDto questionResponseDto : questionResponseDtos.getList()) {
-            Long questionId = questionResponseDto.getId();
-            Link selfLink = linkTo(QuestionController.class).slash(questionId).withSelfRel();
-            questionResponseDto.add(selfLink);
-        }
-        questionResponseDtos.set_links(linkTo(QuestionController.class).withSelfRel());
-        return new ResponseEntity<>(questionResponseDtos, HttpStatus.OK);
+        return new ResponseEntity<>(questions, HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<QuestionResponseDto> findById(@PathVariable Long id) {
-        QuestionResponseDto questionResponseDto = questionService.findById(id);
-        if (questionResponseDto == null) {
+    public ResponseEntity<Question> findById(@PathVariable Long id) {
+        Question question = questionService.findById(id);
+        if (question == null) {
             throw new IllegalArgumentException("No question");
         }
-        questionResponseDto.add(linkTo(methodOn(QuestionController.class).findAll(new SearchDto())).slash(id).withRel("self"));
-
-        return new ResponseEntity<>(questionResponseDto, HttpStatus.OK);
+        return new ResponseEntity<>(question, HttpStatus.OK);
     }
     @PostMapping("")
     public Long insert(@RequestBody QuestionRequestDto requestDto) {
@@ -54,7 +45,7 @@ public class QuestionController {
     }
     @PutMapping("/{id}")
     public Long update(@PathVariable Long id, @RequestBody @Valid final QuestionUpdateRequestDto requestDto) {
-        return questionService.updateById(id, requestDto);
+        return questionService.update(id, requestDto);
     }
     @DeleteMapping("/{id}")
     public Long delete(@PathVariable Long id){

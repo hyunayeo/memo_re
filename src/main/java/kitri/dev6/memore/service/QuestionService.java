@@ -1,14 +1,11 @@
 package kitri.dev6.memore.service;
 
 import kitri.dev6.memore.domain.Question;
-import kitri.dev6.memore.dto.common.Converter;
 import kitri.dev6.memore.dto.common.Pagination;
 import kitri.dev6.memore.dto.common.PagingResponse;
 import kitri.dev6.memore.dto.common.SearchDto;
 import kitri.dev6.memore.dto.request.QuestionRequestDto;
 import kitri.dev6.memore.dto.request.QuestionUpdateRequestDto;
-import kitri.dev6.memore.dto.response.BookResponseDto;
-import kitri.dev6.memore.dto.response.QuestionResponseDto;
 import kitri.dev6.memore.repository.QuestionMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +18,7 @@ import java.util.List;
 public class QuestionService {
     private final QuestionMapper questionMapper;
 
-    public PagingResponse<QuestionResponseDto> findAll(SearchDto params) {
+    public PagingResponse<Question> findAll(SearchDto params) {
 
         params.setDomainType("question");
         int count = questionMapper.count(params);
@@ -35,22 +32,12 @@ public class QuestionService {
 
         // 계산된 페이지 정보의 일부(limitStart, recordSize)를 기준으로 리스트 데이터 조회 후 응답 데이터 반환
         List<Question> list = questionMapper.findAll(params);
-        // domain -> dto
-        List<QuestionResponseDto> convertedList = (List<QuestionResponseDto>) (Object) Converter.domainListTodtoList(list);
 
-        return new PagingResponse<>(convertedList, pagination);
+        return new PagingResponse<>(list, pagination);
     }
 
-    public QuestionResponseDto findById(Long id) {
-        Question question = questionMapper.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("질문이 존재하지 않습니다. id=" + id));
-
-        return new QuestionResponseDto(question);
-    }
-
-    public void delete(Long id) {
-        this.findById(id);
-        questionMapper.delete(id);
+    public Question findById(Long id) {
+        return questionMapper.findById(id);
     }
 
     public Long insert(QuestionRequestDto requestDto) {
@@ -59,11 +46,14 @@ public class QuestionService {
         return Question.getId();
     }
 
-    public Long updateById(Long id, QuestionUpdateRequestDto requestDto){
-        Question question = questionMapper.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 질문이 없습니다"));;
+    public Long update(Long id, QuestionUpdateRequestDto requestDto){
+        Question question = questionMapper.findById(id);
         question.setTitle(requestDto.getTitle());
         question.setContent(requestDto.getContent());
-        questionMapper.updateById(question);
+        questionMapper.update(question);
         return id;
+    }
+    public void delete(Long id) {
+        questionMapper.delete(id);
     }
 }

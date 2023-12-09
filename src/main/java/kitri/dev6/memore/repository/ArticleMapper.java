@@ -2,7 +2,6 @@ package kitri.dev6.memore.repository;
 
 import kitri.dev6.memore.domain.Article;
 import kitri.dev6.memore.dto.common.SearchDto;
-import kitri.dev6.memore.dto.response.ArticleResponseDto;
 import kitri.dev6.memore.repository.sql.Sql;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
@@ -32,7 +31,7 @@ public interface ArticleMapper {
             @Result(property = "book", column = "book_id", one = @One(select = "kitri.dev6.memore.repository.BookMapper.findById", fetchType = FetchType.EAGER)),
             @Result(property = "member", column = "member_id", one = @One(select = "kitri.dev6.memore.repository.MemberMapper.findById", fetchType = FetchType.EAGER))
     })
-    List<Article> findArticlesWithBookAndMember(SearchDto params);
+    List<Article> findAllWithBookAndMember(SearchDto params);
 
     @Select("select * from article where #{bookId}=book_id")
     @Results({
@@ -48,8 +47,7 @@ public interface ArticleMapper {
             @Result(property = "createdAt", column = "created_at"),
             @Result(property = "member", column = "member_id", one = @One(select = "kitri.dev6.memore.repository.MemberMapper.findById", fetchType = FetchType.EAGER))
     })
-    List<Article> findArticlesWithMemberByBookId(Long bookId);
-
+    List<Article> findAllWithMemberByBookId(Long bookId);
 
     @Select("select * from article where #{memberId}=member_id")
     @Results({
@@ -64,7 +62,7 @@ public interface ArticleMapper {
             @Result(property = "endDate", column = "end_date"),
             @Result(property = "createdAt", column = "created_at"),
     })
-    List<Article> findArticlesByMemberId(Long memberId);
+    List<Article> findAllByMemberId(Long memberId);
 
     @Select("select * from article where member_id = #{memberId}")
     List<Article> findByMemberId(Long memberId);

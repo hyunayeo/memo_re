@@ -35,7 +35,7 @@ public class MemberTests {
 
     @AfterEach
     public void tearDown() throws Exception {
-        memberMapper.deleteById(insertTestId);
+        memberMapper.delete(insertTestId);
     }
 
     @Test

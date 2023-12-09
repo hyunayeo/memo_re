@@ -1,12 +1,10 @@
 package kitri.dev6.memore.service;
 
-import kitri.dev6.memore.dto.common.Converter;
 import kitri.dev6.memore.dto.common.Pagination;
 import kitri.dev6.memore.dto.common.PagingResponse;
 import kitri.dev6.memore.dto.common.SearchDto;
 import kitri.dev6.memore.dto.request.MemberRequestDto;
 import kitri.dev6.memore.domain.Member;
-import kitri.dev6.memore.dto.response.MemberResponseDto;
 import kitri.dev6.memore.dto.request.MemberUpdateRequestDto;
 import kitri.dev6.memore.repository.MemberMapper;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberService {
     private final MemberMapper memberMapper;
 
@@ -34,24 +33,21 @@ public class MemberService {
         params.setPagination(pagination);
 
         // 계산된 페이지 정보의 일부(limitStart, recordSize)를 기준으로 리스트 데이터 조회 후 응답 데이터 반환
-        List<Member> list = memberMapper.findAll(params);
+        List<Member> list = memberMapper.findAllWithArticlesAndWishesAndQuestions(params);
 
         return new PagingResponse<>(list, pagination);
     }
 
-    @Transactional
     public Member findById(Long id) {
         return memberMapper.findById(id);
     }
 
-    @Transactional
     public Long insert(MemberRequestDto memberRequestDto) {
         Member member = memberRequestDto.toDomain();
         memberMapper.insert(member);
         return member.getId();
     }
 
-    @Transactional
     public Long update(Long id, MemberUpdateRequestDto requestDto) {
         Member member = memberMapper.findById(id);
         if (member == null) {
@@ -62,12 +58,12 @@ public class MemberService {
                 requestDto.getName(),
                 requestDto.getPassword(),
                 requestDto.getPicture());
-        memberMapper.updateById(member);
+        memberMapper.update(member);
         return id;
     }
 
-    public void deleteById(Long id) {
+    public void delete(Long id) {
         // TODO: 2023-11-23 관리자만 삭제 가능하게 변경
-        memberMapper.deleteById(id);
+        memberMapper.delete(id);
     }
 }

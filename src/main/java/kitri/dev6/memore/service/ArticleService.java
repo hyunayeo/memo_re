@@ -1,20 +1,22 @@
 package kitri.dev6.memore.service;
 
 import kitri.dev6.memore.domain.Article;
-import kitri.dev6.memore.dto.common.Converter;
 import kitri.dev6.memore.dto.common.Pagination;
 import kitri.dev6.memore.dto.common.PagingResponse;
 import kitri.dev6.memore.dto.common.SearchDto;
 import kitri.dev6.memore.dto.request.ArticleRequestDto;
-import kitri.dev6.memore.dto.response.ArticleResponseDto;
 import kitri.dev6.memore.repository.ArticleMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class ArticleService {
 
     @Autowired
@@ -32,7 +34,7 @@ public class ArticleService {
         Pagination pagination = new Pagination(count, params);
         params.setPagination(pagination);
 
-        List<Article> list = articleMapper.findArticlesWithBookAndMember(params);
+        List<Article> list = articleMapper.findAllWithBookAndMember(params);
 
         return new PagingResponse<>(list, pagination);
     }

@@ -1,12 +1,10 @@
 package kitri.dev6.memore.service;
 
 import kitri.dev6.memore.domain.Wish;
-import kitri.dev6.memore.dto.common.Converter;
 import kitri.dev6.memore.dto.common.Pagination;
 import kitri.dev6.memore.dto.common.PagingResponse;
 import kitri.dev6.memore.dto.common.SearchDto;
 import kitri.dev6.memore.dto.request.WishRequestDto;
-import kitri.dev6.memore.dto.response.WishResponseDto;
 import kitri.dev6.memore.repository.WishMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +18,7 @@ public class WishService {
     private final WishMapper wishMapper;
 
     // 전체 찜 조회
-    public PagingResponse<WishResponseDto> findAll(SearchDto params) {
+    public PagingResponse<Wish> findAll(SearchDto params) {
 // 조건에 해당하는 데이터가 없는 경우, 응답 데이터에 비어있는 리스트와 null을 담아 반환
         params.setDomainType("wish");
         int count = wishMapper.count(params);
@@ -35,23 +33,21 @@ public class WishService {
         // 계산된 페이지 정보의 일부(limitStart, recordSize)를 기준으로 리스트 데이터 조회 후 응답 데이터 반환
         List<Wish> list = wishMapper.findAll(params);
         // domain -> dto
-        List<WishResponseDto> convertedList = (List<WishResponseDto>) (Object) Converter.domainListTodtoList(list);
+//        List<WishResponseDto> convertedList = (List<WishResponseDto>) (Object) Converter.domainListTodtoList(list);
 
-        return new PagingResponse<>(convertedList, pagination);
+        return new PagingResponse<>(list, pagination);
     }
-    public WishResponseDto findById(Long id) {
-        Wish wish = wishMapper.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("질문이 존재하지 않습니다. id=" + id));
-        return new WishResponseDto(wish);
+    public Wish findById(Long id) {
+        return wishMapper.findById(id);
     }
 
     // 찜 등록 : 회원의 찜 목록에 book정보를 담아야 한다.
-    public void createWish(WishRequestDto wishRequestDto) {
+    public void insert(WishRequestDto wishRequestDto) {
         wishMapper.insert(wishRequestDto.toDomain());
     }
 
     // 찜 삭제 : 찜 목록에 담긴 id를 회원의 찜 목록에서 삭제해야 한다.
-    public void deleteById(Long id, Long memberId) {
+    public void delete(Long id, Long memberId) {
         wishMapper.delete(id, memberId);
     }
 }
