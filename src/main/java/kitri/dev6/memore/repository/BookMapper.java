@@ -1,23 +1,99 @@
 package kitri.dev6.memore.repository;
 
 import kitri.dev6.memore.domain.Book;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import kitri.dev6.memore.dto.common.SearchDto;
+import kitri.dev6.memore.repository.sql.Sql;
+import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.FetchType;
 
 import java.util.List;
 
 @Mapper
 public interface BookMapper {
 
+    @SelectProvider(type = Sql.class, method = "count")
+    int count(SearchDto params);
+
+    @SelectProvider(type = Sql.class, method = "findAll")
+    List<Book> findAll(SearchDto searchDto);
+
+    @SelectProvider(type = Sql.class, method = "findAll")
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "title", column = "title"),
+            @Result(property = "description", column = "description"),
+            @Result(property = "isbn", column = "isbn"),
+            @Result(property = "viewCount", column = "view_count"),
+            @Result(property = "cover", column = "cover"),
+            @Result(property = "link", column = "link"),
+            @Result(property = "author", column = "author"),
+            @Result(property = "publisher", column = "publisher"),
+            @Result(property = "createdAt", column = "created_at"),
+            @Result(property = "modifiedAt", column = "modified_at"),
+            @Result(property = "memberId", column = "member_id"),
+            @Result(property = "categoryId", column = "category_id"),
+            @Result(property = "articles", column = "id", many = @Many(select = "kitri.dev6.memore.repository.ArticleMapper.findAllWithMemberByBookId", fetchType = FetchType.EAGER)),
+    })
+    List<Book> findAllWithArticles(SearchDto params);
+
     @Select("select * from book where id = #{id}")
     Book findById(Long id);
 
-    @Select("select * from book")
-    List<Book> findAll();
+    @Select("select * from book where id = #{id}")
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "title", column = "title"),
+            @Result(property = "description", column = "description"),
+            @Result(property = "isbn", column = "isbn"),
+            @Result(property = "viewCount", column = "view_count"),
+            @Result(property = "cover", column = "cover"),
+            @Result(property = "link", column = "link"),
+            @Result(property = "author", column = "author"),
+            @Result(property = "publisher", column = "publisher"),
+            @Result(property = "createdAt", column = "created_at"),
+            @Result(property = "modifiedAt", column = "modified_at"),
+            @Result(property = "memberId", column = "member_id"),
+            @Result(property = "categoryId", column = "category_id"),
+            @Result(property = "articles", column = "id", many = @Many(select = "kitri.dev6.memore.repository.ArticleMapper.findAllWithMemberByBookId", fetchType = FetchType.EAGER)),
+    })
+    Book findWithArticlesById(Long id);
+
+    @Select("select * from book where isbn13 = #{isbn}")
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "title", column = "title"),
+            @Result(property = "description", column = "description"),
+            @Result(property = "isbn", column = "isbn13"),
+            @Result(property = "viewCount", column = "view_count"),
+            @Result(property = "cover", column = "cover"),
+            @Result(property = "link", column = "link"),
+            @Result(property = "author", column = "author"),
+            @Result(property = "publisher", column = "publisher"),
+            @Result(property = "createdAt", column = "created_at"),
+            @Result(property = "modifiedAt", column = "modified_at"),
+            @Result(property = "memberId", column = "member_id"),
+            @Result(property = "categoryId", column = "category_id"),
+            @Result(property = "articles", column = "id", many = @Many(select = "kitri.dev6.memore.repository.ArticleMapper.findAllWithMemberByBookId", fetchType = FetchType.EAGER)),
+    })
+    Book findWithArticlesByIsbn(Long isbn);
+
+    @Select("select * from book where member_id=#{memberID}")
+    List<Book> findByMemberId(Long memberId);
 
     @Insert("insert into book (category_id, member_id, title, isbn, isbn13, cover, link, description, author, publisher, published_date, approved) " +
-            "values (#{category_id}, #{member_id}, #{title}, #{isbn}, #{isbn13}, #{cover}, #{link}, " +
-            "#{description}, #{author}, #{publisher}, #{published_date}, #{approved})")
-    void create(Book book);
+            "values (#{categoryId}, #{memberId}, #{title}, #{isbn}, #{isbn13}, #{cover}, #{link}, " +
+            "#{description}, #{author}, #{publisher}, #{publishedDate}, #{approved})")
+    @SelectKey(statement = "select last_insert_id()", keyColumn = "id", keyProperty = "id", before = false, resultType = Long.class)
+    Long insert(Book book);
+
+    @Update("update book set deleted_at = now() where id = #{id}")
+    void delete(Long id);
+
+    @Update("update book set category_id=#{categoryId}, member_id=#{memberId}, title=#{title}, isbn=#{isbn}," +
+            "isbn13=#{isbn13}, cover=#{cover}, link=#{link}, description=#{description}, author=#{author}, publisher=#{publisher}," +
+            "published_date=#{publishedDate}, approved=#{approved}, modified_at=now() where id = #{id}")
+    void update(Book book);
+
+    // 기타
+    // @Select("select name from category where #{id} = code")
 }

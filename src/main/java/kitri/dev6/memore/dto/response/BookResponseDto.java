@@ -1,21 +1,21 @@
-package kitri.dev6.memore.domain;
+package kitri.dev6.memore.dto.response;
 
+import kitri.dev6.memore.domain.Book;
 import kitri.dev6.memore.dto.open_api.AladinBookVO;
 import kitri.dev6.memore.dto.open_api.NaverBookVO;
-import kitri.dev6.memore.dto.response.ArticleResponseDto;
-import lombok.*;
+import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import lombok.Getter;
+
 @Getter
-@Setter
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
-public class Book {
+public class BookResponseDto extends RepresentationModel<BookResponseDto> {
     private Long id;
     private Long categoryId;
     private Long memberId;
@@ -28,28 +28,31 @@ public class Book {
     private String author;
     private String publisher;
     private LocalDate publishedDate;
-    private Boolean approved;
+    private boolean approved;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
     private List<ArticleResponseDto> articles;
 
-    public void update(String title, String isbn, String isbn13,
-                       String cover, String link, String description, String author,
-                       String publisher, LocalDate publishedDate, Boolean approved) {
-        this.title = title;
-        this.isbn = isbn;
-        this.isbn13 = isbn13;
-        this.cover = cover;
-        this.link = link;
-        this.description = description;
-        this.author = author;
-        this.publisher = publisher;
-        this.publishedDate = publishedDate;
-        this.approved = approved;
+    public BookResponseDto(Book domain){
+        this.id = domain.getId();
+        this.categoryId = domain.getCategoryId();
+        this.memberId = domain.getMemberId();
+        this.title = domain.getTitle();
+        this.isbn = domain.getIsbn();
+        this.isbn13 = domain.getIsbn13();
+        this.cover = domain.getCover();
+        this.link = domain.getLink();
+        this.description = domain.getDescription();
+        this.author = domain.getAuthor();
+        this.publisher = domain.getPublisher();
+        this.publishedDate = domain.getPublishedDate();
+        this.approved = domain.getApproved();
+        this.createdAt = domain.getCreatedAt();
+        this.modifiedAt = domain.getModifiedAt();
     }
 
-    public Book(NaverBookVO book){
+    public BookResponseDto(NaverBookVO book){
         this.categoryId = 1L;
         this.memberId = 1L;
         this.title = book.getTitle();
@@ -62,7 +65,7 @@ public class Book {
         this.publishedDate = LocalDate.parse(book.getPubdate(), DateTimeFormatter.ofPattern("yyyyMMdd"));
     }
 
-    public Book(AladinBookVO book){
+    public BookResponseDto(AladinBookVO book){
         this.categoryId = 1L;
         this.memberId = 1L;
         this.title = book.getTitle();
@@ -75,4 +78,5 @@ public class Book {
         this.publisher = book.getPublisher();
         this.publishedDate = LocalDate.parse(book.getPubDate());
     }
+
 }

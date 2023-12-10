@@ -78,7 +78,7 @@ do
       /*)   app_path=$link ;; #(
       *)    app_path=$APP_HOME$link ;;
     esac
-done
+isDone
 
 # This is normally unused
 # shellcheck disable=SC2034
@@ -195,7 +195,7 @@ if "$cygwin" || "$msys" ; then
         # iterations, nor the values presented in `arg`.
         shift                   # remove old arg
         set -- "$@" "$arg"      # push replacement arg
-    done
+    isDone
 fi
 
 

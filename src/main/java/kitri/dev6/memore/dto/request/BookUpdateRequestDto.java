@@ -1,19 +1,14 @@
-package kitri.dev6.memore.dto;
+package kitri.dev6.memore.dto.request;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
-@NoArgsConstructor
+
 @Getter
-@Setter
-public class BookRequest {
-    @NotEmpty
-    private Long categoryId;
-    @NotEmpty
-    private Long memberId;
+@Builder
+public class BookUpdateRequestDto {
     @NotEmpty
     private String title;
     @NotEmpty
@@ -29,5 +24,5 @@ public class BookRequest {
     private String publisher;
     private LocalDate publishedDate;
     @NotEmpty
-    private boolean approved;
+    private Boolean approved;
 }

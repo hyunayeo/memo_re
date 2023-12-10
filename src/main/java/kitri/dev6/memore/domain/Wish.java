@@ -1,14 +1,16 @@
 package kitri.dev6.memore.domain;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
+
 @Getter
 @Setter
+@Builder
 public class Wish {
+    // 테이블과 일치하게 구조화된 데이터 객체 / Wish 목록에서 필요한 데이터
     private Long id;
-    private Long member_id;
-    private Long book_id;
-    private LocalDateTime created_at;
+    private Long memberId;
+    private Long bookId;
+    private LocalDateTime createdAt;
 }
