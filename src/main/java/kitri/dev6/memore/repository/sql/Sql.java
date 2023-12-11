@@ -142,24 +142,44 @@ public class Sql {
             if (!StringUtils.isEmpty(params.getSearchType())) {
                 query.WHERE(QueryUtils.procSearchInput(searchType, keyword));
             }
-//            query.WHERE(QueryUtils.like("title", keyword));
-//            query.OR();
-//            query.WHERE(QueryUtils.like("content", keyword));
         }
         query.ORDER_BY(QueryUtils.sortAs(sortType, sortOrder));
         query.LIMIT("#{pagination.limitStart}, #{recordSize}");
 
-//        System.out.println(query);
         return query.toString();
     }
 
-    public String findAll(SearchDto params) {
+    public SQL filter(SearchDto params, boolean isCount) {
         SQL query = new SQL() {
             {
-                SELECT("*");
-                FROM(params.getDomainType());
+                if (params.getFilter().equals("category")) {
+                    if (isCount) {
+                        SELECT("count(*)");
+                    } else {
+                        SELECT("a.id id, a.title title, content, view_count, is_done, is_hide, rating_score, start_date, end_date, a.created_at created_at, book_id, a.member_id member_id");
+                    }
+                    FROM("article a");
+                    JOIN("book b on a.book_id = b.id");
+                    JOIN("category c on b.category_id = c.code");
+                    JOIN("aladin_category ac on c.name = ac.name");
+                    WHERE(QueryUtils.procSearchInput("ac.name", params.getFilterKeyword()));
+                }
             }
         };
+        System.out.println(query);
+        return query.toString().isEmpty() ? null : query.getSelf();
+    };
+    public String findAll(SearchDto params) {
+        SQL query = filter(params, false);
+
+        if (query == null) {
+            query = new SQL() {
+                {
+                    SELECT("*");
+                    FROM(params.getDomainType());
+                }
+            };
+        }
 
         if (!StringUtils.isEmpty(params.getSearchKeyword())) {
             if (!StringUtils.isEmpty(params.getSearchType())) {
@@ -200,12 +220,22 @@ public class Sql {
     }
 
     public String count(SearchDto params) {
-        SQL query = new SQL() {
-            {
-                SELECT("count(*)");
-                FROM(params.getDomainType());
-            }
-        };
+//        SQL query = new SQL() {
+//            {
+//                SELECT("count(*)");
+//                FROM(params.getDomainType());
+//            }
+//        };
+        SQL query = filter(params, true);
+
+        if (query == null) {
+            query = new SQL() {
+                {
+                    SELECT("count(*)");
+                    FROM(params.getDomainType());
+                }
+            };
+        }
         if (!StringUtils.isEmpty(params.getSearchKeyword())) {
             if (!StringUtils.isEmpty(params.getSearchType())) {
                 query.WHERE(QueryUtils.procSearchInput(params.getSearchType(), params.getSearchKeyword()));
