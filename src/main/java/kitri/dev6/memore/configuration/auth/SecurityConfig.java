@@ -18,11 +18,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**").permitAll()
+                .antMatchers("/**", "/css/**", "/images/**", "/js/**", "/h2-console/**").permitAll()
                 .antMatchers("/api/**").hasRole(Role.USER.name())
                 .anyRequest().authenticated()
                 .and().logout()
-                .logoutSuccessUrl("/")
+                .logoutUrl("/api/logout")
+                .logoutSuccessUrl("http://localhost:3000/")
                 .and().oauth2Login().successHandler(new MyAuthenticationSuccessHandler())
                 .userInfoEndpoint().userService(customOAuth2UserService);
     }

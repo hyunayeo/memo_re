@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface MemberMapper {
@@ -59,5 +60,10 @@ public interface MemberMapper {
 
     @Update("update member set name=#{name}, number=#{number}, password=#{password}, picture=#{picture}, modified_at=now() where id = #{id}")
     Long update(Member member);
+
+    @Select("select * from member where email=#{email}")
+    Optional<Member> findByEmail(String email);
+    @Insert("insert into member (email, name, picture, role, social) values (#{email}, #{name}, #{picture}, #{role}, #{social}) on duplicate key update name=#{name}, picture=#{picture}")
+    void save(Member member);
 
 }

@@ -1,9 +1,10 @@
 package kitri.dev6.memore.configuration.auth.dto;
 
+import kitri.dev6.memore.domain.Member;
 import kitri.dev6.memore.domain.user.Role;
-import kitri.dev6.memore.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 @Getter
@@ -52,12 +53,13 @@ public class OAuthAttributes {
                 .build();
     }
 
-    public User toEntity() {
-        return User.builder()
+    public Member toEntity(String registrationId) {
+        return Member.builder()
                 .name(name)
                 .email(email)
                 .picture(picture)
                 .role(Role.USER)
+                .social(registrationId)
                 .build();
     }
 }

@@ -57,7 +57,7 @@ public class MemberService {
         member.update(requestDto.getNumber(),
                 requestDto.getName(),
                 requestDto.getPassword(),
-                requestDto.getPicture());
+                requestDto.getPicture(),null);
         memberMapper.update(member);
         return id;
     }

@@ -6,16 +6,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
-
 @RequiredArgsConstructor
 @RestController("")
 public class IndexController {
-    private final HttpSession httpSession;
     @GetMapping("/api/test")
     public String test(@LoginUser SessionUser user){
         if (user != null){
-            return user.getName();
+            return user.getEmail();
         }
         return "no";
     }

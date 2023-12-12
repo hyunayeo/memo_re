@@ -2,8 +2,8 @@ package kitri.dev6.memore.configuration.auth;
 
 import kitri.dev6.memore.configuration.auth.dto.OAuthAttributes;
 import kitri.dev6.memore.configuration.auth.dto.SessionUser;
-import kitri.dev6.memore.domain.user.User;
-import kitri.dev6.memore.repository.UserRepository;
+import kitri.dev6.memore.domain.Member;
+import kitri.dev6.memore.repository.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -23,7 +23,7 @@ import java.util.Collections;
 @RequiredArgsConstructor
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
-    private final UserRepository userRepository;
+    private final MemberMapper memberMapper;
     private final HttpSession httpSession;
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -34,20 +34,20 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
-        User user = saveOrUpdate(attributes);
-        httpSession.setAttribute("user", new SessionUser(user));
+        Member member = saveOrUpdate(attributes, registrationId);
+        httpSession.setAttribute("user", new SessionUser(member));
 
         return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
+                Collections.singleton(new SimpleGrantedAuthority(member.getRoleKey())),
                 attributes.getAttributes(),
                 attributes.getNameAttributeKey());
     }
 
-    private User saveOrUpdate(OAuthAttributes attributes) {
-        User user = userRepository.findByEmail(attributes.getEmail())
-                .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
-                .orElse(attributes.toEntity());
-        userRepository.save(user);
-        return user;
+    private Member saveOrUpdate(OAuthAttributes attributes, String registrationId) {
+        Member member = memberMapper.findByEmail(attributes.getEmail())
+                .map(entity -> entity.update(null, attributes.getName(),null, attributes.getPicture(), registrationId))
+                .orElse(attributes.toEntity(registrationId));
+        memberMapper.save(member);
+        return member;
     }
 }
