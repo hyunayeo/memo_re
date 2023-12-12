@@ -47,7 +47,7 @@ public class WishService {
     }
 
     // 찜 삭제 : 찜 목록에 담긴 id를 회원의 찜 목록에서 삭제해야 한다.
-    public void delete(Long id, Long memberId) {
-        wishMapper.delete(id, memberId);
+    public void delete(Long bookId, Long memberId) {
+        wishMapper.delete(bookId, memberId);
     }
 }

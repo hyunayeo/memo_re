@@ -41,8 +41,8 @@ public class WishController {
     }
     // 찜 삭제
     // TODO: use memberId of session(로그인한 멤버id를 쓰게 하기 / 세션 정보)
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id, @RequestParam("memberId") Long memberId) {
-        wishService.delete(id, memberId);
+    @DeleteMapping("/{bookId}")
+    public void delete(@PathVariable Long bookId, @RequestParam("memberId") Long memberId) {
+        wishService.delete(bookId, memberId);
     }
 }
