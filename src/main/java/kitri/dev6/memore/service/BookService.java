@@ -70,7 +70,6 @@ public class BookService {
         book.update(
                 bookRequestDto.getTitle(),
                 bookRequestDto.getIsbn(),
-                bookRequestDto.getIsbn13(),
                 bookRequestDto.getCover(),
                 bookRequestDto.getLink(),
                 bookRequestDto.getDescription(),

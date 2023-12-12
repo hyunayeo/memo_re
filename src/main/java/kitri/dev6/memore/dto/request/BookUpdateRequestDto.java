@@ -13,8 +13,6 @@ public class BookUpdateRequestDto {
     private String title;
     @NotEmpty
     private String isbn;
-    @NotEmpty
-    private String isbn13;
     private String cover;
     private String link;
     private String description;

@@ -20,8 +20,8 @@ public class BookRequestDto {
     private String title;
     @NotEmpty
     private String isbn;
-    @NotEmpty
-    private String isbn13;
+//    @NotEmpty
+//    private String isbn13;
     private String cover;
     private String link;
     private String description;
@@ -38,7 +38,6 @@ public class BookRequestDto {
                 .memberId(this.memberId)
                 .title(this.title)
                 .isbn(this.isbn)
-                .isbn13(this.isbn13)
                 .cover(this.cover)
                 .link(this.link)
                 .description(this.description)

@@ -21,7 +21,6 @@ public class BookResponseDto extends RepresentationModel<BookResponseDto> {
     private Long memberId;
     private String title;
     private String isbn;
-    private String isbn13;
     private String cover;
     private String link;
     private String description;
@@ -40,7 +39,6 @@ public class BookResponseDto extends RepresentationModel<BookResponseDto> {
         this.memberId = domain.getMemberId();
         this.title = domain.getTitle();
         this.isbn = domain.getIsbn();
-        this.isbn13 = domain.getIsbn13();
         this.cover = domain.getCover();
         this.link = domain.getLink();
         this.description = domain.getDescription();
@@ -56,7 +54,7 @@ public class BookResponseDto extends RepresentationModel<BookResponseDto> {
         this.categoryId = 1L;
         this.memberId = 1L;
         this.title = book.getTitle();
-        this.isbn13 = book.getIsbn();
+        this.isbn = book.getIsbn();
         this.cover = book.getImage();
         this.link = book.getLink();
         this.description = book.getDescription();
@@ -70,7 +68,6 @@ public class BookResponseDto extends RepresentationModel<BookResponseDto> {
         this.memberId = 1L;
         this.title = book.getTitle();
         this.isbn = book.getIsbn();
-        this.isbn13 = book.getIsbn13();
         this.cover = book.getCover();
         this.link = book.getLink();
         this.description = book.getDescription();
