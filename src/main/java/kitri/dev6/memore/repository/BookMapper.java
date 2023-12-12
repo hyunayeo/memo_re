@@ -1,6 +1,7 @@
 package kitri.dev6.memore.repository;
 
 import kitri.dev6.memore.domain.Book;
+import kitri.dev6.memore.domain.Wish;
 import kitri.dev6.memore.dto.common.SearchDto;
 import kitri.dev6.memore.repository.sql.Sql;
 import org.apache.ibatis.annotations.*;
@@ -93,6 +94,8 @@ public interface BookMapper {
             "isbn13=#{isbn13}, cover=#{cover}, link=#{link}, description=#{description}, author=#{author}, publisher=#{publisher}," +
             "published_date=#{publishedDate}, approved=#{approved}, modified_at=now() where id = #{id}")
     void update(Book book);
+
+
 
     // 기타
     // @Select("select name from category where #{id} = code")
