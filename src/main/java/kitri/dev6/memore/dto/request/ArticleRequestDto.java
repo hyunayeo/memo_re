@@ -1,9 +1,7 @@
 package kitri.dev6.memore.dto.request;
 
 import kitri.dev6.memore.domain.Article;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
@@ -11,6 +9,8 @@ import java.time.LocalDate;
 @Builder
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ArticleRequestDto {
     @NotEmpty
     private Long memberId;

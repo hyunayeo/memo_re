@@ -27,6 +27,7 @@ public class ArticleController {
     private final ArticleService articleService;
     @GetMapping
     public ResponseEntity<PagingResponse<Article>> findAll(@ModelAttribute("params") SearchDto params) {
+
         PagingResponse<Article> articles = articleService.findAll(params);
         if (articles == null) {
             throw new IllegalArgumentException("No Articles");

@@ -59,12 +59,12 @@ public interface BookMapper {
     })
     Book findWithArticlesById(Long id);
 
-    @Select("select * from book where isbn13 = #{isbn}")
+    @Select("select * from book where isbn = #{isbn}")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "title", column = "title"),
             @Result(property = "description", column = "description"),
-            @Result(property = "isbn", column = "isbn13"),
+            @Result(property = "isbn", column = "isbn"),
             @Result(property = "viewCount", column = "view_count"),
             @Result(property = "cover", column = "cover"),
             @Result(property = "link", column = "link"),
@@ -76,13 +76,13 @@ public interface BookMapper {
             @Result(property = "categoryId", column = "category_id"),
             @Result(property = "articles", column = "id", many = @Many(select = "kitri.dev6.memore.repository.ArticleMapper.findAllWithMemberByBookId", fetchType = FetchType.EAGER)),
     })
-    Book findWithArticlesByIsbn(Long isbn);
+    Book findWithArticlesByIsbn(String isbn);
 
     @Select("select * from book where member_id=#{memberID}")
     List<Book> findByMemberId(Long memberId);
 
-    @Insert("insert into book (category_id, member_id, title, isbn, isbn13, cover, link, description, author, publisher, published_date, approved) " +
-            "values (#{categoryId}, #{memberId}, #{title}, #{isbn}, #{isbn13}, #{cover}, #{link}, " +
+    @Insert("insert into book (category_id, member_id, title, isbn, cover, link, description, author, publisher, published_date, approved) " +
+            "values (#{categoryId}, #{memberId}, #{title}, #{isbn}, #{cover}, #{link}, " +
             "#{description}, #{author}, #{publisher}, #{publishedDate}, #{approved})")
     @SelectKey(statement = "select last_insert_id()", keyColumn = "id", keyProperty = "id", before = false, resultType = Long.class)
     Long insert(Book book);
@@ -91,7 +91,7 @@ public interface BookMapper {
     void delete(Long id);
 
     @Update("update book set category_id=#{categoryId}, member_id=#{memberId}, title=#{title}, isbn=#{isbn}," +
-            "isbn13=#{isbn13}, cover=#{cover}, link=#{link}, description=#{description}, author=#{author}, publisher=#{publisher}," +
+            "cover=#{cover}, link=#{link}, description=#{description}, author=#{author}, publisher=#{publisher}," +
             "published_date=#{publishedDate}, approved=#{approved}, modified_at=now() where id = #{id}")
     void update(Book book);
 
@@ -99,4 +99,10 @@ public interface BookMapper {
 
     // 기타
     // @Select("select name from category where #{id} = code")
+    @Select("select distinct `1depth` from aladin_category where cid = #{categoryId}")
+    String findFirstDepthByCid(Long categoryId);
+
+    @Select("select code from category where #{name} = name")
+    Long findCategoryIdByName(String name);
+
 }
