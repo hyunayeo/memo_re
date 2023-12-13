@@ -1,5 +1,6 @@
 package kitri.dev6.memore.service;
 
+import kitri.dev6.memore.dto.statistics.ByCategoryDto;
 import kitri.dev6.memore.dto.statistics.ByMonthlyDto;
 import kitri.dev6.memore.dto.statistics.ByYearlyDto;
 import kitri.dev6.memore.repository.StatisticsMapper;
@@ -18,5 +19,8 @@ public class StatisticsService {
 
     public List<ByYearlyDto> countGroupByYear(Long memberId) {
         return statisticsMapper.countGroupByYear(memberId);
+    }
+    public List<ByCategoryDto> countGroupByCategory(Long memberId) {
+        return statisticsMapper.countGroupByCategory(memberId);
     }
 }
