@@ -95,17 +95,14 @@ public interface BookMapper {
             "published_date=#{publishedDate}, approved=#{approved}, modified_at=now() where id = #{id}")
     void update(Book book);
 
-<<<<<<< HEAD
 
 
     // 기타
     // @Select("select name from category where #{id} = code")
-=======
     @Select("select distinct `1depth` from aladin_category where cid = #{categoryId}")
     String findFirstDepthByCid(Long categoryId);
 
     @Select("select code from category where #{name} = name")
     Long findCategoryIdByName(String name);
 
->>>>>>> feature/#27-category
 }
