@@ -21,7 +21,6 @@ public class Book {
     private Long memberId;
     private String title;
     private String isbn;
-    private String isbn13;
     private String cover;
     private String link;
     private String description;
@@ -34,12 +33,11 @@ public class Book {
 
     private List<ArticleResponseDto> articles;
 
-    public void update(String title, String isbn, String isbn13,
+    public void update(String title, String isbn,
                        String cover, String link, String description, String author,
                        String publisher, LocalDate publishedDate, Boolean approved) {
         this.title = title;
         this.isbn = isbn;
-        this.isbn13 = isbn13;
         this.cover = cover;
         this.link = link;
         this.description = description;
@@ -53,26 +51,31 @@ public class Book {
         this.categoryId = 1L;
         this.memberId = 1L;
         this.title = book.getTitle();
-        this.isbn13 = book.getIsbn();
+        this.isbn = book.getIsbn();
         this.cover = book.getImage();
         this.link = book.getLink();
         this.description = book.getDescription();
         this.author = book.getAuthor();
         this.publisher = book.getPublisher();
         this.publishedDate = LocalDate.parse(book.getPubdate(), DateTimeFormatter.ofPattern("yyyyMMdd"));
+        this.approved = true;
     }
 
     public Book(AladinBookVO book){
-        this.categoryId = 1L;
+        this.categoryId = book.getCategoryId();
         this.memberId = 1L;
         this.title = book.getTitle();
-        this.isbn = book.getIsbn();
-        this.isbn13 = book.getIsbn13();
+        if (book.getIsbn13().isEmpty()) {
+            this.isbn = book.getIsbn();
+        } else {
+            this.isbn = book.getIsbn13();
+        }
         this.cover = book.getCover();
         this.link = book.getLink();
         this.description = book.getDescription();
         this.author = book.getAuthor();
         this.publisher = book.getPublisher();
         this.publishedDate = LocalDate.parse(book.getPubDate());
+        this.approved = true;
     }
 }

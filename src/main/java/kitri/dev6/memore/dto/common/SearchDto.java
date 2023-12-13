@@ -36,6 +36,8 @@ public class SearchDto {
     private Pagination pagination; // 페이지네이션 정보
     private String joinWith;
     private String apiFrom;
+    private String filter;
+    private String filterKeyword;
 
     public SearchDto() {
         this.page = 1;
@@ -46,6 +48,8 @@ public class SearchDto {
         this.searchType = "";
         this.searchKeyword = "";
         this.apiFrom = FROM_NAVER;
+        this.filter = "";
+        this.filterKeyword = "";
     }
 
     public int getOffset() {

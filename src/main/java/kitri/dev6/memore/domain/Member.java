@@ -1,6 +1,8 @@
 package kitri.dev6.memore.domain;
 
+import kitri.dev6.memore.domain.user.Role;
 import lombok.*;
+import org.apache.catalina.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,6 +19,8 @@ public class Member {
     private String name;
     private String password;
     private String picture;
+    private Role role;
+    private String social;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private LocalDateTime deletedAt;
@@ -25,10 +29,15 @@ public class Member {
     private List<Wish> wishes;
     private List<Question> questions;
 
-    public void update(String number, String name, String password, String picture) {
+    public Member update(String number, String name, String password, String picture, String social) {
         this.number = number;
         this.name = name;
         this.password = password;
         this.picture = picture;
+        this.social = social;
+        return this;
+    }
+    public String getRoleKey(){
+        return this.role.getKey();
     }
 }

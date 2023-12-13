@@ -24,7 +24,7 @@ public class BookService {
         return bookMapper.findWithArticlesById(id);
     }
 
-    public Book findByIsbn(Long isbn) {
+    public Book findByIsbn(String isbn) {
         Book book = null;
 
         book = bookMapper.findWithArticlesByIsbn(isbn);
@@ -70,7 +70,6 @@ public class BookService {
         book.update(
                 bookRequestDto.getTitle(),
                 bookRequestDto.getIsbn(),
-                bookRequestDto.getIsbn13(),
                 bookRequestDto.getCover(),
                 bookRequestDto.getLink(),
                 bookRequestDto.getDescription(),

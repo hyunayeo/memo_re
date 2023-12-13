@@ -1,5 +1,7 @@
 package kitri.dev6.memore.controller;
 
+import kitri.dev6.memore.configuration.auth.LoginUser;
+import kitri.dev6.memore.configuration.auth.dto.SessionUser;
 import kitri.dev6.memore.dto.common.PagingResponse;
 import kitri.dev6.memore.dto.common.SearchDto;
 import kitri.dev6.memore.dto.request.MemberRequestDto;
@@ -20,7 +22,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
-
+    @GetMapping("/loginCheck")
+    public Long getMemberId(@LoginUser SessionUser user){
+        return memberService.findIdByEmail(user.getEmail());
+    }
     @GetMapping()
     public ResponseEntity<PagingResponse<Member>> findAll(@ModelAttribute("params") SearchDto params){
         PagingResponse<Member> members = memberService.findAll(params);
