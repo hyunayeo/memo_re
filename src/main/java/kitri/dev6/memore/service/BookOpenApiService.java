@@ -8,6 +8,9 @@ import kitri.dev6.memore.dto.open_api.AladinApiResponseDto;
 import kitri.dev6.memore.dto.open_api.AladinBookVO;
 import kitri.dev6.memore.dto.open_api.NaverApiResponseDto;
 import kitri.dev6.memore.dto.open_api.NaverBookVO;
+import kitri.dev6.memore.repository.BookMapper;
+import kitri.dev6.memore.repository.CategoryMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,7 +22,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BookOpenApiService {
+
+    final CategoryMapper categoryMapper;
     String NAVER_CLIENT_ID = "COtAbIwgRLBncek_NYIl";
     String CLIENT_SECRET = "ChApSR2iDe";
     String ALADIN_SECRET = "ttbpicnic9351807001";
@@ -71,6 +77,7 @@ public class BookOpenApiService {
                 .queryParam("QueryType", params.getSearchType())
                 .queryParam("MaxResults", params.getRecordSize())
                 .queryParam("start", params.getOffset() + 1)
+                .queryParam("Cover", "Big")
                 .queryParam("SearchTarget", "Book")
                 .queryParam("output","js")
                 .queryParam("Version", 20131101)
@@ -131,7 +138,7 @@ public class BookOpenApiService {
         return result.getItem();
     }
 
-    Book fetchOneFromAladin(Long isbn) {
+    Book fetchOneFromAladin(String isbn) {
         RestTemplate restTemplate = new RestTemplate();
         URI uri = UriComponentsBuilder
                 .fromUriString("https://aladin.co.kr")
@@ -139,6 +146,7 @@ public class BookOpenApiService {
                 .queryParam("ttbkey", ALADIN_SECRET)
                 .queryParam("itemIdType", "ISBN")
                 .queryParam("ItemId", isbn)
+                .queryParam("Cover", "Big")
                 .queryParam("output", "js")
                 .queryParam("Version", "20131101")
                 .queryParam("OptResult","packing")
@@ -149,20 +157,10 @@ public class BookOpenApiService {
         AladinApiResponseDto response = restTemplate.getForObject(uri, AladinApiResponseDto.class);
         AladinBookVO v = response.getItem().get(0);
 
-        return Book.builder()
-                .title(v.getTitle())
-                .link(v.getLink())
-                .author(v.getAuthor())
-                .publisher(v.getPublisher())
-                .isbn(v.getIsbn())
-                .isbn13(v.getIsbn13())
-                .cover(v.getCover())
-                .description(v.getDescription())
-                .categoryId(1L)
-                .approved(true)
-                .memberId(1L)
-                .publishedDate(LocalDate.parse(v.getPubDate()))
-                .build();
+        // 카테고리 매핑 시키기
+        v.setCategoryId(categoryMapper.findCategoryId(v.getCategoryId()));
+
+        return new Book(v);
     }
 
 
