@@ -75,7 +75,7 @@ public interface BookMapper {
             @Result(property = "categoryId", column = "category_id"),
             @Result(property = "articles", column = "id", many = @Many(select = "kitri.dev6.memore.repository.ArticleMapper.findAllWithMemberByBookId", fetchType = FetchType.EAGER)),
     })
-    Book findWithArticlesByIsbn(Long isbn);
+    Book findWithArticlesByIsbn(String isbn);
 
     @Select("select * from book where member_id=#{memberID}")
     List<Book> findByMemberId(Long memberId);

@@ -39,12 +39,12 @@ public class BookController {
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Book> findById(@PathVariable Long id, @ModelAttribute("params") SearchDto params){
+    public ResponseEntity<Book> findById(@PathVariable String id, @ModelAttribute("params") SearchDto params){
         Book book = null;
         if (params.getSearchType().equals("isbn")) {
             book = bookService.findByIsbn(id);
         } else {
-            book = bookService.findById(id);
+            book = bookService.findById(Long.parseLong(id));
         }
         if (book == null) {
             throw new IllegalArgumentException("No book");

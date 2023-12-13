@@ -77,6 +77,7 @@ public class BookOpenApiService {
                 .queryParam("QueryType", params.getSearchType())
                 .queryParam("MaxResults", params.getRecordSize())
                 .queryParam("start", params.getOffset() + 1)
+                .queryParam("Cover", "Big")
                 .queryParam("SearchTarget", "Book")
                 .queryParam("output","js")
                 .queryParam("Version", 20131101)
@@ -137,7 +138,7 @@ public class BookOpenApiService {
         return result.getItem();
     }
 
-    Book fetchOneFromAladin(Long isbn) {
+    Book fetchOneFromAladin(String isbn) {
         RestTemplate restTemplate = new RestTemplate();
         URI uri = UriComponentsBuilder
                 .fromUriString("https://aladin.co.kr")
@@ -145,6 +146,7 @@ public class BookOpenApiService {
                 .queryParam("ttbkey", ALADIN_SECRET)
                 .queryParam("itemIdType", "ISBN")
                 .queryParam("ItemId", isbn)
+                .queryParam("Cover", "Big")
                 .queryParam("output", "js")
                 .queryParam("Version", "20131101")
                 .queryParam("OptResult","packing")
@@ -156,21 +158,9 @@ public class BookOpenApiService {
         AladinBookVO v = response.getItem().get(0);
 
         // 카테고리 매핑 시키기
-        Long categoryId = categoryMapper.findCategoryId(v.getCategoryId());
+        v.setCategoryId(categoryMapper.findCategoryId(v.getCategoryId()));
 
-        return Book.builder()
-                .title(v.getTitle())
-                .link(v.getLink())
-                .author(v.getAuthor())
-                .publisher(v.getPublisher())
-                .isbn(v.getIsbn13())
-                .cover(v.getCover())
-                .description(v.getDescription())
-                .categoryId(categoryId)
-                .approved(true)
-                .memberId(1L)
-                .publishedDate(LocalDate.parse(v.getPubDate()))
-                .build();
+        return new Book(v);
     }
 
 

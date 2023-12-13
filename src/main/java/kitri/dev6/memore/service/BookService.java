@@ -24,7 +24,7 @@ public class BookService {
         return bookMapper.findWithArticlesById(id);
     }
 
-    public Book findByIsbn(Long isbn) {
+    public Book findByIsbn(String isbn) {
         Book book = null;
 
         book = bookMapper.findWithArticlesByIsbn(isbn);

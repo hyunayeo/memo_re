@@ -8,6 +8,7 @@ import java.util.List;
 // items에 들어갈 VO
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

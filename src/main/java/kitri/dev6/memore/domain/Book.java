@@ -58,19 +58,24 @@ public class Book {
         this.author = book.getAuthor();
         this.publisher = book.getPublisher();
         this.publishedDate = LocalDate.parse(book.getPubdate(), DateTimeFormatter.ofPattern("yyyyMMdd"));
+        this.approved = true;
     }
 
     public Book(AladinBookVO book){
         this.categoryId = book.getCategoryId();
         this.memberId = 1L;
         this.title = book.getTitle();
-//        this.isbn = book.getIsbn();
-        this.isbn = book.getIsbn();
+        if (book.getIsbn13().isEmpty()) {
+            this.isbn = book.getIsbn();
+        } else {
+            this.isbn = book.getIsbn13();
+        }
         this.cover = book.getCover();
         this.link = book.getLink();
         this.description = book.getDescription();
         this.author = book.getAuthor();
         this.publisher = book.getPublisher();
         this.publishedDate = LocalDate.parse(book.getPubDate());
+        this.approved = true;
     }
 }
