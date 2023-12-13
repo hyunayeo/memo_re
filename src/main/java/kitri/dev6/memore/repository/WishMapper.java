@@ -21,6 +21,7 @@ public interface WishMapper {
             @Result(property = "id", column = "id"),
             @Result(property = "memberId", column = "member_id"),
             @Result(property = "createdAt", column = "created_at"),
+            @Result(property = "bookId", column = "book_id"),
             @Result(property = "book", column = "book_id", one = @One(select = "kitri.dev6.memore.repository.BookMapper.findById", fetchType = FetchType.EAGER)),
     })
     List<Wish> findByWishMemberId(SearchDto params);

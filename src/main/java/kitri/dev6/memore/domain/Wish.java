@@ -15,5 +15,6 @@ public class Wish {
     private Long memberId;
     private Long bookId;
     private LocalDateTime createdAt;
+
     private Book book;
 }
