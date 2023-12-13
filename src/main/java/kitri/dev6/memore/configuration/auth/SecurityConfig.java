@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -24,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().logout()
                 .logoutUrl("/api/logout")
                 .logoutSuccessUrl("http://localhost:3000/")
-                .and().oauth2Login().successHandler(new MyAuthenticationSuccessHandler())
+                .and().oauth2Login().successHandler(myAuthenticationSuccessHandler)
                 .userInfoEndpoint().userService(customOAuth2UserService);
     }
 }

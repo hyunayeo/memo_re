@@ -1,5 +1,6 @@
 package kitri.dev6.memore.service;
 
+import kitri.dev6.memore.configuration.auth.dto.SessionUser;
 import kitri.dev6.memore.dto.common.Pagination;
 import kitri.dev6.memore.dto.common.PagingResponse;
 import kitri.dev6.memore.dto.common.SearchDto;
@@ -19,6 +20,10 @@ import java.util.List;
 @Transactional
 public class MemberService {
     private final MemberMapper memberMapper;
+    public Long findIdByEmail(String email){
+        Member member = memberMapper.findByEmail(email).get();
+        return member.getId();
+    }
 
     public PagingResponse<Member> findAll(SearchDto params) {
         // 조건에 해당하는 데이터가 없는 경우, 응답 데이터에 비어있는 리스트와 null을 담아 반환
