@@ -23,6 +23,19 @@ public class Sql {
 //                    JOIN("aladin_category ac on c.name = ac.name");
                     WHERE(QueryUtils.procSearchInput("c.name", URLDecoder.decode(params.getFilterKeyword(), "UTF-8")));
                 }
+
+                if (params.getDomainType().equals("article")) {
+                    if (params.getSearchType().equals("writer")) {
+                        if (isCount) {
+                            SELECT("count(*)");
+                        } else {
+                            SELECT("article.*");
+                        }
+                        FROM("article");
+                        JOIN("member m on article.member_id = m.id");
+                        WHERE(QueryUtils.procSearchInput("m.name", URLDecoder.decode(params.getSearchKeyword(), "UTF-8")));
+                    }
+                }
             }
         };
         System.out.println(query);
