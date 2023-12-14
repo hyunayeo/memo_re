@@ -26,11 +26,11 @@ public class WishController {
         }
         return new ResponseEntity<>(wishes, HttpStatus.OK);
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<Wish> findById(@PathVariable Long id) {
-        Wish wish = wishService.findById(id);
+    @GetMapping("/{bookId}")
+    public ResponseEntity<Wish> findByBookId(@PathVariable Long bookId, @RequestParam("memberId") Long memberId) {
+        Wish wish = wishService.findByBookId(bookId, memberId);
         if (wish == null) {
-            throw new IllegalArgumentException("No wish");
+            return null;
         }
         return new ResponseEntity<>(wish, HttpStatus.OK);
     }
