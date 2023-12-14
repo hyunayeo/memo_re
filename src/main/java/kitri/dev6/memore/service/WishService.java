@@ -38,6 +38,7 @@ public class WishService {
 
         return new PagingResponse<>(list, pagination);
     }
+
     public Wish findById(Long id) {
         return wishMapper.findById(id);
     }
@@ -50,5 +51,10 @@ public class WishService {
     // 찜 삭제 : 찜 목록에 담긴 id를 회원의 찜 목록에서 삭제해야 한다.
     public void delete(Long bookId, Long memberId) {
         wishMapper.delete(bookId, memberId);
+    }
+
+    public Wish findByBookId(Long bookId, Long memberId) {
+        Wish wish = wishMapper.findByBookId(bookId, memberId);
+        return wish;
     }
 }
