@@ -45,5 +45,6 @@ public interface WishMapper {
     // 찜 삭제
     @Delete("delete from wish where member_id = #{memberId} and book_id= #{bookId};")
     void delete(Long bookId, Long memberId);
-
+    @Select("select * from wish where member_id = #{memberId} and book_id = #{bookId};")
+    Wish findByBookId(Long bookId, Long memberId);
 }
