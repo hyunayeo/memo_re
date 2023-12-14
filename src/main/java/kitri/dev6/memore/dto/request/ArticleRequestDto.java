@@ -1,5 +1,6 @@
 package kitri.dev6.memore.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import kitri.dev6.memore.domain.Article;
 import lombok.*;
 
@@ -19,13 +20,13 @@ public class ArticleRequestDto {
     @NotEmpty
     private String title;
     private String content;
-    @NotEmpty
+    @NotEmpty @JsonProperty("isDone")
     private boolean isDone;
     @NotEmpty
     private LocalDate startDate;
     private LocalDate endDate;
     private int ratingScore;
-    @NotEmpty
+    @NotEmpty @JsonProperty("isHide")
     private boolean isHide;
 
     public Article toDomain(){

@@ -1,5 +1,6 @@
 package kitri.dev6.memore.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -17,10 +18,12 @@ public class Article {
     private String title;
     private String content;
     private int viewCount;
+    @JsonProperty("isDone")
     private boolean isDone;
     private LocalDate startDate;
     private LocalDate endDate;
     private int ratingScore;
+    @JsonProperty("isHide")
     private boolean isHide;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
