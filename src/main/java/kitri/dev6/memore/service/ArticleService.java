@@ -88,7 +88,13 @@ public class ArticleService {
     }
 
     public Article findById(Long id) {
-        return articleMapper.findById(id);
+        Article article = articleMapper.findById(id);
+        if (article!=null){
+            article.setViewCount(article.getViewCount()+1);
+            articleMapper.updateViewCount(id);
+            return article;
+        }
+        return null;
     }
 
     public Long insert(ArticleRequestDto articleRequestDto) {

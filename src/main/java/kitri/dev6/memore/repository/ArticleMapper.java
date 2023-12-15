@@ -99,6 +99,8 @@ public interface ArticleMapper {
             "rating_score = #{ratingScore}, is_hide = #{isHide}" +
             " where id = #{id}")
     Long updateById(Article article);
+    @Update("update article set view_count=view_count+1 where id=#{id}")
+    Long updateViewCount(Long id);
 
     //    @Delete("delete from article where id = #{id}")
     @Update("update article set deleted_at=CURRENT_TIMESTAMP where id = #{id}")
