@@ -56,6 +56,8 @@ public class Sql {
         if (!StringUtils.isEmpty(params.getSearchKeyword())) {
             if (!StringUtils.isEmpty(params.getSearchType())) {
                 query.WHERE(QueryUtils.procSearchInput(params.getSearchType(), params.getSearchKeyword()));
+                query.AND();
+                query.WHERE(QueryUtils.procSearchInput(params.getSearchType2(), params.getSearchKeyword2()));
             }
         }
         query.ORDER_BY(QueryUtils.sortAs(params.getSortType(), params.getSortAs()));

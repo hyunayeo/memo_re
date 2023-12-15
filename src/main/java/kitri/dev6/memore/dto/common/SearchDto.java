@@ -33,6 +33,8 @@ public class SearchDto {
     private String sortAs;          // 정렬 순서
     private String searchKeyword;       // 검색 키워드
     private String searchType;    // 검색 유형 (제목, 아이디, 날짜...)
+    private String searchKeyword2;       // 검색 키워드
+    private String searchType2;    // 검색 유형 (제목, 아이디, 날짜...)
     private Pagination pagination; // 페이지네이션 정보
     private String joinWith;
     private String apiFrom;
