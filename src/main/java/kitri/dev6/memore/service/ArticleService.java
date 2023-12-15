@@ -115,10 +115,10 @@ public class ArticleService {
         return articleMapper.updateById(article);
     }
 
-    public void delete(Long id) {
-        if (articleMapper.findById(id) != null) {
+    public void delete(Long memberId, Long id) {
+        Article article = articleMapper.findById(id);
+        if (article != null & article.getMember().getId().equals(memberId)) {
             articleMapper.deleteById(id);
         }
     }
-
 }
