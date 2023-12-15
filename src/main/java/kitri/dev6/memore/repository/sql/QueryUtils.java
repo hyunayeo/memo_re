@@ -8,7 +8,7 @@ public class QueryUtils {
     static HashSet<String> likeCompareSet =
             new HashSet<>(List.of(new String[]{"title", "content"}));
     static HashSet<String> exactCompareSet =
-            new HashSet<>(List.of(new String[]{"id", "member_id", "book_id", "category_id", "view_count", "rating_score"}));
+            new HashSet<>(List.of(new String[]{"id", "member_id", "book_id", "category_id", "view_count", "rating_score", "is_done", "is_hide"}));
     static HashSet<String> exactCompareWithQuotesSet =
             new HashSet<>(List.of(new String[]{"name", "c.name", "email", "m.name" }));
 
