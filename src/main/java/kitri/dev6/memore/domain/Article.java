@@ -43,10 +43,9 @@ public class Article {
         this.endDate = endDate;
         this.ratingScore = ratingScore;
         this.isHide = isHide;
-        this.updateEndDate();
     }
 
-    private void updateEndDate() {
+    public void updateEndDate() {
         if (this.isDone == true & this.endDate==null) {
             this.endDate = LocalDate.now();
         }

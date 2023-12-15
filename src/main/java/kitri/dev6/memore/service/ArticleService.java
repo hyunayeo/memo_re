@@ -93,6 +93,7 @@ public class ArticleService {
 
     public Long insert(ArticleRequestDto articleRequestDto) {
         Article article = articleRequestDto.toDomain();
+        article.updateEndDate();
         articleMapper.insert(article);
         return article.getId();
     }
@@ -110,6 +111,7 @@ public class ArticleService {
                 articleRequestDto.getRatingScore(),
                 articleRequestDto.isHide()
         );
+        article.updateEndDate();
         return articleMapper.updateById(article);
     }
 
