@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 public class Sql {
+    static String tableAlias = "";
     public SQL filter(SearchDto params, boolean isCount) throws UnsupportedEncodingException {
         SQL query = new SQL() {
             {
@@ -22,6 +23,7 @@ public class Sql {
                     JOIN("category c on b.category_id = c.code");
 //                    JOIN("aladin_category ac on c.name = ac.name");
                     WHERE(QueryUtils.procSearchInput("c.name", URLDecoder.decode(params.getFilterKeyword(), "UTF-8")));
+                    tableAlias = "a.";
                 }
 
                 if (params.getDomainType().equals("article")) {
@@ -34,6 +36,7 @@ public class Sql {
                         FROM("article");
                         JOIN("member m on article.member_id = m.id");
                         WHERE(QueryUtils.procSearchInput("m.name", URLDecoder.decode(params.getSearchKeyword(), "UTF-8")));
+                        tableAlias = "article.";
                     }
                 }
             }
@@ -58,14 +61,16 @@ public class Sql {
                 query.WHERE(QueryUtils.procSearchInput(params.getSearchType(), params.getSearchKeyword()));
                 query.AND();
                 query.WHERE(QueryUtils.procSearchInput(params.getSearchType2(), params.getSearchKeyword2()));
+                // article 뒤에 어떤 키워드가 붙어있는지 확인하여 붙여주기...
             }
         }
         query.AND();
-        query.WHERE("deleted_at is null");
+        query.WHERE(QueryUtils.procSearchInput(tableAlias + "deleted_at", " is null"));
         query.ORDER_BY(QueryUtils.sortAs(params.getSortType(), params.getSortAs()));
         query.LIMIT("#{pagination.limitStart}, #{recordSize}");
 
         System.out.println(query);
+        tableAlias = "";
         return query.toString();
     }
 
