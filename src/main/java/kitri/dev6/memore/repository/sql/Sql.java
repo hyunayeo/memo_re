@@ -60,6 +60,8 @@ public class Sql {
                 query.WHERE(QueryUtils.procSearchInput(params.getSearchType2(), params.getSearchKeyword2()));
             }
         }
+        query.AND();
+        query.WHERE("deleted_at is null");
         query.ORDER_BY(QueryUtils.sortAs(params.getSortType(), params.getSortAs()));
         query.LIMIT("#{pagination.limitStart}, #{recordSize}");
 
