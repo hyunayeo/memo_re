@@ -34,7 +34,6 @@ public interface ArticleMapper {
     List<Article> findAllWithBookAndMember(SearchDto params);
 
     @Select("select id, title, content, view_count, is_done, is_hide, rating_score, start_date, end_date, created_at from article join on book where category_id=#{categoryName}")
-
     List<Article> findAllByCategoryName(String categoryName);
 
     @Select("select * from article where #{bookId}=book_id")
@@ -100,8 +99,10 @@ public interface ArticleMapper {
             "rating_score = #{ratingScore}, is_hide = #{isHide}" +
             " where id = #{id}")
     Long updateById(Article article);
+    @Update("update article set view_count=view_count+1 where id=#{id}")
+    Long updateViewCount(Long id);
 
-    @Delete("delete from article where id = #{id}")
+    //    @Delete("delete from article where id = #{id}")
+    @Update("update article set deleted_at=CURRENT_TIMESTAMP where id = #{id}")
     Long deleteById(Long id);
-
 }
