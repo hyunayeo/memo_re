@@ -85,6 +85,8 @@ public interface ArticleMapper {
             @Result(property = "startDate", column = "start_date"),
             @Result(property = "endDate", column = "end_date"),
             @Result(property = "createdAt", column = "created_at"),
+            @Result(property = "bookId", column = "book_id"),
+            @Result(property = "memberId", column = "member_id"),
             @Result(property = "book", column = "book_id", one = @One(select = "kitri.dev6.memore.repository.BookMapper.findById", fetchType = FetchType.EAGER)),
             @Result(property = "member", column = "member_id", one = @One(select = "kitri.dev6.memore.repository.MemberMapper.findById", fetchType = FetchType.EAGER))
     })
@@ -105,4 +107,12 @@ public interface ArticleMapper {
     //    @Delete("delete from article where id = #{id}")
     @Update("update article set deleted_at=CURRENT_TIMESTAMP where id = #{id}")
     Long deleteById(Long id);
+
+    @Delete("delete from article where id = #{id}")
+    Long delete(Long id);
+
+    @Insert("insert into article_deleted (member_id, book_id, title, content, is_done, start_date, end_date, rating_score, is_hide) " +
+            " values ( #{memberId}, #{bookId}, #{title}, #{content}, #{isDone}, #{startDate}, #{endDate}, #{ratingScore}, #{isHide})")
+    void backupBeforeDelete(Article article);
+
 }

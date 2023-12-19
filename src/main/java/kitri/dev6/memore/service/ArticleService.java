@@ -124,7 +124,8 @@ public class ArticleService {
     public void delete(Long memberId, Long id) {
         Article article = articleMapper.findById(id);
         if (article != null & article.getMember().getId().equals(memberId)) {
-            articleMapper.deleteById(id);
+            articleMapper.backupBeforeDelete(article);
+            articleMapper.delete(id);
         }
     }
 }
