@@ -26,7 +26,6 @@ public class BookService {
 
     public Book findByIsbn(String isbn) {
         Book book = null;
-
         book = bookMapper.findWithArticlesByIsbn(isbn);
         if (book == null) {
             // 알라딘 API에서 가져오기 by isbn
@@ -45,6 +44,12 @@ public class BookService {
         // 조건에 해당하는 데이터가 없는 경우, 응답 데이터에 비어있는 리스트와 null을 담아 반환
         if (params.shouldIUseNaverBookApi()) {
             list = (List<Book>) (Object) Converter.toDto(bookOpenApiService.fetchAllFromNaver(params));
+            for (Book naverBook:list){
+                 Book searchBook = bookMapper.findByIsbn(naverBook.getIsbn());
+                 if (searchBook!=null){
+                     naverBook.setId(searchBook.getId());
+                 }
+            }
         } else if (params.shouldIUseAladinBookApi()) {
             list = (List<Book>) (Object) Converter.toDto(bookOpenApiService.fetchAllFromAladin(params));
         } else {
