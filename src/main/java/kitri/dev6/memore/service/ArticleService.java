@@ -88,11 +88,18 @@ public class ArticleService {
     }
 
     public Article findById(Long id) {
-        return articleMapper.findById(id);
+        Article article = articleMapper.findById(id);
+        if (article!=null){
+            article.setViewCount(article.getViewCount()+1);
+            articleMapper.updateViewCount(id);
+            return article;
+        }
+        return null;
     }
 
     public Long insert(ArticleRequestDto articleRequestDto) {
         Article article = articleRequestDto.toDomain();
+        article.updateEndDate();
         articleMapper.insert(article);
         return article.getId();
     }
@@ -110,13 +117,14 @@ public class ArticleService {
                 articleRequestDto.getRatingScore(),
                 articleRequestDto.isHide()
         );
+        article.updateEndDate();
         return articleMapper.updateById(article);
     }
 
-    public void delete(Long id) {
-        if (articleMapper.findById(id) != null) {
+    public void delete(Long memberId, Long id) {
+        Article article = articleMapper.findById(id);
+        if (article != null & article.getMember().getId().equals(memberId)) {
             articleMapper.deleteById(id);
         }
     }
-
 }

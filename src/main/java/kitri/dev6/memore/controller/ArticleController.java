@@ -51,8 +51,8 @@ public class ArticleController {
         throw new IllegalArgumentException("부적절한 요청");
     }
     @DeleteMapping("/{id}")
-    public Long delete(@PathVariable Long id) {
-        articleService.delete(id);
+    public Long delete(@LoginUser SessionUser user, @PathVariable Long id) {
+        articleService.delete(user.getId(),id);
         return id;
     }
 }

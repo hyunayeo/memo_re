@@ -49,6 +49,8 @@ public class SearchDto {
         this.sortAs = Type.DESC;
         this.searchType = "";
         this.searchKeyword = "";
+        this.searchType2 = "";
+        this.searchKeyword2 = "";
         this.apiFrom = FROM_NAVER;
         this.filter = "";
         this.filterKeyword = "";
