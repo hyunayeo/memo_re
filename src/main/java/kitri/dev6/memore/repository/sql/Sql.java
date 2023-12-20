@@ -62,6 +62,10 @@ public class Sql {
                 // article 뒤에 어떤 키워드가 붙어있는지 확인하여 붙여주기...
             }
         }
+
+        if (params.getDomainType().equals("article")) {
+            query.WHERE(QueryUtils.procSearchInput("is_hide", params.getIsHide()));
+        }
         query.ORDER_BY(QueryUtils.sortAs(params.getSortType(), params.getSortAs()));
         query.LIMIT("#{pagination.limitStart}, #{recordSize}");
 
