@@ -40,6 +40,7 @@ public class SearchDto {
     private String apiFrom;
     private String filter;
     private String filterKeyword;
+    private String isHide;
 
     public SearchDto() {
         this.page = 1;
@@ -54,6 +55,7 @@ public class SearchDto {
         this.apiFrom = FROM_NAVER;
         this.filter = "";
         this.filterKeyword = "";
+        this.isHide = "false";
     }
 
     public int getOffset() {
@@ -77,7 +79,7 @@ public class SearchDto {
             return false;
         }
         if (this.getSearchType().equals("ItemNewAll") ||
-                this.getSearchType().equals("neItemNewSpecial")
+                this.getSearchType().equals("ItemNewSpecial")
                     || this.getSearchType().equals("ItemEditorChoice")
                         || this.getSearchType().equals("Bestseller")
                             || this.getSearchType().equals("BlogBest "))
