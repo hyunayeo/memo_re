@@ -2,7 +2,7 @@ name: CI
 on:
   push:
     branches:
-      - deploy
+      - main
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
       - run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.properties
       - run: cat ./src/main/resources/application.properties
       
-      - run: echo "${{ secrets.APPLICATION-OAUTH }}" > ./src/main/resources/application.properties
+      - run: echo "${{ secrets.APPLICATION_OAUTH }}" > ./src/main/resources/application.properties
       - run: cat ./src/main/resources/application.properties
         
       - name: Set up JDK 11
