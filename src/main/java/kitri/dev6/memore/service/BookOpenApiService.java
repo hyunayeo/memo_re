@@ -19,6 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,6 +32,11 @@ public class BookOpenApiService {
     String ALADIN_SECRET = "ttbpicnic9351807001";
 
     List<NaverBookVO> fetchAllFromNaver(SearchDto params) {
+
+        if (params.getSearchKeyword().isEmpty()) {
+            return new ArrayList<NaverBookVO>();
+        }
+
 
         //String apiURL = "https://openapi.naver.com/v1/search/blog?query=" + text;    // JSON 결과
         URI uri = UriComponentsBuilder

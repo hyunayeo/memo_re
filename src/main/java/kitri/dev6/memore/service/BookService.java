@@ -44,11 +44,14 @@ public class BookService {
         // 조건에 해당하는 데이터가 없는 경우, 응답 데이터에 비어있는 리스트와 null을 담아 반환
         if (params.shouldIUseNaverBookApi()) {
             list = (List<Book>) (Object) Converter.toDto(bookOpenApiService.fetchAllFromNaver(params));
-            for (Book naverBook:list){
-                 Book searchBook = bookMapper.findByIsbn(naverBook.getIsbn());
-                 if (searchBook!=null){
-                     naverBook.setId(searchBook.getId());
-                 }
+
+            if (list != null) {
+                for (Book naverBook : list){
+                    Book searchBook = bookMapper.findByIsbn(naverBook.getIsbn());
+                    if (searchBook!=null){
+                        naverBook.setId(searchBook.getId());
+                    }
+                }
             }
         } else if (params.shouldIUseAladinBookApi()) {
             list = (List<Book>) (Object) Converter.toDto(bookOpenApiService.fetchAllFromAladin(params));
