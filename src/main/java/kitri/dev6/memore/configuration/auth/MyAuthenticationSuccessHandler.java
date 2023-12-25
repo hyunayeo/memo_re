@@ -7,6 +7,7 @@ import kitri.dev6.memore.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -24,9 +25,11 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+
 public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     public final Integer SESSION_TIMEOUT_IN_SECONDS = 60 * 300; // 30m
-    String REDIRECT_URI = "http://localhost:3000/";
+    @Value("${redirect.uri}")
+    String REDIRECT_URI;
     public final MemberService memberService;
 
     @Override
