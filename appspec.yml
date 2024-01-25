@@ -1,0 +1,6 @@
+version: 0.0
+os: linux
+files:
+  - source:  / # codedeploy에서 전달해준 파일 중 destination으로 이동시킬 대상 지정(/:모든파일)
+    destination: /home/ubuntu/app/step2/zip/ # 지정 파일을 받을 위치
+    overwrite: yes
